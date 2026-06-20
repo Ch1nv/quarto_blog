@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>quarto_blog</title>
+<link>https://your-website-url.example.com/</link>
+<atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
+<description>A blog built with Quarto</description>
+<generator>quarto-1.9.38</generator>
+<lastBuildDate>Sat, 20 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Kalman Filter 其實就是遞迴最小平方法</title>
+  <dc:creator>盧晉偉 </dc:creator>
+  <link>https://your-website-url.example.com/posts/kalman/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="先把題目鋪開" class="level2">
+<h2 class="anchored" data-anchor-id="先把題目鋪開">先把題目鋪開</h2>
+<!-- 一兩句講清楚「我在解什麼、為什麼值得做」：
+     靜態 OLS 假設 β 從頭到尾不變，但兩支資產的關係會隨時間走動。
+     先給方向盤，再讓推導去跑。 -->
+</section>
+<section id="從靜態-ols-出發" class="level2">
+<h2 class="anchored" data-anchor-id="從靜態-ols-出發">從靜態 OLS 出發</h2>
+<p>最小平方法的 normal equation：</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Chat%7B%5Cbeta%7D%20=%20(X%5E%5Ctop%20X)%5E%7B-1%7D%20X%5E%5Ctop%20y%0A"></p>
+<!-- 你的話：這給的是一個「對整段歷史一次到位、且固定」的 β。 -->
+</section>
+<section id="讓-β-隨時間走動狀態空間的設定" class="level2">
+<h2 class="anchored" data-anchor-id="讓-β-隨時間走動狀態空間的設定">讓 β 隨時間走動：狀態空間的設定</h2>
+<p>把固定的 <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> 換成會演化的隱藏狀態 <img src="https://latex.codecogs.com/png.latex?%5Cbeta_t">：</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Ay_t%20&amp;=%20x_t%5E%5Ctop%20%5Cbeta_t%20+%20%5Cvarepsilon_t,%20&amp;%20%5Cvarepsilon_t%20&amp;%5Csim%20%5Cmathcal%7BN%7D(0,%5C,R)%20%5C%5C%0A%5Cbeta_t%20&amp;=%20%5Cbeta_%7Bt-1%7D%20+%20%5Ceta_t,%20%20%20%20%20%20%20%20&amp;%20%5Ceta_t%20%20%20%20%20%20%20%20&amp;%5Csim%20%5Cmathcal%7BN%7D(0,%5C,Q)%0A%5Cend%7Baligned%7D%0A"></p>
+<!-- 解釋 Q（允許 β 動多少）和 R（觀測雜訊）各自扮演什麼角色。 -->
+</section>
+<section id="遞迴更新式" class="level2">
+<h2 class="anchored" data-anchor-id="遞迴更新式">遞迴更新式</h2>
+<!-- predict 一步、update 一步，把 Kalman gain 寫出來。
+     重點是讓讀者看到「每來一筆新資料，就更新一次對 β 的估計」。 -->
+</section>
+<section id="看出特例ols-是-q-to-0-的-kalman" class="level2">
+<h2 class="anchored" data-anchor-id="看出特例ols-是-q-to-0-的-kalman">看出特例：OLS 是 <img src="https://latex.codecogs.com/png.latex?Q%20%5Cto%200"> 的 Kalman</h2>
+<!-- 這篇的「啊哈」：當 Q → 0，β 不再被允許移動，
+     遞迴最小平方就退化回那個靜態的 (XᵀX)⁻¹Xᵀy。
+     同一件事，兩個極端。 -->
+</section>
+<section id="一個小例子選配" class="level2">
+<h2 class="anchored" data-anchor-id="一個小例子選配">一個小例子（選配）</h2>
+<p>下面是 pairs trading 裡用 Kalman 估「時變 hedge ratio」的骨架（先當示意，之後想真的跑再說）：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 用 Kalman filter 遞迴更新 hedge ratio beta_t</span></span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># state = beta_t, observation = y_t = beta_t * x_t + noise</span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ... 你的論文程式碼可以接進來 ...</span></span></code></pre></div></div>
+</section>
+<section id="收尾" class="level2">
+<h2 class="anchored" data-anchor-id="收尾">收尾</h2>
+<!-- 接回你的論文，以及這個「讓關係自己長出來」的視角
+     如何延伸到 optimal transport / flow matching。 -->
+
+
+</section>
+
+ ]]></description>
+  <category>統計</category>
+  <category>狀態空間模型</category>
+  <category>最佳化</category>
+  <guid>https://your-website-url.example.com/posts/kalman/</guid>
+  <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Post With Code</title>
+  <dc:creator>Harlow Malloc</dc:creator>
+  <link>https://your-website-url.example.com/posts/post-with-code/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is a post with executable code.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <category>code</category>
+  <category>analysis</category>
+  <guid>https://your-website-url.example.com/posts/post-with-code/</guid>
+  <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://your-website-url.example.com/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Welcome To My Blog</title>
+  <dc:creator>Tristan O&#39;Malley</dc:creator>
+  <link>https://your-website-url.example.com/posts/welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This is the first post in a Quarto blog. Welcome!</p>
+<p><img src="https://your-website-url.example.com/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
+<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://your-website-url.example.com/posts/welcome/</guid>
+  <pubDate>Wed, 17 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

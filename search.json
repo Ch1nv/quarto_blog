@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "quarto_blog",
+    "section": "",
+    "text": "Kalman Filter 其實就是遞迴最小平方法\n\n\n\n統計\n\n狀態空間模型\n\n最佳化\n\n\n\n\n\n\n\n\n\nJun 20, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 20, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJun 17, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code."
+  },
+  {
+    "objectID": "posts/kalman/index.html#從靜態-ols-出發",
+    "href": "posts/kalman/index.html#從靜態-ols-出發",
+    "title": "Kalman Filter 其實就是遞迴最小平方法",
+    "section": "從靜態 OLS 出發",
+    "text": "從靜態 OLS 出發\n最小平方法的 normal equation：\n\\[\n\\hat{\\beta} = (X^\\top X)^{-1} X^\\top y\n\\]"
+  },
+  {
+    "objectID": "posts/kalman/index.html#讓-β-隨時間走動狀態空間的設定",
+    "href": "posts/kalman/index.html#讓-β-隨時間走動狀態空間的設定",
+    "title": "Kalman Filter 其實就是遞迴最小平方法",
+    "section": "讓 β 隨時間走動：狀態空間的設定",
+    "text": "讓 β 隨時間走動：狀態空間的設定\n把固定的 \\(\\beta\\) 換成會演化的隱藏狀態 \\(\\beta_t\\)：\n\\[\n\\begin{aligned}\ny_t &= x_t^\\top \\beta_t + \\varepsilon_t, & \\varepsilon_t &\\sim \\mathcal{N}(0,\\,R) \\\\\n\\beta_t &= \\beta_{t-1} + \\eta_t,        & \\eta_t        &\\sim \\mathcal{N}(0,\\,Q)\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "posts/kalman/index.html#遞迴更新式",
+    "href": "posts/kalman/index.html#遞迴更新式",
+    "title": "Kalman Filter 其實就是遞迴最小平方法",
+    "section": "遞迴更新式",
+    "text": "遞迴更新式"
+  },
+  {
+    "objectID": "posts/kalman/index.html#看出特例ols-是-q-to-0-的-kalman",
+    "href": "posts/kalman/index.html#看出特例ols-是-q-to-0-的-kalman",
+    "title": "Kalman Filter 其實就是遞迴最小平方法",
+    "section": "看出特例：OLS 是 \\(Q \\to 0\\) 的 Kalman",
+    "text": "看出特例：OLS 是 \\(Q \\to 0\\) 的 Kalman"
+  },
+  {
+    "objectID": "posts/kalman/index.html#一個小例子選配",
+    "href": "posts/kalman/index.html#一個小例子選配",
+    "title": "Kalman Filter 其實就是遞迴最小平方法",
+    "section": "一個小例子（選配）",
+    "text": "一個小例子（選配）\n下面是 pairs trading 裡用 Kalman 估「時變 hedge ratio」的骨架（先當示意，之後想真的跑再說）：\n# 用 Kalman filter 遞迴更新 hedge ratio beta_t\n# state = beta_t, observation = y_t = beta_t * x_t + noise\n# ... 你的論文程式碼可以接進來 ..."
+  },
+  {
+    "objectID": "posts/kalman/index.html#收尾",
+    "href": "posts/kalman/index.html#收尾",
+    "title": "Kalman Filter 其實就是遞迴最小平方法",
+    "section": "收尾",
+    "text": "收尾"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  }
+]
