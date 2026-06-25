@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "CHIN-WEI, LU",
     "section": "",
-    "text": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節\n\n\n\n電腦視覺\n\n物件偵測\n\n醫療影像\n\nYOLO\n\n\n\n肺結節偵測是肺癌早篩的關鍵，但小結節只佔影像裡幾個像素，資料集又小又標註寬鬆。這篇記錄我用 YOLOv11 處理「小資料 + 小目標」雙重困境的過程，最後實驗結果是 yolo11n 的效果最好，但仍受限於小結節資料過少的限制。\n\n\n\n\n\nJun 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n卡爾曼濾波器在配對交易上的應用\n\n\n\n統計\n\n狀態空間模型\n\n配對交易\n\n\n\n\n\n\n\n\n\nJun 20, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
+    "text": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節\n\n\n\n電腦視覺\n\n物件偵測\n\n醫療影像\n\nYOLO\n\n\n\n肺結節偵測是肺癌早篩的關鍵，但小結節只佔影像裡幾個像素，資料集又小又標註寬鬆。這篇記錄我用 YOLOv11 處理「小資料 + 小目標」雙重困境的過程，最後實驗結果是 yolo11n 的效果最好，但仍受限於小結節資料過少的限制。\n\n\n\n\n\nJun 25, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n卡爾曼濾波器在配對交易上的應用\n\n\n\n統計\n\n狀態空間模型\n\n配對交易\n\n\n\n\n\n\n\n\n\nJun 20, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/lung_nodule_detection/index.html",
