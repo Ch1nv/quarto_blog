@@ -10,7 +10,229 @@
 <atom:link href="https://ch1nv.github.io/luchinwei/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Thu, 25 Jun 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 26 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議</title>
+  <dc:creator>盧晉偉 </dc:creator>
+  <link>https://ch1nv.github.io/luchinwei/posts/amazon_product_reviews_alanysis/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>如果想用消費者留下的評論幫產品團隊找問題，最直覺的做法是：把評論分成好評跟差評，然後去看差評。我一開始也是這樣做的。但做到一半我發現，這個前提其實是錯的——<strong>差評不一定有具體問題，而好評裡反而常常藏著最該被處理的缺陷。</strong></p>
+<p>這篇文章記錄的，我怎麼從「補 missing rating、看差評」這個直覺起點，一路把問題重新定義成 <strong>actionable review mining</strong>，最後做出一個 DistilBERT + Gemini 的兩階段 pipeline：小模型負責便宜地篩出候選評論，LLM 負責把它們抽成 <code>aspect</code>、<code>issue_summary</code>、<code>evidence_span</code> 這種產品團隊能直接讀的結構化 issue。</p>
+<p>真正花時間的不是訓練模型，而是想清楚一件事：<strong>我到底在找什麼。</strong></p>
+<section id="一開始把問題定義錯了" class="level2">
+<h2 class="anchored" data-anchor-id="一開始把問題定義錯了">一開始把問題定義錯了</h2>
+<p>最初我把這個任務想成兩步：先把缺失的星等補回來，再從負向評論裡找產品問題。聽起來很合理，於是我先處理 rating（星等）。</p>
+<p>原始資料有 1,597 筆評論，其中 420 筆缺 rating；去重後仍有 144 筆沒有星等。有趣的是，這些缺星等評論的文字長度中位數是 474 字元，幾乎是有星等評論（200 字元）的 2.4 倍——它們是寫得最長、內容最多的那一批。我用 TF-IDF + Logistic Regression、也試了 DistilBERT，想預測它們偏好評還是差評。</p>
+<p>但越做越覺得不對勁。很多長評論根本不是「正面」或「負面」可以概括的：有些整體給五星，正文卻列了一串缺點；有些通篇抱怨，最後一句還是推薦這個產品。<strong>rating 描述的是使用者對商品的整體態度，但「有沒有具體、可改善的問題」是另一回事。</strong> 我花力氣補出來的星等，並不會直接告訴我哪一篇值得產品團隊讀。</p>
+<p>那 helpful votes（點讚數） 呢？這是我試的第二個入口。直覺上，被很多人標 helpful 的評論應該比較值得看。我用 Gemini 標了 400 筆 actionable label （有具體建議的評論）來驗證這個假設：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Label</th>
+<th style="text-align: right;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>actionable（有具體建議）</td>
+<td style="text-align: right;">194</td>
+</tr>
+<tr class="even">
+<td>non-actionable</td>
+<td style="text-align: right;">206</td>
+</tr>
+</tbody>
+</table>
+<p>結果在 194 筆 actionable 評論裡，有 104 筆（53.6%）並不是高 helpful 的評論；<code>numHelpful</code>（點讚數） 跟 actionable label 的相關只有 0.085。換句話說，<strong>如果我只讀高票評論，會直接漏掉一半以上的產品改善訊號。</strong> helpful votes 衡量的是「對其他買家有沒有幫助」，不是「對產品團隊有沒有用」，這兩件事並不重疊。</p>
+<p>兩個直覺入口都試過、也都被資料打臉之後，我才意識到問題出在更上游：我一直在用「整體情緒」「互動熱度」這類 proxy（標籤），去逼近一個它們根本不對齊的目標。該換的不是模型，是問題本身。</p>
+</section>
+<section id="那可行動到底是什麼意思" class="level2">
+<h2 class="anchored" data-anchor-id="那可行動到底是什麼意思">那「可行動」到底是什麼意思</h2>
+<p>我把任務重新定義成 actionable review mining。要回答的問題不再是：</p>
+<blockquote class="blockquote">
+<p>這篇評論是好評還是差評？</p>
+</blockquote>
+<p>而是：</p>
+<blockquote class="blockquote">
+<p>這篇評論裡，有沒有產品團隊可以採取行動的具體問題？</p>
+</blockquote>
+<p>在這個專案裡，一篇 actionable review 指的是文字中包含以下任一種訊號：具體缺陷、功能缺口、使用限制，或任何產品團隊能據以改善的需求。情緒是哪一邊、被多少人按讚，都不在判準裡。</p>
+<p>定義清楚之後，整段研究路徑其實可以濃縮成一條線：</p>
+<pre class="mermaid"><code>flowchart TD
+  A["補 Missing Rating（走錯）"] --&gt; B["研究 numHelpful（也不夠）"]
+  B --&gt; C["重新定義：Actionable Review Mining"]
+  C --&gt; D["DistilBERT student gate + Gemini extraction"]
+  D --&gt; E["Product digest / Issue trend"]</code></pre>
+<p>Gemini 在這裡扮演 teacher 與抽取器，產出結構化欄位：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>actionable</code></td>
+<td>是否包含可行動的產品問題</td>
+</tr>
+<tr class="even">
+<td><code>aspect</code></td>
+<td>問題所屬面向</td>
+</tr>
+<tr class="odd">
+<td><code>issue_summary</code></td>
+<td>問題摘要</td>
+</tr>
+<tr class="even">
+<td><code>evidence_span</code></td>
+<td>原評論中的證據片段</td>
+</tr>
+</tbody>
+</table>
+<p>這裡有一個我刻意守住的界線：這些欄位用來做 teacher label、證據驗證跟 digest（評估），但<strong>真正要部署的 DistilBERT student model，輸入永遠只有完整的 review body</strong>——不讀 rating、不讀 helpful votes、不讀產品名稱、不讀長度，也不讀任何 Gemini 抽出來的欄位。我要的是一個只看文字、就能判斷可行動性的 gate，而不是一個偷偷依賴 metadata 的模型。</p>
+</section>
+<section id="為什麼是小模型把關-llm-抽取" class="level2">
+<h2 class="anchored" data-anchor-id="為什麼是小模型把關-llm-抽取">為什麼是「小模型把關 + LLM 抽取」</h2>
+<p>最終架構不是讓 DistilBERT 取代 LLM，而是讓兩者各做自己擅長的事：</p>
+<pre class="mermaid"><code>flowchart LR
+  A["Amazon review body"] --&gt; B["Sentence-evidence DistilBERT gate"]
+  B --&gt; C["Candidate reviews"]
+  C --&gt; D["Gemini structured extraction"]
+  D --&gt; E["Product issue digest"]
+  E --&gt; F["Issue trend analysis"]</code></pre>
+<p>DistilBERT 便宜、穩定，負責從大量評論中快速篩掉明顯沒問題的那些，把候選量壓下來；Gemini 處理真正困難的部分——判斷模稜兩可的案例、寫出 issue summary、把證據片段對齊回原文。</p>
+<p>這樣分工的好處不只是省 LLM 成本，更是因為它比較像真實的產品分析流程：輸出不是一個分類分數，而是一批可以排序、彙整、追蹤的產品問題。</p>
+</section>
+<section id="四個實驗回答四個不同的問題" class="level2">
+<h2 class="anchored" data-anchor-id="四個實驗回答四個不同的問題">四個實驗，回答四個不同的問題</h2>
+<p>我做了四個主要實驗。重點從來不是衝最高分，而是每個實驗各自回答一個我當下還沒把握的問題：</p>
+<ul>
+<li>只看文字的 student 行不行？（Baseline Student）</li>
+<li>模型有沒有偷學評論長度？（Length-Balanced Diagnostic）</li>
+<li>在自然分布下能不能部署？（Full-Pool Deployment）</li>
+<li>用證據監督能不能補回漏判？（Evidence-Supervised Sentence Student）</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Experiment</th>
+<th>它在問什麼</th>
+<th style="text-align: right;">Key Result</th>
+<th>我的決定</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Baseline Student</td>
+<td>text-only DistilBERT 能不能當 Gemini 前的 gate</td>
+<td style="text-align: right;">macro-F1 0.850</td>
+<td>可行，但 short 會漏判、long 會誤判</td>
+</tr>
+<tr class="even">
+<td>Length-Balanced Diagnostic</td>
+<td>模型是不是在靠長度作弊</td>
+<td style="text-align: right;">balanced macro-F1 0.670</td>
+<td>只當診斷，不部署</td>
+</tr>
+<tr class="odd">
+<td>Full-Pool Deployment</td>
+<td>自然長度分布下的部署模型</td>
+<td style="text-align: right;">macro-F1 0.875、positive recall 0.953</td>
+<td>強 baseline</td>
+</tr>
+<tr class="even">
+<td>Evidence-Supervised Sentence Student</td>
+<td>用 evidence span 做句子層監督</td>
+<td style="text-align: right;">macro-F1 0.896、positive recall 0.977</td>
+<td>最終推薦</td>
+</tr>
+</tbody>
+</table>
+<p>第二個實驗分數最難看，卻是最關鍵的一個。它證實了我擔心的事：模型確實受評論長度影響——很短的評論難以判斷，很長的評論則因為細節多而容易被誤判成 actionable。知道偏誤從哪來，我才有辦法設計下一步的 sentence-evidence model 去對症下藥，而不是盲目調參數。</p>
+</section>
+<section id="最後為什麼選-sentence-evidence-gate" class="level2">
+<h2 class="anchored" data-anchor-id="最後為什麼選-sentence-evidence-gate">最後為什麼選 sentence-evidence gate</h2>
+<p>最終推薦的是 evidence-supervised sentence student。它用 Gemini 的 <code>evidence_span</code> 建立句子層的監督訊號：</p>
+<ul>
+<li>evidence 句子 → positive</li>
+<li>non-actionable 評論裡的句子 → clean negative</li>
+<li>actionable 評論裡其他沒被標成 evidence 的句子 → unknown，不進 loss</li>
+</ul>
+<p>推論時模型一樣只讀評論文字，把句子分數取最高，聚合成 review-level 機率。我讓它在部署條件下跟 full-pool gate 正面對打：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th style="text-align: right;">Full-Pool Gate</th>
+<th style="text-align: right;">Sentence-Evidence Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>從 1,043 篇篩出的候選</td>
+<td style="text-align: right;">491</td>
+<td style="text-align: right;">504</td>
+</tr>
+<tr class="even">
+<td>保留的 actionable reviews</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">408</td>
+</tr>
+<tr class="odd">
+<td>Corpus-level actionable recall</td>
+<td style="text-align: right;">0.901</td>
+<td style="text-align: right;">0.919</td>
+</tr>
+<tr class="even">
+<td>False negatives</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="odd">
+<td>RTX 3060 離線延遲</td>
+<td style="text-align: right;">9.9 秒</td>
+<td style="text-align: right;">16.1 秒</td>
+</tr>
+</tbody>
+</table>
+<p>sentence-evidence gate 多送了 13 篇候選給 Gemini，但少漏了 8 篇 actionable review。對這個離線 digest pipeline 來說，這是划算的交換：多花一點推論時間，換更高的產品問題召回率。</p>
+<p>我也特別檢查了「多抓的這些訊號會不會反而把 digest 攪亂」。結果是不會：47 個產品裡有 44 個的 top issue 完全一致，完整 digest 的 exact issue Jaccard 高達 0.910。也就是說，sentence-evidence gate 沒有改變整體的產品問題結構，只是在邊界案例上多撿回了一些有用的東西——這正是我想要的行為。</p>
+</section>
+<section id="從分類分數到真正能追蹤的產品訊號" class="level2">
+<h2 class="anchored" data-anchor-id="從分類分數到真正能追蹤的產品訊號">從分類分數到真正能追蹤的產品訊號</h2>
+<p>這個專案的輸出沒有停在 classifier score。</p>
+<p>Gemini extraction 會把每一篇 actionable review 轉成一列 issue：問題面向、摘要、原文證據。這些 row 再彙整成 product digest，讓產品團隊一眼看到每個商品最常出現、最該處理的問題。</p>
+<p>我還把完整的 extraction 接到一個 Amazon Tap 的 monthly issue trend prototype：先把 actionable reviews 對映到人工審過的 canonical issue families，再用 empirical-logit local linear trend 的 state space model 搭配 Kalman filter，去偵測 Rising、Spike、Drop 這幾種訊號。對我來說這一步很自然——把「把噪訊濾成可信狀態」的 Kalman 思路，從金融時間序列搬到產品問題的時間序列上。</p>
+<p>所以這條 pipeline 的價值不只是「找出哪些評論有問題」，而是把評論變成<strong>可以長期追蹤的 product intelligence</strong>。</p>
+</section>
+<section id="這個專案到底證明了什麼" class="level2">
+<h2 class="anchored" data-anchor-id="這個專案到底證明了什麼">這個專案到底證明了什麼</h2>
+<p>回頭看，這個專案教我重新理解了 review mining 的核心問題。如果目標是改善產品，那 positive/negative sentiment 只是間接訊號、helpful votes 只是互動訊號；真正重要的，是評論裡有沒有具體、可定位、可採取行動的產品問題。</p>
+<p>最終系統用 sentence-evidence DistilBERT 當 candidate gate，Gemini 負責 structured extraction 與 evidence validation，讓小模型跟 LLM 各做擅長的事，把大量 Amazon 評論轉成貼近產品團隊工作流的 issue digest。</p>
+<p>而對作品集來說，我想呈現的不是某個被我調高 0.02 的 F1，而是一套完整的工作方式：<strong>從一個錯的 proxy 出發，被資料糾正，重新定義問題，診斷模型偏誤，做部署取捨，最後把模型輸出接到真正有用的分析成果。</strong> 模型訓練只是其中一段；想清楚要解什麼，才是整件事的方向盤。</p>
+
+
+</section>
+
+ ]]></description>
+  <category>NLP</category>
+  <category>LLM</category>
+  <category>評論分析</category>
+  <guid>https://ch1nv.github.io/luchinwei/posts/amazon_product_reviews_alanysis/</guid>
+  <pubDate>Fri, 26 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>小模型在小資料集更優秀：在 280 張影像上偵測肺結節</title>
   <dc:creator>盧晉偉 </dc:creator>

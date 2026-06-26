@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="盧晉偉">
+<meta name="dcterms.date" content="2026-06-26">
+<meta name="description" content="一個 Amazon review mining 專案的完整過程——為什麼 sentiment、rating、helpful votes 都不是好入口，我如何把任務重新定義成 actionable review mining，最後用 DistilBERT gate + Gemini extraction 把評論轉成產品團隊能直接用的 issue digest。">
 
-<title>CHIN-WEI, LU</title>
+<title>差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議 – CHIN-WEI, LU</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +29,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bba5ebae505b5c03f3f0d8040a416a6b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bba5ebae505b5c03f3f0d8040a416a6b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,68 +73,10 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="CHIN-WEI, LU" href="index.xml" data-external="1"></head>
+<link rel="stylesheet" href="../../styles.css">
+</head>
 
 <body class="nav-fixed quarto-light">
 
@@ -142,7 +85,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">CHIN-WEI, LU</span>
     </a>
   </div>
@@ -153,7 +96,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -171,146 +114,273 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">CHIN-WEI, LU</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議</h1>
+                  <div>
+        <div class="description">
+          一個 Amazon review mining 專案的完整過程——為什麼 sentiment、rating、helpful votes 都不是好入口，我如何把任務重新定義成 actionable review mining，最後用 DistilBERT gate + Gemini extraction 把評論轉成產品團隊能直接用的 issue digest。
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">NLP</div>
+                <div class="quarto-category">LLM</div>
+                <div class="quarto-category">評論分析</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>盧晉偉 </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 26, 2026</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="TExN">LLM <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TkxQ">NLP <span class="quarto-category-count">(1)</span></div><div class="category" data-category="WU9MTw==">YOLO <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU3JTg5JUE5JUU0JUJCJUI2JUU1JTgxJUI1JUU2JUI4JUFD">物件偵測 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU3JThCJTgwJUU2JTg1JThCJUU3JUE5JUJBJUU5JTk2JTkzJUU2JUE4JUExJUU1JTlFJThC">狀態空間模型 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU3JUI1JUIxJUU4JUE4JTg4">統計 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU4JUE5JTk1JUU4JUFCJTk2JUU1JTg4JTg2JUU2JTlFJTkw">評論分析 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU5JTg1JThEJUU1JUIwJThEJUU0JUJBJUE0JUU2JTk4JTkz">配對交易 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU5JTg2JUFCJUU3JTk5JTgyJUU1JUJEJUIxJUU1JTgzJThG">醫療影像 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU5JTlCJUJCJUU4JTg1JUE2JUU4JUE2JTk2JUU4JUE2JUJB">電腦視覺 <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#一開始把問題定義錯了" id="toc-一開始把問題定義錯了" class="nav-link active" data-scroll-target="#一開始把問題定義錯了">一開始把問題定義錯了</a></li>
+  <li><a href="#那可行動到底是什麼意思" id="toc-那可行動到底是什麼意思" class="nav-link" data-scroll-target="#那可行動到底是什麼意思">那「可行動」到底是什麼意思</a></li>
+  <li><a href="#為什麼是小模型把關-llm-抽取" id="toc-為什麼是小模型把關-llm-抽取" class="nav-link" data-scroll-target="#為什麼是小模型把關-llm-抽取">為什麼是「小模型把關 + LLM 抽取」</a></li>
+  <li><a href="#四個實驗回答四個不同的問題" id="toc-四個實驗回答四個不同的問題" class="nav-link" data-scroll-target="#四個實驗回答四個不同的問題">四個實驗，回答四個不同的問題</a></li>
+  <li><a href="#最後為什麼選-sentence-evidence-gate" id="toc-最後為什麼選-sentence-evidence-gate" class="nav-link" data-scroll-target="#最後為什麼選-sentence-evidence-gate">最後為什麼選 sentence-evidence gate</a></li>
+  <li><a href="#從分類分數到真正能追蹤的產品訊號" id="toc-從分類分數到真正能追蹤的產品訊號" class="nav-link" data-scroll-target="#從分類分數到真正能追蹤的產品訊號">從分類分數到真正能追蹤的產品訊號</a></li>
+  <li><a href="#這個專案到底證明了什麼" id="toc-這個專案到底證明了什麼" class="nav-link" data-scroll-target="#這個專案到底證明了什麼">這個專案到底證明了什麼</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>如果想用消費者留下的評論幫產品團隊找問題，最直覺的做法是：把評論分成好評跟差評，然後去看差評。我一開始也是這樣做的。但做到一半我發現，這個前提其實是錯的——<strong>差評不一定有具體問題，而好評裡反而常常藏著最該被處理的缺陷。</strong></p>
+<p>這篇文章記錄的，我怎麼從「補 missing rating、看差評」這個直覺起點，一路把問題重新定義成 <strong>actionable review mining</strong>，最後做出一個 DistilBERT + Gemini 的兩階段 pipeline：小模型負責便宜地篩出候選評論，LLM 負責把它們抽成 <code>aspect</code>、<code>issue_summary</code>、<code>evidence_span</code> 這種產品團隊能直接讀的結構化 issue。</p>
+<p>真正花時間的不是訓練模型，而是想清楚一件事：<strong>我到底在找什麼。</strong></p>
+<section id="一開始把問題定義錯了" class="level2">
+<h2 class="anchored" data-anchor-id="一開始把問題定義錯了">一開始把問題定義錯了</h2>
+<p>最初我把這個任務想成兩步：先把缺失的星等補回來，再從負向評論裡找產品問題。聽起來很合理，於是我先處理 rating（星等）。</p>
+<p>原始資料有 1,597 筆評論，其中 420 筆缺 rating；去重後仍有 144 筆沒有星等。有趣的是，這些缺星等評論的文字長度中位數是 474 字元，幾乎是有星等評論（200 字元）的 2.4 倍——它們是寫得最長、內容最多的那一批。我用 TF-IDF + Logistic Regression、也試了 DistilBERT，想預測它們偏好評還是差評。</p>
+<p>但越做越覺得不對勁。很多長評論根本不是「正面」或「負面」可以概括的：有些整體給五星，正文卻列了一串缺點；有些通篇抱怨，最後一句還是推薦這個產品。<strong>rating 描述的是使用者對商品的整體態度，但「有沒有具體、可改善的問題」是另一回事。</strong> 我花力氣補出來的星等，並不會直接告訴我哪一篇值得產品團隊讀。</p>
+<p>那 helpful votes（點讚數） 呢？這是我試的第二個入口。直覺上，被很多人標 helpful 的評論應該比較值得看。我用 Gemini 標了 400 筆 actionable label （有具體建議的評論）來驗證這個假設：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Label</th>
+<th style="text-align: right;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>actionable（有具體建議）</td>
+<td style="text-align: right;">194</td>
+</tr>
+<tr class="even">
+<td>non-actionable</td>
+<td style="text-align: right;">206</td>
+</tr>
+</tbody>
+</table>
+<p>結果在 194 筆 actionable 評論裡，有 104 筆（53.6%）並不是高 helpful 的評論；<code>numHelpful</code>（點讚數） 跟 actionable label 的相關只有 0.085。換句話說，<strong>如果我只讀高票評論，會直接漏掉一半以上的產品改善訊號。</strong> helpful votes 衡量的是「對其他買家有沒有幫助」，不是「對產品團隊有沒有用」，這兩件事並不重疊。</p>
+<p>兩個直覺入口都試過、也都被資料打臉之後，我才意識到問題出在更上游：我一直在用「整體情緒」「互動熱度」這類 proxy（標籤），去逼近一個它們根本不對齊的目標。該換的不是模型，是問題本身。</p>
+</section>
+<section id="那可行動到底是什麼意思" class="level2">
+<h2 class="anchored" data-anchor-id="那可行動到底是什麼意思">那「可行動」到底是什麼意思</h2>
+<p>我把任務重新定義成 actionable review mining。要回答的問題不再是：</p>
+<blockquote class="blockquote">
+<p>這篇評論是好評還是差評？</p>
+</blockquote>
+<p>而是：</p>
+<blockquote class="blockquote">
+<p>這篇評論裡，有沒有產品團隊可以採取行動的具體問題？</p>
+</blockquote>
+<p>在這個專案裡，一篇 actionable review 指的是文字中包含以下任一種訊號：具體缺陷、功能缺口、使用限制，或任何產品團隊能據以改善的需求。情緒是哪一邊、被多少人按讚，都不在判準裡。</p>
+<p>定義清楚之後，整段研究路徑其實可以濃縮成一條線：</p>
+<pre class="mermaid"><code>flowchart TD
+  A["補 Missing Rating（走錯）"] --&gt; B["研究 numHelpful（也不夠）"]
+  B --&gt; C["重新定義：Actionable Review Mining"]
+  C --&gt; D["DistilBERT student gate + Gemini extraction"]
+  D --&gt; E["Product digest / Issue trend"]</code></pre>
+<p>Gemini 在這裡扮演 teacher 與抽取器，產出結構化欄位：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>actionable</code></td>
+<td>是否包含可行動的產品問題</td>
+</tr>
+<tr class="even">
+<td><code>aspect</code></td>
+<td>問題所屬面向</td>
+</tr>
+<tr class="odd">
+<td><code>issue_summary</code></td>
+<td>問題摘要</td>
+</tr>
+<tr class="even">
+<td><code>evidence_span</code></td>
+<td>原評論中的證據片段</td>
+</tr>
+</tbody>
+</table>
+<p>這裡有一個我刻意守住的界線：這些欄位用來做 teacher label、證據驗證跟 digest（評估），但<strong>真正要部署的 DistilBERT student model，輸入永遠只有完整的 review body</strong>——不讀 rating、不讀 helpful votes、不讀產品名稱、不讀長度，也不讀任何 Gemini 抽出來的欄位。我要的是一個只看文字、就能判斷可行動性的 gate，而不是一個偷偷依賴 metadata 的模型。</p>
+</section>
+<section id="為什麼是小模型把關-llm-抽取" class="level2">
+<h2 class="anchored" data-anchor-id="為什麼是小模型把關-llm-抽取">為什麼是「小模型把關 + LLM 抽取」</h2>
+<p>最終架構不是讓 DistilBERT 取代 LLM，而是讓兩者各做自己擅長的事：</p>
+<pre class="mermaid"><code>flowchart LR
+  A["Amazon review body"] --&gt; B["Sentence-evidence DistilBERT gate"]
+  B --&gt; C["Candidate reviews"]
+  C --&gt; D["Gemini structured extraction"]
+  D --&gt; E["Product issue digest"]
+  E --&gt; F["Issue trend analysis"]</code></pre>
+<p>DistilBERT 便宜、穩定，負責從大量評論中快速篩掉明顯沒問題的那些，把候選量壓下來；Gemini 處理真正困難的部分——判斷模稜兩可的案例、寫出 issue summary、把證據片段對齊回原文。</p>
+<p>這樣分工的好處不只是省 LLM 成本，更是因為它比較像真實的產品分析流程：輸出不是一個分類分數，而是一批可以排序、彙整、追蹤的產品問題。</p>
+</section>
+<section id="四個實驗回答四個不同的問題" class="level2">
+<h2 class="anchored" data-anchor-id="四個實驗回答四個不同的問題">四個實驗，回答四個不同的問題</h2>
+<p>我做了四個主要實驗。重點從來不是衝最高分，而是每個實驗各自回答一個我當下還沒把握的問題：</p>
+<ul>
+<li>只看文字的 student 行不行？（Baseline Student）</li>
+<li>模型有沒有偷學評論長度？（Length-Balanced Diagnostic）</li>
+<li>在自然分布下能不能部署？（Full-Pool Deployment）</li>
+<li>用證據監督能不能補回漏判？（Evidence-Supervised Sentence Student）</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Experiment</th>
+<th>它在問什麼</th>
+<th style="text-align: right;">Key Result</th>
+<th>我的決定</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Baseline Student</td>
+<td>text-only DistilBERT 能不能當 Gemini 前的 gate</td>
+<td style="text-align: right;">macro-F1 0.850</td>
+<td>可行，但 short 會漏判、long 會誤判</td>
+</tr>
+<tr class="even">
+<td>Length-Balanced Diagnostic</td>
+<td>模型是不是在靠長度作弊</td>
+<td style="text-align: right;">balanced macro-F1 0.670</td>
+<td>只當診斷，不部署</td>
+</tr>
+<tr class="odd">
+<td>Full-Pool Deployment</td>
+<td>自然長度分布下的部署模型</td>
+<td style="text-align: right;">macro-F1 0.875、positive recall 0.953</td>
+<td>強 baseline</td>
+</tr>
+<tr class="even">
+<td>Evidence-Supervised Sentence Student</td>
+<td>用 evidence span 做句子層監督</td>
+<td style="text-align: right;">macro-F1 0.896、positive recall 0.977</td>
+<td>最終推薦</td>
+</tr>
+</tbody>
+</table>
+<p>第二個實驗分數最難看，卻是最關鍵的一個。它證實了我擔心的事：模型確實受評論長度影響——很短的評論難以判斷，很長的評論則因為細節多而容易被誤判成 actionable。知道偏誤從哪來，我才有辦法設計下一步的 sentence-evidence model 去對症下藥，而不是盲目調參數。</p>
+</section>
+<section id="最後為什麼選-sentence-evidence-gate" class="level2">
+<h2 class="anchored" data-anchor-id="最後為什麼選-sentence-evidence-gate">最後為什麼選 sentence-evidence gate</h2>
+<p>最終推薦的是 evidence-supervised sentence student。它用 Gemini 的 <code>evidence_span</code> 建立句子層的監督訊號：</p>
+<ul>
+<li>evidence 句子 → positive</li>
+<li>non-actionable 評論裡的句子 → clean negative</li>
+<li>actionable 評論裡其他沒被標成 evidence 的句子 → unknown，不進 loss</li>
+</ul>
+<p>推論時模型一樣只讀評論文字，把句子分數取最高，聚合成 review-level 機率。我讓它在部署條件下跟 full-pool gate 正面對打：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th style="text-align: right;">Full-Pool Gate</th>
+<th style="text-align: right;">Sentence-Evidence Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>從 1,043 篇篩出的候選</td>
+<td style="text-align: right;">491</td>
+<td style="text-align: right;">504</td>
+</tr>
+<tr class="even">
+<td>保留的 actionable reviews</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">408</td>
+</tr>
+<tr class="odd">
+<td>Corpus-level actionable recall</td>
+<td style="text-align: right;">0.901</td>
+<td style="text-align: right;">0.919</td>
+</tr>
+<tr class="even">
+<td>False negatives</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="odd">
+<td>RTX 3060 離線延遲</td>
+<td style="text-align: right;">9.9 秒</td>
+<td style="text-align: right;">16.1 秒</td>
+</tr>
+</tbody>
+</table>
+<p>sentence-evidence gate 多送了 13 篇候選給 Gemini，但少漏了 8 篇 actionable review。對這個離線 digest pipeline 來說，這是划算的交換：多花一點推論時間，換更高的產品問題召回率。</p>
+<p>我也特別檢查了「多抓的這些訊號會不會反而把 digest 攪亂」。結果是不會：47 個產品裡有 44 個的 top issue 完全一致，完整 digest 的 exact issue Jaccard 高達 0.910。也就是說，sentence-evidence gate 沒有改變整體的產品問題結構，只是在邊界案例上多撿回了一些有用的東西——這正是我想要的行為。</p>
+</section>
+<section id="從分類分數到真正能追蹤的產品訊號" class="level2">
+<h2 class="anchored" data-anchor-id="從分類分數到真正能追蹤的產品訊號">從分類分數到真正能追蹤的產品訊號</h2>
+<p>這個專案的輸出沒有停在 classifier score。</p>
+<p>Gemini extraction 會把每一篇 actionable review 轉成一列 issue：問題面向、摘要、原文證據。這些 row 再彙整成 product digest，讓產品團隊一眼看到每個商品最常出現、最該處理的問題。</p>
+<p>我還把完整的 extraction 接到一個 Amazon Tap 的 monthly issue trend prototype：先把 actionable reviews 對映到人工審過的 canonical issue families，再用 empirical-logit local linear trend 的 state space model 搭配 Kalman filter，去偵測 Rising、Spike、Drop 這幾種訊號。對我來說這一步很自然——把「把噪訊濾成可信狀態」的 Kalman 思路，從金融時間序列搬到產品問題的時間序列上。</p>
+<p>所以這條 pipeline 的價值不只是「找出哪些評論有問題」，而是把評論變成<strong>可以長期追蹤的 product intelligence</strong>。</p>
+</section>
+<section id="這個專案到底證明了什麼" class="level2">
+<h2 class="anchored" data-anchor-id="這個專案到底證明了什麼">這個專案到底證明了什麼</h2>
+<p>回頭看，這個專案教我重新理解了 review mining 的核心問題。如果目標是改善產品，那 positive/negative sentiment 只是間接訊號、helpful votes 只是互動訊號；真正重要的，是評論裡有沒有具體、可定位、可採取行動的產品問題。</p>
+<p>最終系統用 sentence-evidence DistilBERT 當 candidate gate，Gemini 負責 structured extraction 與 evidence validation，讓小模型跟 LLM 各做擅長的事，把大量 Amazon 評論轉成貼近產品團隊工作流的 issue digest。</p>
+<p>而對作品集來說，我想呈現的不是某個被我調高 0.02 的 F1，而是一套完整的工作方式：<strong>從一個錯的 proxy 出發，被資料糾正，重新定義問題，診斷模型偏誤，做部署取捨，最後把模型輸出接到真正有用的分析成果。</strong> 模型訓練只是其中一段；想清楚要解什麼，才是整件事的方向盤。</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="TkxQJTJDTExNJTJDJUU4JUE5JTk1JUU4JUFCJTk2JUU1JTg4JTg2JUU2JTlFJTkw" data-listing-date-sort="1782432000000" data-listing-file-modified-sort="1782456775375" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="471">
-<div class="thumbnail"><a href="./posts/amazon_product_reviews_alanysis/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/amazon_product_reviews_alanysis/index.html" class="no-external">差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TkxQ'); return false;">NLP</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TExN'); return false;">LLM</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU4JUE5JTk1JUU4JUFCJTk2JUU1JTg4JTg2JUU2JTlFJTkw'); return false;">評論分析</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/amazon_product_reviews_alanysis/index.html" class="no-external">
-<p>一個 Amazon review mining 專案的完整過程——為什麼 sentiment、rating、helpful votes 都不是好入口，我如何把任務重新定義成 actionable review mining，最後用 DistilBERT gate + Gemini extraction 把評論轉成產品團隊能直接用的 issue digest。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/amazon_product_reviews_alanysis/index.html" class="no-external">
-<div class="listing-date">
-Jun 26, 2026
-</div>
-<div class="listing-author">
-盧晉偉
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="JUU5JTlCJUJCJUU4JTg1JUE2JUU4JUE2JTk2JUU4JUE2JUJBJTJDJUU3JTg5JUE5JUU0JUJCJUI2JUU1JTgxJUI1JUU2JUI4JUFDJTJDJUU5JTg2JUFCJUU3JTk5JTgyJUU1JUJEJUIxJUU1JTgzJThGJTJDWU9MTw==" data-listing-date-sort="1782345600000" data-listing-file-modified-sort="1782456775375" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="470">
-<div class="thumbnail"><a href="./posts/lung_nodule_detection/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/lung_nodule_detection/val_batch1_pred.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/lung_nodule_detection/index.html" class="no-external">小模型在小資料集更優秀：在 280 張影像上偵測肺結節</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU5JTlCJUJCJUU4JTg1JUE2JUU4JUE2JTk2JUU4JUE2JUJB'); return false;">電腦視覺</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU3JTg5JUE5JUU0JUJCJUI2JUU1JTgxJUI1JUU2JUI4JUFD'); return false;">物件偵測</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU5JTg2JUFCJUU3JTk5JTgyJUU1JUJEJUIxJUU1JTgzJThG'); return false;">醫療影像</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('WU9MTw=='); return false;">YOLO</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/lung_nodule_detection/index.html" class="no-external">
-<p>肺結節偵測是肺癌早篩的關鍵，但小結節只佔影像裡幾個像素，資料集又小又標註寬鬆。這篇記錄我用 YOLOv11 處理「小資料 + 小目標」雙重困境的過程，最後實驗結果是 yolo11n 的效果最好，但仍受限於小結節資料過少的限制。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/lung_nodule_detection/index.html" class="no-external">
-<div class="listing-date">
-Jun 25, 2026
-</div>
-<div class="listing-author">
-盧晉偉
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="JUU3JUI1JUIxJUU4JUE4JTg4JTJDJUU3JThCJTgwJUU2JTg1JThCJUU3JUE5JUJBJUU5JTk2JTkzJUU2JUE4JUExJUU1JTlFJThCJTJDJUU5JTg1JThEJUU1JUIwJThEJUU0JUJBJUE0JUU2JTk4JTkz" data-listing-date-sort="1781913600000" data-listing-file-modified-sort="1782456775375" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="492">
-<div class="thumbnail"><a href="./posts/kalman/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/kalman/index.html" class="no-external">卡爾曼濾波器在配對交易上的應用</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU3JUI1JUIxJUU4JUE4JTg4'); return false;">統計</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU3JThCJTgwJUU2JTg1JThCJUU3JUE5JUJBJUU5JTk2JTkzJUU2JUE4JUExJUU1JTlFJThC'); return false;">狀態空間模型</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUU5JTg1JThEJUU1JUIwJThEJUU0JUJBJUE0JUU2JTk4JTkz'); return false;">配對交易</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/kalman/index.html" class="no-external">
-配對交易（pairs trading）是一種<strong>市場中立</strong>策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有<strong>均值回歸（mean reversion）</strong>的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/kalman/index.html" class="no-external">
-<div class="listing-date">
-Jun 20, 2026
-</div>
-<div class="listing-author">
-盧晉偉
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

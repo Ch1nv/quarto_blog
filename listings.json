@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/amazon_product_reviews_alanysis/index.html",
       "/posts/lung_nodule_detection/index.html",
       "/posts/kalman/index.html"
     ]
