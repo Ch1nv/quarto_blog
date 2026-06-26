@@ -256,6 +256,265 @@
   <pubDate>Fri, 26 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>市集地圖：解決「主辦方」和「逛市集的人」的問題</title>
+  <dc:creator>盧晉偉 </dc:creator>
+  <link>https://ch1nv.github.io/luchinwei/posts/market_map/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="這個專案在解什麼" class="level2">
+<h2 class="anchored" data-anchor-id="這個專案在解什麼">這個專案在解什麼</h2>
+<p>每到週末，全台有大量市集同時開張，資訊卻散落在 IG、粉專、活動社團和主辦方公告裡。對想出門逛市集的人來說，痛點其實很具體：不知道這週末附近有哪些市集、不知道有哪些攤、找到的時候活動常常已經結束。</p>
+<p>而站在另一端的主辦方，問題更隱形：他們對自己的活動幾乎沒有任何數據。現場靠紙本集點卡——印多了浪費、印少了不夠、散場後一疊集不滿的卡只能丟，活動結束也說不清今天到底多少人真的參與。</p>
+<p>所以這個專案要解的，是同一條斷裂的路徑上的兩個缺口：</p>
+<ol type="1">
+<li><strong>發現端</strong>：讓「找市集」這件事，從翻十個社群變成看一張地圖。</li>
+<li><strong>現場端</strong>：讓某一個市集的現場資訊（活動、攤位、集點）變得好找、好用，並讓主辦方第一次握住自己的數據。</li>
+</ol>
+</section>
+<section id="整體設計兩層架構" class="level2">
+<h2 class="anchored" data-anchor-id="整體設計兩層架構">整體設計：兩層架構</h2>
+<p>我把整個系統拆成兩層，各自是一個可以獨立跑起來的專案：</p>
+<ul>
+<li><p><strong>發現層 — 全台市集地圖</strong> 一張全台市集地圖，負責回答「這週末哪裡有市集」。使用者在這裡瀏覽、搜尋、篩選、看點位，然後<strong>選定一個想去的市集</strong>。技術上是 <code>React + Leaflet</code> 的雙欄地圖介面，後端用 <code>FastAPI</code> 提供輕量查詢層。</p></li>
+<li><p><strong>現場層 — 個別市集活動 App（東方市集為例）</strong> 某一個市集自己的活動頁，負責回答「我已經決定去這個市集了，那它有哪些攤、哪些活動、集點還差幾點」。技術上是跑在 LINE 裡的 <code>LIFF</code> 前端，後端 <code>FastAPI</code> 串 <code>Supabase</code>，並記錄使用者互動事件給主辦方看。</p></li>
+</ul>
+<p>兩層之間的交棒，不是「再開一個網站」，而是落在使用者本來就熟悉的入口——<strong>LINE</strong>。</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+  subgraph D["發現層：全台市集地圖"]
+    map["React + Leaflet 地圖&lt;br/&gt;搜尋 / 篩選 / 看點位"]
+    detail["市集詳情面板"]
+  end
+
+  subgraph BRIDGE["連接點"]
+    oa["個別市集 LINE 官方帳號"]
+    rich["Rich Menu"]
+  end
+
+  subgraph V["現場層：個別市集活動 App"]
+    liff["LIFF App&lt;br/&gt;活動 / 攤位 / 集點卡"]
+    dash["主辦方數據後台"]
+  end
+
+  user["使用者"] --&gt; map
+  map --&gt; detail
+  detail --&gt;|官方 LINE 按鈕| oa
+  oa --&gt; rich
+  rich --&gt; liff
+  liff --&gt; dash
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="連接點從平台詳情走進個別市集的-line" class="level2">
+<h2 class="anchored" data-anchor-id="連接點從平台詳情走進個別市集的-line">連接點：從平台詳情走進個別市集的 LINE</h2>
+<p>整個系統最重要的設計，就是這條交棒路徑：</p>
+<blockquote class="blockquote">
+<p>在全台地圖上選定一個市集 → 從它的詳情頁打開<strong>那個市集自己的 LINE 官方帳號</strong> → 從官方帳號的 rich menu 進入該市集的 LIFF App。</p>
+</blockquote>
+<p>刻意不在發現層裡「內建」每個市集的完整現場功能，而是把使用者交棒到各市集自己的 LINE，是因為這樣每一層的職責都很乾淨：發現層只負責把人帶到對的市集門口，現場層由各市集自己的官方帳號接手。對使用者來說，全程都在 LINE 裡，不需要下載任何 App。</p>
+<section id="第一步發現層詳情頁的官方-line-按鈕" class="level3">
+<h3 class="anchored" data-anchor-id="第一步發現層詳情頁的官方-line-按鈕">第一步：發現層詳情頁的官方 LINE 按鈕</h3>
+<p>在全台地圖的市集詳情面板裡，只要該市集有設定 LINE 連結，就會顯示一顆官方 LINE 按鈕。這顆按鈕就是交棒的起點——使用者點下去，就離開「綜覽地圖」，走進「某一個市集」。</p>
+<p>發現層的後端同時也放了 LINE webhook 的雛形，可以用文字指令完成同一件事：輸入「市集地圖」回覆地圖入口，輸入特定市集名稱（例如「東方市集」）則回覆<strong>那個市集指定的官方 LINE 連結</strong>。換句話說，無論使用者是在網頁上看地圖、還是在 LINE 裡跟平台對話，都能被導向同一個出口。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 發現層 webhook：把使用者導向「某個市集自己的官方 LINE」</span></span>
+<span id="cb1-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> handle_text_message(text: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="cb1-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> text <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"市集地圖"</span>:</span>
+<span id="cb1-4">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> LIFF_MAP_URL  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 回到全台地圖</span></span>
+<span id="cb1-5">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> text <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> MARKET_LINE_LINKS:</span>
+<span id="cb1-6">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> MARKET_LINE_LINKS[text]  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 交棒給該市集的官方帳號</span></span>
+<span id="cb1-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> DEFAULT_REPLY</span></code></pre></div></div>
+<p align="center">
+<img src="https://ch1nv.github.io/luchinwei/posts/market_map/東方市集詳細頁面.jpg" width="25%" style="vertical-align: top;"> <img src="https://ch1nv.github.io/luchinwei/posts/market_map/全台市集數位地圖.jpg" width="68%" style="vertical-align: top;">
+</p>
+<p align="center">
+<em>市集活動詳情頁（左）與全台市集數位地圖（右）</em>
+</p>
+</section>
+<section id="第二步個別市集官方帳號的-rich-menu" class="level3">
+<h3 class="anchored" data-anchor-id="第二步個別市集官方帳號的-rich-menu">第二步：個別市集官方帳號的 rich menu</h3>
+<p>使用者進到某個市集的官方帳號後，現場層接手。這個市集自己的 rich menu 切成兩塊：上半部走 LIFF，打開完整的活動頁；下半部走 bot 回覆，快速給出活動時間與公告。</p>
+<pre class="text"><code>rich menu 上半部 → 開啟 LIFF（?source=rich_menu）
+rich menu 下半部 → postback → webhook 回覆官方市集資訊</code></pre>
+<p>這個切分讓同一張 rich menu 同時支援「進入完整體驗」和「只想快速看一眼答案」兩種人。</p>
+<p align="center">
+<img src="https://ch1nv.github.io/luchinwei/posts/market_map/東方市集LINE介面.jpg" width="80%">
+</p>
+<p align="center">
+<em>LINE官方號入口 rich menu （左一） / 攤位列表（左二、左三） / 首頁資訊（右一、右二）</em>
+</p>
+</section>
+<section id="第三步liff-app-接手現場體驗" class="level3">
+<h3 class="anchored" data-anchor-id="第三步liff-app-接手現場體驗">第三步：LIFF App 接手現場體驗</h3>
+<p>LIFF 前端初始化後取得 LINE profile，拿到 <code>userId</code> 就能查這個人在這個市集的集點進度。使用者可以看活動、依日期與分類篩攤位、看攤位詳情，每一步互動都會被記成事件寫回 Supabase——這正是讓主辦方第一次有數據可看的地方。</p>
+<pre class="tsx"><code>await liff.init({ liffId });
+
+if (!liff.isLoggedIn()) {
+  liff.login();
+  return;
+}
+
+const profile = await liff.getProfile();
+// 之後就能用 profile.userId 查這個人在此市集的集點進度</code></pre>
+<p>到這裡，使用者就完成了從「在全台地圖上隨意逛」到「站在某個市集裡、手上拿著手機找攤」的完整移動，而且全程沒有離開 LINE。</p>
+<p align="center">
+<img src="https://ch1nv.github.io/luchinwei/posts/market_map/東方市集數位集點卡.jpg" width="80%">
+</p>
+<p align="center">
+<em>數位集點卡</em>
+</p>
+</section>
+</section>
+<section id="兩個子專案的技術重點" class="level2">
+<h2 class="anchored" data-anchor-id="兩個子專案的技術重點">兩個子專案的技術重點</h2>
+<p>兩層各自的實作細節我寫在獨立的文章裡，這裡只點出重點與分工。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>發現層：全台市集地圖</th>
+<th>現場層：個別市集 App</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>要回答的問題</td>
+<td>這週末哪裡有市集</td>
+<td>這個市集有哪些攤、哪些活動、集點</td>
+</tr>
+<tr class="even">
+<td>前端</td>
+<td>React + react-leaflet（雙欄地圖）</td>
+<td>React + LINE LIFF SDK</td>
+</tr>
+<tr class="odd">
+<td>後端</td>
+<td>FastAPI（讀 JSON 的輕量查詢層）</td>
+<td>FastAPI（串 Supabase + webhook）</td>
+</tr>
+<tr class="even">
+<td>資料層</td>
+<td>Excel 轉 mock JSON（第一版）</td>
+<td>Supabase Postgres</td>
+</tr>
+<tr class="odd">
+<td>LINE 角色</td>
+<td>webhook 導向各市集官方帳號</td>
+<td>rich menu + LIFF + 集點 + 行為分析</td>
+</tr>
+<tr class="even">
+<td>主要產出</td>
+<td>可探索的全台市集地圖</td>
+<td>可營運、可分析的單一市集現場系統</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="為什麼整條路徑都壓在-line-上" class="level2">
+<h2 class="anchored" data-anchor-id="為什麼整條路徑都壓在-line-上">為什麼整條路徑都壓在 LINE 上</h2>
+<p>這套設計刻意不開獨立 App，而是把發現、交棒、現場體驗全部放進 LINE。這不是技術上做不到，而是針對使用情境的取捨：</p>
+<ul>
+<li><strong>現場掃碼的那一秒，才是真正的轉換關卡。</strong> 任何「請先下載 App」的步驟，在市集現場都會變成當下的流失點。LINE 已經在使用者手機裡，少了這層摩擦。</li>
+<li><strong>兩層之間的交棒因此可以無縫。</strong> 因為發現層和現場層共用同一個 LINE 入口，使用者從地圖走進某個市集時，不會經歷「跳出去、再下載、再登入」的斷裂。</li>
+<li><strong>軟體優先是刻意的結構選擇，不是省略。</strong> 不做攤商端硬體裝置，讓每多接一個主辦方就能解鎖背後數十個攤商，整套系統靠軟體就能擴張——這是把「可規模化」放在第一順位的設計判斷。</li>
+</ul>
+</section>
+<section id="現況東方市集落地驗證" class="level2">
+<h2 class="anchored" data-anchor-id="現況東方市集落地驗證">現況：東方市集落地驗證</h2>
+<p>這套兩層架構不是純構想。發現層與現場層的基建，已經透過與「東方市集」的合作做過一次真實驗證，驗證了兩件事：</p>
+<ol type="1">
+<li><strong>LINE 基礎建設在真實市集跑得動。</strong> 為東方市集完成了 LINE 官方帳號、LIFF 頁面，以及市集資訊頁、攤位列表與攤位介紹的上線。一個沒有技術背景的主辦方能順利導入，消費者免下載就能在 LINE 裡瀏覽。</li>
+<li><strong>集點卡數位化的需求是真實而強烈的。</strong> 現場親眼看到紙本集點卡發放沒有控管、印量難拿捏、散場後無從得知參與人數的混亂，並向其他主辦方確認這是市集產業的共通痛點。</li>
+</ol>
+<p>需要精確區分的是：這次合作<strong>驗證了基建、確認了集點卡的需求</strong>，但數位集點卡這個功能本身<strong>還沒有在東方市集實際部署</strong>。把這條界線講清楚，比把它寫成「集點卡已上線」更站得住腳。</p>
+</section>
+<section id="下一步" class="level2">
+<h2 class="anchored" data-anchor-id="下一步">下一步</h2>
+<p>從兩層各自的限制，下一步其實很明確：</p>
+<ol type="1">
+<li><strong>發現層接資料庫與 geocoding</strong>：把第一版的 Excel 轉 JSON 換成 PostgreSQL + PostGIS，並讓地址批次轉座標、標記信心分數。</li>
+<li><strong>現場層補上集點寫入流程</strong>：讓攤主或服務台能掃碼或輸入代碼，更新使用者的集點進度——把「需求被確認」推進到「功能實際上線」。</li>
+<li><strong>把交棒做得更順</strong>：用 Rich Menu 與 LIFF 入口取代文字指令，讓使用者不必記「輸入市集地圖」這種命令。</li>
+<li><strong>數據後台</strong>：整理 rich menu 開啟率、熱門攤位、搜尋關鍵字與日期偏好，讓主辦方真正看得到自己的活動成效。</li>
+<li><strong>權限控管</strong>：為主辦方的管理操作加入角色與登入驗證。</li>
+</ol>
+</section>
+<section id="小結" class="level2">
+<h2 class="anchored" data-anchor-id="小結">小結</h2>
+<p>這個專案有趣的地方，不在單一技術堆疊多複雜，而在於它把一條本來斷裂的日常路徑重新接了起來：</p>
+<blockquote class="blockquote">
+<p>在全台地圖上發現市集 → 從詳情頁走進那個市集的 LINE 官方帳號 → 在 LIFF 裡逛攤、集點 → 主辦方拿回自己的數據。</p>
+</blockquote>
+<p>發現層回答「去哪裡」，現場層回答「到了之後怎麼逛」，而兩者之間的交棒刻意壓在 LINE 上，讓整段體驗不需要使用者下載任何東西。對活動、店家、地方社群這類產品來說，「先把資訊變得可探索、再無縫交棒到熟悉的入口」，往往就是產品真正開始長出來的地方。</p>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>Side Project</category>
+  <category>LINE LIFF</category>
+  <category>React</category>
+  <category>FastAPI</category>
+  <category>System Design</category>
+  <guid>https://ch1nv.github.io/luchinwei/posts/market_map/</guid>
+  <pubDate>Fri, 26 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
   <title>小模型在小資料集更優秀：在 280 張影像上偵測肺結節</title>
   <dc:creator>盧晉偉 </dc:creator>
   <link>https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/</link>
