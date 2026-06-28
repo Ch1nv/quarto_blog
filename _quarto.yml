@@ -16,6 +16,8 @@ website:
       - href: about.qmd
         text: About
     right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/ch1nv
       - icon: github
         href: https://github.com/Ch1nv
 format:
