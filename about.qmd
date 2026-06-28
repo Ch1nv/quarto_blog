@@ -4,9 +4,6 @@ image: profile.jpg
 about:
   template: jolla
   links:
-    - icon: envelope
-      text: Email
-      href: mailto:lcw.shinni@gmail.com
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/ch1nv
@@ -23,3 +20,5 @@ about:
 過去的研究與專案包含 Kalman Filter 配對交易、YOLO 影像偵測、Amazon 評論分析，以及全台市集地圖平台。
 
 這個網站整理我的專案作品與日常技術筆記。
+
+若想聯絡我，可以寫信到 lcw.shinni [at] gmail [dot] com。
