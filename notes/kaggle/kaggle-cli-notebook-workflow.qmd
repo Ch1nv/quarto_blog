@@ -1,0 +1,329 @@
+---
+title: "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果"
+date: 2026-06-28
+categories: [kaggle, cli, notebook, machine-learning]
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+## 目標工作流
+
+這篇整理 Kaggle 原生 CLI 的常用指令。目標是讓 Kaggle Notebook 的使用方式接近 Git workflow：
+
+```text
+本機 repo / notebook
+  -> 修改 .ipynb
+  -> kaggle kernels push
+  -> Kaggle 雲端執行 GPU / CPU notebook
+  -> kaggle kernels status 查狀態
+  -> kaggle kernels output 抓回 submission.csv / log
+  -> kaggle competitions submit 提交結果
+```
+
+## 先備條件
+
+安裝 Kaggle CLI：
+
+```powershell
+pip install kaggle
+```
+
+設定 API token。傳統 `kaggle.json` 通常放在：
+
+```text
+C:\Users\<你的 Windows 使用者>\.kaggle\kaggle.json
+```
+
+內容格式：
+
+```json
+{
+  "username": "你的_kaggle_username",
+  "key": "你的_api_key"
+}
+```
+
+新版 Kaggle CLI 也可能要求用環境變數：
+
+```powershell
+$env:KAGGLE_API_TOKEN = "你的_api_key"
+```
+
+確認 CLI 可用：
+
+```powershell
+kaggle --version
+```
+
+## Git 類比
+
+| Git 習慣 | Kaggle CLI | 用途 |
+|---|---|---|
+| `git push` | `kaggle kernels push -p .` | 把本地 notebook 推到 Kaggle，並觸發雲端執行 |
+| `git status` | `kaggle kernels status owner/kernel-slug` | 查看 notebook 執行狀態 |
+| `git pull` | `kaggle kernels pull owner/kernel-slug -p .` | 把 Kaggle 網頁上的 notebook 拉回本地 |
+| 下載 artifacts | `kaggle kernels output owner/kernel-slug -p outputs --force` | 抓回 `submission.csv`、log、模型檔等輸出 |
+| 發佈結果 | `kaggle competitions submit ...` | 提交比賽 submission |
+
+## Kernel metadata
+
+要用 `kaggle kernels push`，資料夾中需要有 `kernel-metadata.json`。
+
+範例：
+
+```json
+{
+  "id": "your-kaggle-username/s6e6-starter",
+  "title": "S6E6 Starter",
+  "code_file": "s6e6_starter.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "competition_sources": ["playground-series-s6e6"],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
+```
+
+重要欄位：
+
+- `id`: `owner/kernel-slug`，owner 是 Kaggle username，slug 是 notebook slug。
+- `code_file`: 要推上去執行的 notebook 或 script。
+- `enable_gpu`: 是否啟用 GPU。
+- `enable_internet`: 是否允許 Kaggle notebook 連外網。
+- `competition_sources`: 掛載比賽資料，例如 `playground-series-s6e6`。
+
+## 最常用工作流
+
+### 1. 本地修改 notebook
+
+例如修改：
+
+```text
+s6e6_starter.ipynb
+```
+
+### 2. 推到 Kaggle 雲端執行
+
+在有 `kernel-metadata.json` 的資料夾執行：
+
+```powershell
+kaggle kernels push -p .
+```
+
+成功時會看到類似：
+
+```text
+Kernel version 2 successfully pushed. Please check progress at https://www.kaggle.com/code/<owner>/<kernel-slug>
+```
+
+### 3. 查執行狀態
+
+```powershell
+kaggle kernels status your-kaggle-username/s6e6-starter
+```
+
+常見狀態：
+
+- `KernelWorkerStatus.RUNNING`: 正在跑。
+- `KernelWorkerStatus.COMPLETE`: 跑完，可以抓 output。
+- `KernelWorkerStatus.ERROR`: 執行失敗，要看 log。
+- `KernelWorkerStatus.CANCELLED`: 被取消。
+
+### 4. 抓回 output
+
+```powershell
+kaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force
+```
+
+下載後通常會看到：
+
+```text
+outputs/
+  submission.csv
+  <kernel-slug>.log
+```
+
+### 5. 提交 submission
+
+```powershell
+kaggle competitions submit -c playground-series-s6e6 -f outputs\submission.csv -m "starter submission"
+```
+
+### 6. 查看提交紀錄
+
+```powershell
+kaggle competitions submissions -c playground-series-s6e6
+```
+
+## 常用 Kaggle CLI 指令
+
+### Notebook / Kernel
+
+列出自己的 kernels：
+
+```powershell
+kaggle kernels list --mine
+```
+
+推送目前資料夾到 Kaggle：
+
+```powershell
+kaggle kernels push -p .
+```
+
+查 kernel 狀態：
+
+```powershell
+kaggle kernels status owner/kernel-slug
+```
+
+抓回 kernel output：
+
+```powershell
+kaggle kernels output owner/kernel-slug -p outputs --force
+```
+
+把 Kaggle 上的 kernel 拉回本地：
+
+```powershell
+kaggle kernels pull owner/kernel-slug -p .
+```
+
+只有當你在 Kaggle 網頁上直接改 notebook，才比較需要 `pull`。如果你的主工作區在本機，通常只需要 `push`、`status`、`output`。
+
+### Competitions
+
+列出比賽：
+
+```powershell
+kaggle competitions list
+```
+
+下載比賽資料：
+
+```powershell
+kaggle competitions download -c playground-series-s6e6 -p data
+```
+
+提交結果：
+
+```powershell
+kaggle competitions submit -c playground-series-s6e6 -f outputs\submission.csv -m "message"
+```
+
+查看提交紀錄：
+
+```powershell
+kaggle competitions submissions -c playground-series-s6e6
+```
+
+查看 leaderboard：
+
+```powershell
+kaggle competitions leaderboard -c playground-series-s6e6 --show
+```
+
+### Datasets
+
+下載 dataset：
+
+```powershell
+kaggle datasets download -d owner/dataset-slug -p data
+```
+
+列出 datasets：
+
+```powershell
+kaggle datasets list -s keyword
+```
+
+## Notebook 裡讀比賽資料
+
+如果在 Kaggle Notebook 雲端執行，competition source 會掛載在：
+
+```text
+/kaggle/input/<competition-slug>
+```
+
+例如：
+
+```python
+from pathlib import Path
+import pandas as pd
+
+DATA_DIR = Path("/kaggle/input/playground-series-s6e6")
+train = pd.read_csv(DATA_DIR / "train.csv")
+test = pd.read_csv(DATA_DIR / "test.csv")
+sample_submission = pd.read_csv(DATA_DIR / "sample_submission.csv")
+```
+
+如果想讓 notebook 同時支援本機和 Kaggle，可以寫 fallback：
+
+```python
+from pathlib import Path
+import kagglehub
+
+COMPETITION = "playground-series-s6e6"
+
+kaggle_input = Path(f"/kaggle/input/{COMPETITION}")
+if kaggle_input.exists():
+    data_dir = kaggle_input
+else:
+    data_dir = Path(kagglehub.competition_download(COMPETITION))
+```
+
+## 建議資料夾結構
+
+```text
+my-kaggle-project/
+  kernel-metadata.json
+  s6e6_starter.ipynb
+  outputs/
+    submission.csv
+    s6e6-starter.log
+  data/
+  README.md
+```
+
+通常不要 commit：
+
+```text
+.kaggle/
+outputs/
+data/
+*.zip
+```
+
+## 一組完整日常指令
+
+```powershell
+# 本地改完 notebook 後，推到 Kaggle 跑
+kaggle kernels push -p .
+
+# 等它跑完
+kaggle kernels status your-kaggle-username/s6e6-starter
+
+# 抓回 submission 和 log
+kaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force
+
+# 提交到比賽
+kaggle competitions submit -c playground-series-s6e6 -f outputs\submission.csv -m "first baseline"
+
+# 看提交紀錄
+kaggle competitions submissions -c playground-series-s6e6
+```
+
+## 小提醒
+
+- `kaggle kernels push -p .` 會根據目前資料夾的 `kernel-metadata.json` 推送。
+- `status` 和 `output` 要用 `owner/kernel-slug`，也就是 Kaggle notebook URL 裡的 owner 和 slug。
+- 如果 notebook 是 private，通常自己的 token 可以存取，但別人的 token 不行。
+- 如果 `output` 抓不到，先確認 `status` 是 `COMPLETE`。
+- 如果 notebook 在 Kaggle 上失敗，先抓 output 或到網頁看 log。
+- 本地是主版本時，盡量不要在 Kaggle 網頁上直接改 notebook；如果改了，要記得 `kaggle kernels pull` 拉回來，避免版本分叉。

@@ -5,6 +5,7 @@ title-block-banner: true
 ---
 
 我是盧晉偉，這裡整理我在資料分析、電腦視覺、時間序列模型與 AI 應用開發上的作品與技術筆記。
+若想要聯絡我，可以寫信到 lcw.shinni [at] gmail [dot] com。
 
 ## 精選作品
 
