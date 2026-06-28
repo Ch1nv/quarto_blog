@@ -1,13 +1,14 @@
 ---
-title: "CHIN-WEI, LU"
+title: "Hi, 這裡是晉偉的部落格"
 page-layout: full
 title-block-banner: true
 ---
 
-我是盧晉偉，這裡整理我在資料分析、電腦視覺、時間序列模型與 AI 應用開發上的作品與技術筆記。
+這裡放了一些完整的[專案紀錄](projects/)，以及[零碎文章](notes/)。
+
 若想要聯絡我，可以寫信到 lcw.shinni [at] gmail [dot] com。
 
-## 精選作品
+## 精選文章
 
 ```{=html}
 <div class="featured-grid">

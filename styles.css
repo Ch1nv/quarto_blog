@@ -54,18 +54,6 @@
   letter-spacing: 0;
 }
 
-.visual-amazon {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.58)),
-    linear-gradient(135deg, #dceefb 0%, #f6d9d7 100%);
-}
-
-.visual-kalman {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.5)),
-    linear-gradient(135deg, #dff3e3 0%, #d9e6f7 100%);
-}
-
 .featured-card-body {
   padding: 1rem;
 }
@@ -91,26 +79,47 @@
   line-height: 1.65;
 }
 
+.quarto-title-banner {
+  padding-bottom: 0.75rem;
+  margin-bottom: 0;
+}
+
+#title-block-header {
+  margin-block-end: 0.5rem;
+}
+
+.navbar .dropdown:hover > .dropdown-menu,
+.navbar .dropdown:focus-within > .dropdown-menu {
+  display: block;
+}
+
+.navbar .dropdown-menu {
+  border-color: #d9e2ec;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(29, 53, 87, 0.11);
+}
+
 .note-category-list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-top: 1.25rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.1rem;
+  margin-top: 1.5rem;
 }
 
 .note-category-card {
-  display: grid;
-  grid-template-columns: minmax(8rem, 0.28fr) 1fr;
-  align-items: center;
-  min-height: 8.5rem;
-  padding: 1.35rem 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 18rem;
+  overflow: hidden;
+  padding: 1.35rem;
   color: inherit;
   text-decoration: none;
   background: #ffffff;
   border: 1px solid #d9e2ec;
-  border-left: 6px solid #2a6f97;
   border-radius: 8px;
-  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  box-shadow: 0 8px 20px rgba(29, 53, 87, 0.07);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
 }
 
 .note-category-card:focus-visible {
@@ -120,35 +129,22 @@
 
 .note-category-card:hover {
   border-color: #7aa7c7;
-  box-shadow: 0 10px 24px rgba(29, 53, 87, 0.11);
-  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(29, 53, 87, 0.14);
+  transform: translateY(-4px);
 }
 
 .note-category-title {
   color: #17324d;
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   font-weight: 700;
   line-height: 1.2;
-  text-align: center;
 }
 
 .note-category-card p {
-  margin: 0;
+  margin: 1rem 0 0;
   color: #384b5d;
-  font-size: 1rem;
-  line-height: 1.75;
-}
-
-.note-category-life {
-  border-left-color: #6f8f72;
-}
-
-.note-category-reading {
-  border-left-color: #9a6b45;
-}
-
-.note-category-games {
-  border-left-color: #7b6aa8;
+  font-size: 0.97rem;
+  line-height: 1.7;
 }
 
 .quarto-listing-filter {
@@ -166,15 +162,13 @@
     grid-template-columns: 1fr;
   }
 
-  .note-category-card {
+  .note-category-list {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
-    min-height: 9rem;
-    padding: 1.2rem;
   }
 
-  .note-category-title {
-    text-align: left;
+  .note-category-card {
+    min-height: 13rem;
+    padding: 1.2rem;
   }
 
   .quarto-listing-filter {

@@ -11,8 +11,18 @@ website:
         text: Home
       - href: projects/index.qmd
         text: Projects
-      - href: notes/index.qmd
-        text: Notes
+      - text: Notes
+        menu:
+          - href: notes/index.qmd
+            text: All Notes
+          - href: notes/tech/index.qmd
+            text: Tech
+          - href: notes/life/index.qmd
+            text: Life
+          - href: notes/reading/index.qmd
+            text: Reading
+          - href: notes/games/index.qmd
+            text: Games
       - href: about.qmd
         text: About
     right:
