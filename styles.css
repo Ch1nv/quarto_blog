@@ -13,16 +13,27 @@
   min-height: 100%;
   overflow: hidden;
   color: inherit;
+  text-decoration: none;
   background: #ffffff;
   border: 1px solid #d9e2ec;
   border-radius: 8px;
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
+.featured-card:focus-visible {
+  outline: 3px solid rgba(42, 111, 151, 0.35);
+  outline-offset: 3px;
+}
+
 .featured-card:hover {
   border-color: #7aa7c7;
   box-shadow: 0 10px 24px rgba(29, 53, 87, 0.11);
   transform: translateY(-2px);
+}
+
+.featured-card:hover h3,
+.featured-card:focus-visible h3 {
+  color: #2a6f97;
 }
 
 .featured-card-image,
@@ -72,15 +83,6 @@
   margin: 0 0 0.55rem;
   font-size: 1.12rem;
   line-height: 1.35;
-}
-
-.featured-card h3 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.featured-card h3 a:hover {
-  color: #2a6f97;
 }
 
 .featured-card p:last-child {

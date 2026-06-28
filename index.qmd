@@ -8,42 +8,44 @@ title-block-banner: true
 
 ## 精選作品
 
+```{=html}
 <div class="featured-grid">
 
-<div class="featured-card">
+<a class="featured-card" href="projects/amazon_product_reviews_alanysis/">
 <div class="featured-card-visual visual-amazon"><span>Review Mining</span></div>
 <div class="featured-card-body">
 <p class="featured-card-kicker">NLP / LLM</p>
-<h3><a href="projects/amazon_product_reviews_alanysis/">Amazon 評論分析</a></h3>
+<h3>Amazon 評論分析</h3>
 <p>把評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。</p>
 </div>
-</div>
+</a>
 
-<div class="featured-card">
+<a class="featured-card" href="projects/market_map/">
 <img class="featured-card-image" src="projects/market_map/全台市集數位地圖.jpg" alt="全台市集地圖介面">
 <div class="featured-card-body">
 <p class="featured-card-kicker">React / LINE LIFF / FastAPI</p>
-<h3><a href="projects/market_map/">全台市集地圖平台</a></h3>
+<h3>全台市集地圖平台</h3>
 <p>串起市集探索、LINE 現場活動介面與主辦方營運數據，處理發現端與現場端的產品斷點。</p>
 </div>
-</div>
+</a>
 
-<div class="featured-card">
+<a class="featured-card" href="projects/lung_nodule_detection/">
 <img class="featured-card-image" src="projects/lung_nodule_detection/val_batch1_pred.jpg" alt="YOLO 肺結節偵測結果">
 <div class="featured-card-body">
 <p class="featured-card-kicker">Computer Vision / YOLO</p>
-<h3><a href="projects/lung_nodule_detection/">YOLO 肺結節偵測</a></h3>
+<h3>YOLO 肺結節偵測</h3>
 <p>在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。</p>
 </div>
-</div>
+</a>
 
-<div class="featured-card">
+<a class="featured-card" href="projects/kalman/">
 <div class="featured-card-visual visual-kalman"><span>Kalman Filter</span></div>
 <div class="featured-card-body">
 <p class="featured-card-kicker">Time Series / Quant</p>
-<h3><a href="projects/kalman/">Kalman Filter 配對交易</a></h3>
+<h3>Kalman Filter 配對交易</h3>
 <p>以狀態空間模型建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。</p>
 </div>
-</div>
+</a>
 
 </div>
+```
