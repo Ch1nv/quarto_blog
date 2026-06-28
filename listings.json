@@ -1,11 +1,17 @@
 [
   {
-    "listing": "/index.html",
+    "listing": "/notes/index.html",
     "items": [
-      "/posts/amazon_product_reviews_alanysis/index.html",
-      "/posts/market_map/index.html",
-      "/posts/lung_nodule_detection/index.html",
-      "/posts/kalman/index.html"
+      "/notes/kaggle-cli-setup.html"
+    ]
+  },
+  {
+    "listing": "/projects/index.html",
+    "items": [
+      "/projects/amazon_product_reviews_alanysis/index.html",
+      "/projects/market_map/index.html",
+      "/projects/lung_nodule_detection/index.html",
+      "/projects/kalman/index.html"
     ]
   }
 ]

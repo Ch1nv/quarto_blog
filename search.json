@@ -4,216 +4,286 @@
     "href": "index.html",
     "title": "CHIN-WEI, LU",
     "section": "",
-    "text": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議\n\n\n\nNLP\n\nLLM\n\n評論分析\n\n\n\n一個 Amazon review mining 專案的完整過程——為什麼 sentiment、rating、helpful votes 都不是好入口，我如何把任務重新定義成 actionable review mining，最後用 DistilBERT gate + Gemini extraction 把評論轉成產品團隊能直接用的 issue digest。\n\n\n\n\n\nJun 26, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n市集地圖：解決「主辦方」和「逛市集的人」的問題\n\n\n\nLINE LIFF\n\nReact\n\nFastAPI\n\n\n\n這篇文章把兩個子專案——全台市集地圖與個別市集活動介面（東方市集 / dongfang）——放在同一條產品線上說明：它們各自解決什麼、技術上怎麼分工，以及最關鍵的連接點如何把使用者從『發現某個市集』一路帶到『在現場逛那個市集』。\n\n\n\n\n\nJun 26, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n小模型在小資料集更優秀：在 280 張影像上偵測肺結節\n\n\n\n電腦視覺\n\n物件偵測\n\n醫療影像\n\nYOLO\n\n\n\n肺結節偵測是肺癌早篩的關鍵，但小結節只佔影像裡幾個像素，資料集又小又標註寬鬆。這篇記錄我用 YOLOv11 處理「小資料 + 小目標」雙重困境的過程，最後實驗結果是 yolo11n 的效果最好，但仍受限於小結節資料過少的限制。\n\n\n\n\n\nJun 25, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n卡爾曼濾波器在配對交易上的應用\n\n\n\n統計\n\n狀態空間模型\n\n配對交易\n\n\n\n\n\n\n\n\n\nJun 20, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
+    "text": "我是盧晉偉，這裡整理我在資料分析、電腦視覺、時間序列模型與 AI 應用開發上的作品與技術筆記。"
   },
   {
-    "objectID": "posts/market_map/index.html",
-    "href": "posts/market_map/index.html",
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
+    "title": "CHIN-WEI, LU",
+    "section": "Featured Projects",
+    "text": "Featured Projects\n\n\nKalman Filter 配對交易\n以狀態空間模型與 Kalman Filter 建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。\n\n\nYOLO 肺結節偵測\n在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。\n\n\nAmazon 評論分析\n把 Amazon 評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。\n\n\n全台市集地圖平台\n設計全台市集地圖與 LINE LIFF 現場活動介面，串起市集探索、活動資訊與主辦方營運數據。"
+  },
+  {
+    "objectID": "index.html#browse",
+    "href": "index.html#browse",
+    "title": "CHIN-WEI, LU",
+    "section": "Browse",
+    "text": "Browse\n\nProjects：完整專案文章\nNotes：日常技術筆記與踩坑紀錄\nAbout：簡短自我介紹與聯絡連結"
+  },
+  {
+    "objectID": "projects/market_map/index.html",
+    "href": "projects/market_map/index.html",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "",
     "text": "每到週末，全台有大量市集同時開張，資訊卻散落在 IG、粉專、活動社團和主辦方公告裡。對想出門逛市集的人來說，痛點其實很具體：不知道這週末附近有哪些市集、不知道有哪些攤、找到的時候活動常常已經結束。\n而站在另一端的主辦方，問題更隱形：他們對自己的活動幾乎沒有任何數據。現場靠紙本集點卡——印多了浪費、印少了不夠、散場後一疊集不滿的卡只能丟，活動結束也說不清今天到底多少人真的參與。\n所以這個專案要解的，是同一條斷裂的路徑上的兩個缺口：\n\n發現端：讓「找市集」這件事，從翻十個社群變成看一張地圖。\n現場端：讓某一個市集的現場資訊（活動、攤位、集點）變得好找、好用，並讓主辦方第一次握住自己的數據。"
   },
   {
-    "objectID": "posts/market_map/index.html#這個專案在解什麼",
-    "href": "posts/market_map/index.html#這個專案在解什麼",
+    "objectID": "projects/market_map/index.html#這個專案在解什麼",
+    "href": "projects/market_map/index.html#這個專案在解什麼",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "",
     "text": "每到週末，全台有大量市集同時開張，資訊卻散落在 IG、粉專、活動社團和主辦方公告裡。對想出門逛市集的人來說，痛點其實很具體：不知道這週末附近有哪些市集、不知道有哪些攤、找到的時候活動常常已經結束。\n而站在另一端的主辦方，問題更隱形：他們對自己的活動幾乎沒有任何數據。現場靠紙本集點卡——印多了浪費、印少了不夠、散場後一疊集不滿的卡只能丟，活動結束也說不清今天到底多少人真的參與。\n所以這個專案要解的，是同一條斷裂的路徑上的兩個缺口：\n\n發現端：讓「找市集」這件事，從翻十個社群變成看一張地圖。\n現場端：讓某一個市集的現場資訊（活動、攤位、集點）變得好找、好用，並讓主辦方第一次握住自己的數據。"
   },
   {
-    "objectID": "posts/market_map/index.html#整體設計兩層架構",
-    "href": "posts/market_map/index.html#整體設計兩層架構",
+    "objectID": "projects/market_map/index.html#整體設計兩層架構",
+    "href": "projects/market_map/index.html#整體設計兩層架構",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "整體設計：兩層架構",
     "text": "整體設計：兩層架構\n我把整個系統拆成兩層，各自是一個可以獨立跑起來的專案：\n\n發現層 — 全台市集地圖 一張全台市集地圖，負責回答「這週末哪裡有市集」。使用者在這裡瀏覽、搜尋、篩選、看點位，然後選定一個想去的市集。技術上是 React + Leaflet 的雙欄地圖介面，後端用 FastAPI 提供輕量查詢層。\n現場層 — 個別市集活動 App（東方市集為例） 某一個市集自己的活動頁，負責回答「我已經決定去這個市集了，那它有哪些攤、哪些活動、集點還差幾點」。技術上是跑在 LINE 裡的 LIFF 前端，後端 FastAPI 串 Supabase，並記錄使用者互動事件給主辦方看。\n\n兩層之間的交棒，不是「再開一個網站」，而是落在使用者本來就熟悉的入口——LINE。\n\n\n\n\n\n%%{init: {\n  \"theme\": \"base\",\n  \"flowchart\": {\n    \"nodeSpacing\": 50,\n    \"rankSpacing\": 80,\n    \"diagramPadding\": 20\n  },\n  \"themeVariables\": {\n    \"fontFamily\": \"Noto Sans TC, Microsoft JhengHei, sans-serif\",\n    \"primaryColor\": \"#ffffff\",\n    \"primaryTextColor\": \"#111827\",\n    \"primaryBorderColor\": \"#334155\",\n    \"lineColor\": \"#64748b\",\n    \"secondaryColor\": \"#f8fafc\",\n    \"tertiaryColor\": \"#ffffff\"\n  }\n}}%%\n\nflowchart LR\n  user[\"使用者\"]\n\n  subgraph D[\"發現層：全台市集地圖\"]\n    direction TB\n    map[\"React + Leaflet 地圖&lt;br/&gt;搜尋 / 篩選 / 看點位\"]\n    detail[\"市集詳情面板\"]\n  end\n\n  subgraph BRIDGE[\"連接點\"]\n    direction TB\n    oa[\"個別市集 LINE 官方帳號\"]\n    rich[\"Rich Menu\"]\n  end\n\n  subgraph V[\"現場層：個別市集活動介面\"]\n    direction TB\n    liff[\"LIFF App&lt;br/&gt;活動 / 攤位 / 集點卡\"]\n    dash[\"主辦方數據後台\"]\n  end\n\n  user --&gt; map\n  map --&gt; detail\n  detail --&gt;|官方 LINE 按鈕| oa\n  oa --&gt; rich\n  rich --&gt; liff\n  liff --&gt; dash\n\n  classDef normal fill:#ffffff,stroke:#334155,color:#111827,stroke-width:1.5px;\n  classDef bridge fill:#fff7ed,stroke:#ea580c,color:#111827,stroke-width:1.5px;\n  classDef app fill:#ecfdf5,stroke:#059669,color:#111827,stroke-width:1.5px;\n  classDef person fill:#eff6ff,stroke:#2563eb,color:#111827,stroke-width:1.5px;\n\n  class map,detail normal;\n  class oa,rich bridge;\n  class liff,dash app;\n  class user person;\n\n  style D fill:#f8fafc,stroke:#94a3b8,color:#111827\n  style BRIDGE fill:#fffaf0,stroke:#f97316,color:#111827\n  style V fill:#f0fdf4,stroke:#10b981,color:#111827"
   },
   {
-    "objectID": "posts/market_map/index.html#連接點從平台詳情走進個別市集的-line",
-    "href": "posts/market_map/index.html#連接點從平台詳情走進個別市集的-line",
+    "objectID": "projects/market_map/index.html#連接點從平台詳情走進個別市集的-line",
+    "href": "projects/market_map/index.html#連接點從平台詳情走進個別市集的-line",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "連接點：從平台詳情走進個別市集的 LINE",
     "text": "連接點：從平台詳情走進個別市集的 LINE\n整個系統最重要的設計，就是這條交棒路徑：\n\n在全台地圖上選定一個市集 → 從它的詳情頁打開那個市集自己的 LINE 官方帳號 → 從官方帳號的 rich menu 進入該市集的 LIFF App。\n\n刻意不在發現層裡「內建」每個市集的完整現場功能，而是把使用者交棒到各市集自己的 LINE，是因為這樣每一層的職責都很乾淨：發現層只負責把人帶到對的市集門口，現場層由各市集自己的官方帳號接手。對使用者來說，全程都在 LINE 裡，不需要下載任何 App。\n\n第一步：發現層詳情頁的官方 LINE 按鈕\n在全台地圖的市集詳情面板裡，只要該市集有設定 LINE 連結，就會顯示一顆官方 LINE 按鈕。這顆按鈕就是交棒的起點——使用者點下去，就離開「綜覽地圖」，走進「某一個市集」。\n發現層的後端同時也放了 LINE webhook 的雛形，可以用文字指令完成同一件事：輸入「市集地圖」回覆地圖入口，輸入特定市集名稱（例如「東方市集」）則回覆那個市集指定的官方 LINE 連結。換句話說，無論使用者是在網頁上看地圖、還是在 LINE 裡跟平台對話，都能被導向同一個出口。\n# 發現層 webhook：把使用者導向「某個市集自己的官方 LINE」\ndef handle_text_message(text: str) -&gt; str:\n    if text == \"市集地圖\":\n        return LIFF_MAP_URL  # 回到全台地圖\n    if text in MARKET_LINE_LINKS:\n        return MARKET_LINE_LINKS[text]  # 交棒給該市集的官方帳號\n    return DEFAULT_REPLY\n\n \n\n\n市集活動詳情頁（左）與全台市集數位地圖（右）\n\n\n\n第二步：個別市集官方帳號的 rich menu\n使用者進到某個市集的官方帳號後，現場層接手。這個市集自己的 rich menu 切成兩塊：上半部走 LIFF，打開完整的活動頁；下半部走 bot 回覆，快速給出活動時間與公告。\nrich menu 上半部 → 開啟 LIFF（?source=rich_menu）\nrich menu 下半部 → postback → webhook 回覆官方市集資訊\n這個切分讓同一張 rich menu 同時支援「進入完整體驗」和「只想快速看一眼答案」兩種人。\n\n\n\n\nLINE官方號入口 rich menu （左一） / 攤位列表（左二、左三） / 首頁資訊（右一、右二）\n\n\n\n第三步：LIFF App 接手現場體驗\nLIFF 前端初始化後取得 LINE profile，拿到 userId 就能查這個人在這個市集的集點進度。使用者可以看活動、依日期與分類篩攤位、看攤位詳情，每一步互動都會被記成事件寫回 Supabase——這正是讓主辦方第一次有數據可看的地方。\nawait liff.init({ liffId });\n\nif (!liff.isLoggedIn()) {\n  liff.login();\n  return;\n}\n\nconst profile = await liff.getProfile();\n// 之後就能用 profile.userId 查這個人在此市集的集點進度\n到這裡，使用者就完成了從「在全台地圖上隨意逛」到「站在某個市集裡、手上拿著手機找攤」的完整移動，而且全程沒有離開 LINE。\n\n\n\n\n數位集點卡"
   },
   {
-    "objectID": "posts/market_map/index.html#兩個子專案的技術重點",
-    "href": "posts/market_map/index.html#兩個子專案的技術重點",
+    "objectID": "projects/market_map/index.html#兩個子專案的技術重點",
+    "href": "projects/market_map/index.html#兩個子專案的技術重點",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "兩個子專案的技術重點",
     "text": "兩個子專案的技術重點\n兩層各自的實作細節我寫在獨立的文章裡，這裡只點出重點與分工。\n\n\n\n\n\n\n\n\n\n發現層：全台市集地圖\n現場層：個別市集 App\n\n\n\n\n要回答的問題\n這週末哪裡有市集\n這個市集有哪些攤、哪些活動、集點\n\n\n前端\nReact + react-leaflet（雙欄地圖）\nReact + LINE LIFF SDK\n\n\n後端\nFastAPI（讀 JSON 的輕量查詢層）\nFastAPI（串 Supabase + webhook）\n\n\n資料層\nExcel 轉 mock JSON（第一版）\nSupabase Postgres\n\n\nLINE 角色\nwebhook 導向各市集官方帳號\nrich menu + LIFF + 集點 + 行為分析\n\n\n主要產出\n可探索的全台市集地圖\n可營運、可分析的單一市集現場系統"
   },
   {
-    "objectID": "posts/market_map/index.html#為什麼整條路徑都壓在-line-上",
-    "href": "posts/market_map/index.html#為什麼整條路徑都壓在-line-上",
+    "objectID": "projects/market_map/index.html#為什麼整條路徑都壓在-line-上",
+    "href": "projects/market_map/index.html#為什麼整條路徑都壓在-line-上",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "為什麼整條路徑都壓在 LINE 上",
     "text": "為什麼整條路徑都壓在 LINE 上\n這套設計刻意不開獨立 App，而是把發現、交棒、現場體驗全部放進 LINE。這不是技術上做不到，而是針對使用情境的取捨：\n\n現場掃碼的那一秒，才是真正的轉換關卡。 任何「請先下載 App」的步驟，在市集現場都會變成當下的流失點。LINE 已經在使用者手機裡，少了這層摩擦。\n兩層之間的交棒因此可以無縫。 因為發現層和現場層共用同一個 LINE 入口，使用者從地圖走進某個市集時，不會經歷「跳出去、再下載、再登入」的斷裂。\n軟體優先是刻意的結構選擇，不是省略。 不做攤商端硬體裝置，讓每多接一個主辦方就能解鎖背後數十個攤商，整套系統靠軟體就能擴張——這是把「可規模化」放在第一順位的設計判斷。"
   },
   {
-    "objectID": "posts/market_map/index.html#現況東方市集落地驗證",
-    "href": "posts/market_map/index.html#現況東方市集落地驗證",
+    "objectID": "projects/market_map/index.html#現況東方市集落地驗證",
+    "href": "projects/market_map/index.html#現況東方市集落地驗證",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "現況：東方市集落地驗證",
     "text": "現況：東方市集落地驗證\n這套兩層架構不是純構想。發現層與現場層的基建，已經透過與「東方市集」的合作做過一次真實驗證，驗證了兩件事：\n\nLINE 基礎建設在真實市集跑得動。 為東方市集完成了 LINE 官方帳號、LIFF 頁面，以及市集資訊頁、攤位列表與攤位介紹的上線。一個沒有技術背景的主辦方能順利導入，消費者免下載就能在 LINE 裡瀏覽。\n集點卡數位化的需求是真實而強烈的。 現場親眼看到紙本集點卡發放沒有控管、印量難拿捏、散場後無從得知參與人數的混亂，並向其他主辦方確認這是市集產業的共通痛點。\n\n需要精確區分的是：這次合作驗證了基建、確認了集點卡的需求，但數位集點卡這個功能本身還沒有在東方市集實際部署。把這條界線講清楚，比把它寫成「集點卡已上線」更站得住腳。"
   },
   {
-    "objectID": "posts/market_map/index.html#下一步",
-    "href": "posts/market_map/index.html#下一步",
+    "objectID": "projects/market_map/index.html#下一步",
+    "href": "projects/market_map/index.html#下一步",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "下一步",
     "text": "下一步\n從兩層各自的限制，下一步其實很明確：\n\n發現層接資料庫與 geocoding：把第一版的 Excel 轉 JSON 換成 PostgreSQL + PostGIS，並讓地址批次轉座標、標記信心分數。\n現場層補上集點寫入流程：讓攤主或服務台能掃碼或輸入代碼，更新使用者的集點進度——把「需求被確認」推進到「功能實際上線」。\n把交棒做得更順：用 Rich Menu 與 LIFF 入口取代文字指令，讓使用者不必記「輸入市集地圖」這種命令。\n數據後台：整理 rich menu 開啟率、熱門攤位、搜尋關鍵字與日期偏好，讓主辦方真正看得到自己的活動成效。\n權限控管：為主辦方的管理操作加入角色與登入驗證。"
   },
   {
-    "objectID": "posts/market_map/index.html#小結",
-    "href": "posts/market_map/index.html#小結",
+    "objectID": "projects/market_map/index.html#小結",
+    "href": "projects/market_map/index.html#小結",
     "title": "市集地圖：解決「主辦方」和「逛市集的人」的問題",
     "section": "小結",
     "text": "小結\n這個專案有趣的地方，不在單一技術堆疊多複雜，而在於它把一條本來斷裂的日常路徑重新接了起來：\n\n在全台地圖上發現市集 → 從詳情頁走進那個市集的 LINE 官方帳號 → 在 LIFF 裡逛攤、集點 → 主辦方拿回自己的數據。\n\n發現層回答「去哪裡」，現場層回答「到了之後怎麼逛」，而兩者之間的交棒刻意壓在 LINE 上，讓整段體驗不需要使用者下載任何東西。對活動、店家、地方社群這類產品來說，「先把資訊變得可探索、再無縫交棒到熟悉的入口」，往往就是產品真正開始長出來的地方。"
   },
   {
-    "objectID": "posts/lung_nodule_detection/index.html",
-    "href": "posts/lung_nodule_detection/index.html",
+    "objectID": "projects/lung_nodule_detection/index.html",
+    "href": "projects/lung_nodule_detection/index.html",
     "title": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節",
     "section": "",
     "text": "肺結節偵測是肺癌早期篩檢的關鍵一步——能不能在小病灶長大之前先把它找出來，往往就是預後的差別。但這件事在技術上有兩個疊在一起的難點，讓它不只是「再訓練一個 YOLO」這麼簡單。\n第一個難點是目標太小。結節依大小分兩類，其中 ≤3mm 的小結節在 416×416 的影像裡只佔幾個像素，經過偵測網路的下採樣之後，可能只剩下特徵圖上的一兩個格點。模型很難在這麼稀疏的資訊裡定位。\n第二個難點是資料又小又寬鬆。整個資料集只有約 280 張影像（訓練 239、驗證 41），而且小結節的樣本數本來就少——驗證集裡的小結節只有 8 個。另外，這份資料集的標註框得相當寬鬆，沒有精準貼合腫瘤邊界。\n所以真正的題目不是「偵測肺結節」，而是：在小資料、小目標、寬鬆標註這三個限制同時存在時，怎麼把偵測效果逼到合理範圍？\n\n資料集：Lung Nodules Detection Dataset（Youness El Brag, Kaggle） 影像尺寸 416×416；兩類別 nodule ≥3mm、nodule &lt;3mm；訓練 239 張、驗證 41 張。\n\n\n\n\n\n\n我把原圖從 416×416 插值放大到 1280×1280。放大並沒有增加任何影像資訊——插值出來的像素都是內插的。它真正改變的是 YOLO 偵測頭特徵圖的空間密度。\n原本只佔幾個像素的小結節，在下採樣後可能對應不到幾個格點；放大之後，同一個結節能對應到更多特徵圖格點，模型就有更多空間線索去定位。換句話說，這是用「更密的特徵圖」去換「對小物件更容易對位」。\n\n\n\n小資料集最大的敵人是過擬合，所以訓練設定朝泛化能力調整：\n\n初始學習率 lr0=0.003，最終衰減到初始的 1%（lrf=0.01）——前期穩定收斂，後期細修。\n用 AdamW 搭配 weight_decay=0.0005 做正則化，壓制小資料集的過擬合傾向。\n\n\n\n\n既然樣本少，就讓每張影像在訓練時盡量「變多」：\n\nmosaic=1.0：拼接多張影像，增加場景多樣性。\nmixup=0.2：混合影像，提升泛化。\ncopy_paste=0.3：複製貼上標註物件，直接增加結節出現的次數。\nscale=0.5：隨機縮放，適應不同大小的腫瘤。\n\n\n\n\n\n\n調整完之後，我把 YOLOv11 的四種大小（Large / Medium / Small / Nano）都跑了一輪來比較。直覺上，大模型容量更大、應該更強。結果剛好相反：\n\n\n\nModel\nOverall mAP50-95\n≤3mm mAP50-95\n≤3mm mAP75\n\n\n\n\n11l (Large)\n47.8%\n34.5%\n41.9%\n\n\n11m (Medium)\n46.9%\n32.4%\n11.0%\n\n\n11s (Small)\n53.7%\n40.5%\n33.8%\n\n\n11n (Nano)\n65.4%\n57.5%\n56.8%\n\n\n\n大模型（11l、11m）整體 mAP50-95 只有 46%～48%，反而是最小的 11n 拿到 65.4%，而且在最難的小結節上從 11s 的 40.5% 一路拉到 57.5%。\n合理的解釋是：這個資料集太小，大模型的容量沒地方發揮，只會去記訓練集的雜訊，於是過擬合；小模型容量受限，反而被迫學到比較通用的特徵，泛化更好。 這也呼應前面所有「防過擬合」的設定——在小資料的世界裡，「更大」常常不是「更好」，而選對模型大小，對小物件偵測的影響大到超乎預期。\n\n\n\n\n比較模型時還踩到一個值得記下來的坑。看上面的表格，11m 的小結節 mAP75 異常地低，只有 11%，乍看像是這個模型在小結節上整個崩掉。\n但同一個 11m 的小結節 mAP50-95 是 32.4%，其實跟 11l 同級，並沒有特別差。問題出在驗證集的小結節只有 8 個樣本——只算 mAP75 這種單一 IOU 門檻的指標時，幾個樣本的浮動就會把數字甩得很大；而 mAP50-95 是多個 IOU 門檻的平均，相對穩定得多。\n所以在這種小驗證集上，單一指標的數字不能盡信，要看跨門檻的平均，否則很容易因為一兩個樣本就對模型下錯結論。\n\n\n\n\n選定 11n 之後，來看它的完整表現：\n\n\n\nModel\nPrecision\nRecall\nmAP50\nmAP75\nmAP50-95\n\n\n\n\nYOLOv11n\n85.4%\n89.7%\n89.8%\n73.2%\n65.4%\n\n\n\n分類別來看：\n\n\n\nClass\nInstances\nPrecision\nRecall\nmAP50\nmAP75\nmAP50-95\n\n\n\n\nall\n44\n85.4%\n89.7%\n89.8%\n73.2%\n65.4%\n\n\n≥3mm\n36\n94.3%\n97.2%\n98.2%\n89.5%\n73.2%\n\n\n≤3mm\n8\n76.6%\n82.1%\n81.3%\n56.8%\n57.5%\n\n\n\n在癌症早篩的情境下，最不想發生的事是漏掉一個真的存在的病灶，所以我偏好把 Recall 顧好——Recall 89.7% 代表所有真實存在的結節中，模型抓出了將近九成。\n但這不是一味地疊高 Recall。Precision 仍維持在 85.4%，意思是模型標為結節的位置裡約 85% 確實是結節，誤報並沒有失控。在「不放過病灶」和「不要一直亂報」之間，這個模型站在一個我覺得對篩檢任務合理的位置。\n\n\n\n \n\n\nGround Truth（左）vs Prediction（右）\n\n\n\n\n\n\n這個模型在大結節上很穩（≥3mm 的 mAP50-95 有 73.2%），但小結節依然是弱點（57.5%）：\n\n標註寬鬆。模型學不到高 IOU 的精準定位。這正是小結節 mAP50（81.3%）和 mAP75（56.8%）落差這麼大的原因——找得到大概位置，但框不準。\n樣本太少。驗證集只有 8 個小結節，指標的標準差會變大。\n\n還有一個細節值得記：在 11n 上，不論整體、大結節、小結節，Recall 都高於 Precision；而小結節的 Recall（82.1%）和 Precision（76.6%）差距達 5.5 個百分點，比整體（4.3）和大結節（2.9）都大。代表模型在小結節上「框錯」的情況相對更多，再次呼應了小結節難偵測、標註寬鬆、樣本少這幾件事。\n目前我用 copy_paste 做的是全域增加樣本，後續比較對的方向應該是：\n\n單獨補小結節的資料，提高它的數量與佔比，而不是只靠全域增強。\n嘗試能容忍寬鬆標註的訓練法，讓模型不被不精準的框邊界綁死。\n\n整體來說，這個模型在應用方向上是合理的，但小結節這塊我還沒解完——這也是我覺得這個專案最有意思的地方：它讓我看到在小資料的限制下，模型選擇、指標解讀、實務取捨各自該怎麼權衡，而不是把一個跑得動的 baseline 當成終點。"
   },
   {
-    "objectID": "posts/lung_nodule_detection/index.html#針對小目標做的調整",
-    "href": "posts/lung_nodule_detection/index.html#針對小目標做的調整",
+    "objectID": "projects/lung_nodule_detection/index.html#針對小目標做的調整",
+    "href": "projects/lung_nodule_detection/index.html#針對小目標做的調整",
     "title": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節",
     "section": "",
     "text": "我把原圖從 416×416 插值放大到 1280×1280。放大並沒有增加任何影像資訊——插值出來的像素都是內插的。它真正改變的是 YOLO 偵測頭特徵圖的空間密度。\n原本只佔幾個像素的小結節，在下採樣後可能對應不到幾個格點；放大之後，同一個結節能對應到更多特徵圖格點，模型就有更多空間線索去定位。換句話說，這是用「更密的特徵圖」去換「對小物件更容易對位」。\n\n\n\n小資料集最大的敵人是過擬合，所以訓練設定朝泛化能力調整：\n\n初始學習率 lr0=0.003，最終衰減到初始的 1%（lrf=0.01）——前期穩定收斂，後期細修。\n用 AdamW 搭配 weight_decay=0.0005 做正則化，壓制小資料集的過擬合傾向。\n\n\n\n\n既然樣本少，就讓每張影像在訓練時盡量「變多」：\n\nmosaic=1.0：拼接多張影像，增加場景多樣性。\nmixup=0.2：混合影像，提升泛化。\ncopy_paste=0.3：複製貼上標註物件，直接增加結節出現的次數。\nscale=0.5：隨機縮放，適應不同大小的腫瘤。"
   },
   {
-    "objectID": "posts/lung_nodule_detection/index.html#小模型-nano-效果最好",
-    "href": "posts/lung_nodule_detection/index.html#小模型-nano-效果最好",
+    "objectID": "projects/lung_nodule_detection/index.html#小模型-nano-效果最好",
+    "href": "projects/lung_nodule_detection/index.html#小模型-nano-效果最好",
     "title": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節",
     "section": "",
     "text": "調整完之後，我把 YOLOv11 的四種大小（Large / Medium / Small / Nano）都跑了一輪來比較。直覺上，大模型容量更大、應該更強。結果剛好相反：\n\n\n\nModel\nOverall mAP50-95\n≤3mm mAP50-95\n≤3mm mAP75\n\n\n\n\n11l (Large)\n47.8%\n34.5%\n41.9%\n\n\n11m (Medium)\n46.9%\n32.4%\n11.0%\n\n\n11s (Small)\n53.7%\n40.5%\n33.8%\n\n\n11n (Nano)\n65.4%\n57.5%\n56.8%\n\n\n\n大模型（11l、11m）整體 mAP50-95 只有 46%～48%，反而是最小的 11n 拿到 65.4%，而且在最難的小結節上從 11s 的 40.5% 一路拉到 57.5%。\n合理的解釋是：這個資料集太小，大模型的容量沒地方發揮，只會去記訓練集的雜訊，於是過擬合；小模型容量受限，反而被迫學到比較通用的特徵，泛化更好。 這也呼應前面所有「防過擬合」的設定——在小資料的世界裡，「更大」常常不是「更好」，而選對模型大小，對小物件偵測的影響大到超乎預期。"
   },
   {
-    "objectID": "posts/lung_nodule_detection/index.html#單一指標陷阱",
-    "href": "posts/lung_nodule_detection/index.html#單一指標陷阱",
+    "objectID": "projects/lung_nodule_detection/index.html#單一指標陷阱",
+    "href": "projects/lung_nodule_detection/index.html#單一指標陷阱",
     "title": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節",
     "section": "",
     "text": "比較模型時還踩到一個值得記下來的坑。看上面的表格，11m 的小結節 mAP75 異常地低，只有 11%，乍看像是這個模型在小結節上整個崩掉。\n但同一個 11m 的小結節 mAP50-95 是 32.4%，其實跟 11l 同級，並沒有特別差。問題出在驗證集的小結節只有 8 個樣本——只算 mAP75 這種單一 IOU 門檻的指標時，幾個樣本的浮動就會把數字甩得很大；而 mAP50-95 是多個 IOU 門檻的平均，相對穩定得多。\n所以在這種小驗證集上，單一指標的數字不能盡信，要看跨門檻的平均，否則很容易因為一兩個樣本就對模型下錯結論。"
   },
   {
-    "objectID": "posts/lung_nodule_detection/index.html#實務上寧可多抓也別放過",
-    "href": "posts/lung_nodule_detection/index.html#實務上寧可多抓也別放過",
+    "objectID": "projects/lung_nodule_detection/index.html#實務上寧可多抓也別放過",
+    "href": "projects/lung_nodule_detection/index.html#實務上寧可多抓也別放過",
     "title": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節",
     "section": "",
     "text": "選定 11n 之後，來看它的完整表現：\n\n\n\nModel\nPrecision\nRecall\nmAP50\nmAP75\nmAP50-95\n\n\n\n\nYOLOv11n\n85.4%\n89.7%\n89.8%\n73.2%\n65.4%\n\n\n\n分類別來看：\n\n\n\nClass\nInstances\nPrecision\nRecall\nmAP50\nmAP75\nmAP50-95\n\n\n\n\nall\n44\n85.4%\n89.7%\n89.8%\n73.2%\n65.4%\n\n\n≥3mm\n36\n94.3%\n97.2%\n98.2%\n89.5%\n73.2%\n\n\n≤3mm\n8\n76.6%\n82.1%\n81.3%\n56.8%\n57.5%\n\n\n\n在癌症早篩的情境下，最不想發生的事是漏掉一個真的存在的病灶，所以我偏好把 Recall 顧好——Recall 89.7% 代表所有真實存在的結節中，模型抓出了將近九成。\n但這不是一味地疊高 Recall。Precision 仍維持在 85.4%，意思是模型標為結節的位置裡約 85% 確實是結節，誤報並沒有失控。在「不放過病灶」和「不要一直亂報」之間，這個模型站在一個我覺得對篩檢任務合理的位置。\n\n\n\n \n\n\nGround Truth（左）vs Prediction（右）"
   },
   {
-    "objectID": "posts/lung_nodule_detection/index.html#限制與後續方向",
-    "href": "posts/lung_nodule_detection/index.html#限制與後續方向",
+    "objectID": "projects/lung_nodule_detection/index.html#限制與後續方向",
+    "href": "projects/lung_nodule_detection/index.html#限制與後續方向",
     "title": "小模型在小資料集更優秀：在 280 張影像上偵測肺結節",
     "section": "",
     "text": "這個模型在大結節上很穩（≥3mm 的 mAP50-95 有 73.2%），但小結節依然是弱點（57.5%）：\n\n標註寬鬆。模型學不到高 IOU 的精準定位。這正是小結節 mAP50（81.3%）和 mAP75（56.8%）落差這麼大的原因——找得到大概位置，但框不準。\n樣本太少。驗證集只有 8 個小結節，指標的標準差會變大。\n\n還有一個細節值得記：在 11n 上，不論整體、大結節、小結節，Recall 都高於 Precision；而小結節的 Recall（82.1%）和 Precision（76.6%）差距達 5.5 個百分點，比整體（4.3）和大結節（2.9）都大。代表模型在小結節上「框錯」的情況相對更多，再次呼應了小結節難偵測、標註寬鬆、樣本少這幾件事。\n目前我用 copy_paste 做的是全域增加樣本，後續比較對的方向應該是：\n\n單獨補小結節的資料，提高它的數量與佔比，而不是只靠全域增強。\n嘗試能容忍寬鬆標註的訓練法，讓模型不被不精準的框邊界綁死。\n\n整體來說，這個模型在應用方向上是合理的，但小結節這塊我還沒解完——這也是我覺得這個專案最有意思的地方：它讓我看到在小資料的限制下，模型選擇、指標解讀、實務取捨各自該怎麼權衡，而不是把一個跑得動的 baseline 當成終點。"
-  },
-  {
-    "objectID": "posts/kalman/index.html",
-    "href": "posts/kalman/index.html",
-    "title": "卡爾曼濾波器在配對交易上的應用",
-    "section": "",
-    "text": "配對交易（pairs trading）是一種市場中立策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有均值回歸（mean reversion）的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。\n要把這件事做成可運作的策略，有兩個核心問題必須回答：\n\n怎麼選出「有效配對」——決定權重 \\(w\\)，使得這個組合真的市場中立、而且價差真的會均值回歸。\n怎麼描述並估計價差——把均值回歸寫成可計算的數學模型，並在每個交易日動態預測下一刻的價差。\n\nElliott et al.(2005) 的價差模型用卡爾曼濾波器（Kalman filter）漂亮地回答了第二個問題，但完全沒有交代第一個問題：它假設配對已經給定，卻沒說怎麼挑。這篇論文要做的，就是把這兩塊缺口補起來，並用真實資料檢驗整套方法到底準不準、限制在哪裡。"
-  },
-  {
-    "objectID": "posts/kalman/index.html#這篇論文在解什麼問題",
-    "href": "posts/kalman/index.html#這篇論文在解什麼問題",
-    "title": "卡爾曼濾波器在配對交易上的應用",
-    "section": "",
-    "text": "配對交易（pairs trading）是一種市場中立策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有均值回歸（mean reversion）的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。\n要把這件事做成可運作的策略，有兩個核心問題必須回答：\n\n怎麼選出「有效配對」——決定權重 \\(w\\)，使得這個組合真的市場中立、而且價差真的會均值回歸。\n怎麼描述並估計價差——把均值回歸寫成可計算的數學模型，並在每個交易日動態預測下一刻的價差。\n\nElliott et al.(2005) 的價差模型用卡爾曼濾波器（Kalman filter）漂亮地回答了第二個問題，但完全沒有交代第一個問題：它假設配對已經給定，卻沒說怎麼挑。這篇論文要做的，就是把這兩塊缺口補起來，並用真實資料檢驗整套方法到底準不準、限制在哪裡。"
-  },
-  {
-    "objectID": "posts/kalman/index.html#方法",
-    "href": "posts/kalman/index.html#方法",
-    "title": "卡爾曼濾波器在配對交易上的應用",
-    "section": "方法",
-    "text": "方法\n\n1. 從傳統 OLS 到狀態空間模型\n卡爾曼濾波器並不是憑空冒出來的演算法，它的骨架其實是大家熟悉的線性迴歸與遞迴最小平方。\n\\[\n\\text{最小平方法} \\;\\rightarrow\\; \\text{加權最小平方法} \\;\\rightarrow\\; \\text{遞迴最小平方法} \\;\\rightarrow\\; \\text{卡爾曼濾波器}\n\\]\n把卡爾曼濾波器理解成「遞迴最小平方在狀態空間上的推廣」之後，它每天兩階段的運作（measurement update 用當天市場價修正估計、time update 往下一天外推先驗估計）就有了清楚的數學意義。\n\n\n2. 怎麼選出「有效配對」\n我們補上 Elliott et al.(2005) 缺的金融理論基礎——資本資產定價模型（CAPM）與 single-index model——再借用 Vidyamurthy(2004) 的共整合（cointegration）想法，提出兩種找權重 \\(w\\) 的方法：\n\nZero-beta approach：選權重 \\(w_{ZB}\\) 讓組合的市場 beta 為零。market beta 定義為\n\n\\[\n\\beta_R = \\rho_{R,R_M}\\,\\frac{\\sigma_R}{\\sigma_{R_M}}\n\\]\nbeta 歸零代表組合報酬與大盤報酬不相關，系統性風險不會外溢進來，這正是「市場中立」的數學寫法。\n\nMean reversion approach：假設價差會均值回歸，就用線性迴歸找出最能貼合價差資料的那條水平線，對應的權重即為 \\(w_{MR}\\)。\n\n\n\n3. 把價差寫成狀態空間模型\n把連續時間的 Ornstein–Uhlenbeck 過程離散化後，價差被寫成一個狀態空間模型：\n\\[\n\\begin{aligned}\n\\text{狀態轉移：} \\quad & Y_i = A + B\\,Y_{i-1} + C w_i \\\\\n\\text{量測過程：} \\quad & z_i = Y_i + D v_i\n\\end{aligned}\n\\]\n其中 \\(Y_i\\) 是理論價差、\\(z_i\\) 是市場觀測到的價差。我們不只寫下模型，還替參數 \\(A,B,C\\) 給出具有金融意義的解釋（\\(A\\) 是這個價差組合的固定報酬、\\(C\\) 是模型誤差的變異、\\(B\\) 在共整合選出的配對下會接近 1）——這正是 Elliott et al. 原文沒做、而我們補上的部分。參數 \\(A,B,C,D\\) 透過 expectation-maximization（EM）以最大概似估計求出。"
-  },
-  {
-    "objectID": "posts/kalman/index.html#數值實驗可口可樂-vs.-百事可樂",
-    "href": "posts/kalman/index.html#數值實驗可口可樂-vs.-百事可樂",
-    "title": "卡爾曼濾波器在配對交易上的應用",
-    "section": "數值實驗：可口可樂 vs. 百事可樂",
-    "text": "數值實驗：可口可樂 vs. 百事可樂\n選了軟性飲料業的經典配對 KO（Coca-Cola）與 PEP（PepsiCo）,取 2012–2019 的每日收盤價,共 2013 個交易日:\n\n\n\n\n\n\n\n設定\n內容\n\n\n\n\n資料來源\nYahoo! Finance 每日收盤價\n\n\n切分\n前 1000 筆為 training set（估參數）、後 1013 筆為 test set（做估計）\n\n\n工具\nR 語言 MARSS 套件（EM + Kalman filter）\n\n\nMean reversion 權重\n\\(w_{MR} = 1.872\\)\n\n\nZero-beta 權重\n\\(w_{ZB} = 0.9614\\)\n\n\n\n以 mean reversion approach 估出的價差模型為例：\n\\[\n\\begin{aligned}\nY_i &= -0.02626 + 0.98790\\,Y_{i-1} + 0.01317\\,w_i \\\\\nz_i &= Y_i + 0.00242\\,v_i\n\\end{aligned}\n\\]\n\\(B \\approx 0.988\\) 接近 1,符合共整合配對的預期。對投資人而言,先驗估計 \\(\\hat{Y}_i^{-}\\) 可直接當交易訊號：當市場價差 \\(z_i\\) 明顯偏離 \\(\\hat{Y}_i^{-}\\) 時,就是進場做多弱勢、做空強勢的時機。"
-  },
-  {
-    "objectID": "posts/kalman/index.html#主要發現",
-    "href": "posts/kalman/index.html#主要發現",
-    "title": "卡爾曼濾波器在配對交易上的應用",
-    "section": "主要發現",
-    "text": "主要發現\n整套方法跑得出穩定、快速收斂的估計,但數值實驗也誠實地暴露了一個結構性限制：\n\n當價差劇烈變動時，卡爾曼濾波器的估計會慢一天才反應過來。\n\n原因很根本——卡爾曼估計值本質上是歷史價差的線性函數，而在離散時間架構下，離當下變動最近的資訊就只有前一天的價差。這代表用這個估計去抓大幅跳動來獲利，有先天的天花板。未來可以嘗試高頻交易，將時間間隔縮小，更好的利用卡爾曼濾波器的估計值。"
-  },
-  {
-    "objectID": "posts/kalman/index.html#技術重點",
-    "href": "posts/kalman/index.html#技術重點",
-    "title": "卡爾曼濾波器在配對交易上的應用",
-    "section": "技術重點",
-    "text": "技術重點\n\n狀態空間模型 / 卡爾曼濾波器：從最小平方法一路推導到 Kalman filter 的遞迴結構,並逐步釐清 measurement / time update 兩階段的數學意義。\n量化金融建模：CAPM、single-index model、market beta、共整合、Ornstein–Uhlenbeck 過程、均值回歸。\n參數估計：以 EM 演算法求狀態空間模型的最大概似估計。\n真實資料驗證：R / MARSS,KO–PEP 2012–2019,train/test 切分,並對模型限制做誠實的誤差分析。\n原創貢獻：替 Elliott 模型狀態轉移參數 \\(A,B,C\\) 補上金融解釋,並指出卡爾曼估計在價差劇變時的延遲限制。\n\nKeywords: Kalman Filter · State-Space Model · Least Squares / Recursive Least Squares · Pairs Trading · Cointegration · CAPM · Single-Index Model · Expectation-Maximization"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html",
-    "href": "posts/amazon_product_reviews_alanysis/index.html",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "",
-    "text": "如果想用消費者留下的評論幫產品團隊找問題，最直覺的做法是：把評論分成好評跟差評，然後去看差評。我一開始也是這樣做的。但做到一半我發現，這個前提其實是錯的——差評不一定有具體問題，而好評裡反而常常藏著最該被處理的缺陷。\n這篇文章記錄的，我怎麼從「補 missing rating、看差評」這個直覺起點，一路把問題重新定義成 actionable review mining，最後做出一個 DistilBERT + Gemini 的兩階段 pipeline：小模型負責便宜地篩出候選評論，LLM 負責把它們抽成 aspect、issue_summary、evidence_span 這種產品團隊能直接讀的結構化 issue。\n真正花時間的不是訓練模型，而是想清楚一件事：我到底在找什麼。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#一開始把問題定義錯了",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#一開始把問題定義錯了",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "一開始把問題定義錯了",
-    "text": "一開始把問題定義錯了\n最初我把這個任務想成兩步：先把缺失的星等補回來，再從負向評論裡找產品問題。聽起來很合理，於是我先處理 rating（星等）。\n原始資料有 1,597 筆評論，其中 420 筆缺 rating；去重後仍有 144 筆沒有星等。有趣的是，這些缺星等評論的文字長度中位數是 474 字元，幾乎是有星等評論（200 字元）的 2.4 倍——它們是寫得最長、內容最多的那一批。我用 TF-IDF + Logistic Regression、也試了 DistilBERT，想預測它們偏好評還是差評。\n但越做越覺得不對勁。很多長評論根本不是「正面」或「負面」可以概括的：有些整體給五星，正文卻列了一串缺點；有些通篇抱怨，最後一句還是推薦這個產品。rating 描述的是使用者對商品的整體態度，但「有沒有具體、可改善的問題」是另一回事。 我花力氣補出來的星等，並不會直接告訴我哪一篇值得產品團隊讀。\n那 helpful votes（點讚數） 呢？這是我試的第二個入口。直覺上，被很多人標 helpful 的評論應該比較值得看。我用 Gemini 標了 400 筆 actionable label （有具體建議的評論）來驗證這個假設：\n\n\n\nLabel\nCount\n\n\n\n\nactionable（有具體建議）\n194\n\n\nnon-actionable\n206\n\n\n\n結果在 194 筆 actionable 評論裡，有 104 筆（53.6%）並不是高 helpful 的評論；numHelpful（點讚數） 跟 actionable label 的相關只有 0.085。換句話說，如果我只讀高票評論，會直接漏掉一半以上的產品改善訊號。 helpful votes 衡量的是「對其他買家有沒有幫助」，不是「對產品團隊有沒有用」，這兩件事並不重疊。\n兩個直覺入口都試過、也都被資料打臉之後，我才意識到問題出在更上游：我一直在用「整體情緒」「互動熱度」這類 proxy（標籤），去逼近一個它們根本不對齊的目標。該換的不是模型，是問題本身。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#那可行動到底是什麼意思",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#那可行動到底是什麼意思",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "那「可行動」到底是什麼意思",
-    "text": "那「可行動」到底是什麼意思\n我把任務重新定義成 actionable review mining。要回答的問題不再是：\n\n這篇評論是好評還是差評？\n\n而是：\n\n這篇評論裡，有沒有產品團隊可以採取行動的具體問題？\n\n在這個專案裡，一篇 actionable review 指的是文字中包含以下任一種訊號：具體缺陷、功能缺口、使用限制，或任何產品團隊能據以改善的需求。情緒是哪一邊、被多少人按讚，都不在判準裡。\n定義清楚之後，整段研究路徑其實可以濃縮成一條線：\n\n\n\n\n\nflowchart TD\n  A[\"補 Missing Rating（走錯）\"] --&gt; B[\"研究 numHelpful（也不夠）\"]\n  B --&gt; C[\"重新定義：Actionable Review Mining\"]\n  C --&gt; D[\"DistilBERT student gate + Gemini extraction\"]\n  D --&gt; E[\"Product digest / Issue trend\"]\n\n\n\n\n\n\nGemini 在這裡扮演 teacher 與抽取器，產出結構化欄位：\n\n\n\nField\nMeaning\n\n\n\n\nactionable\n是否包含可行動的產品問題\n\n\naspect\n問題所屬面向\n\n\nissue_summary\n問題摘要\n\n\nevidence_span\n原評論中的證據片段\n\n\n\n這裡有一個我刻意守住的界線：這些欄位用來做 teacher label、證據驗證跟 digest（評估），但真正要部署的 DistilBERT student model，輸入永遠只有完整的 review body——不讀 rating、不讀 helpful votes、不讀產品名稱、不讀長度，也不讀任何 Gemini 抽出來的欄位。我要的是一個只看文字、就能判斷可行動性的 gate，而不是一個偷偷依賴 metadata 的模型。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#為什麼是小模型把關-llm-抽取",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#為什麼是小模型把關-llm-抽取",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "為什麼是「小模型把關 + LLM 抽取」",
-    "text": "為什麼是「小模型把關 + LLM 抽取」\n最終架構不是讓 DistilBERT 取代 LLM，而是讓兩者各做自己擅長的事：\n\n\n\n\n\nflowchart LR\n  A[\"Amazon review body\"] --&gt; B[\"Sentence-evidence DistilBERT gate\"]\n  B --&gt; C[\"Candidate reviews\"]\n  C --&gt; D[\"Gemini structured extraction\"]\n  D --&gt; E[\"Product issue digest\"]\n  E --&gt; F[\"Issue trend analysis\"]\n\n\n\n\n\n\nDistilBERT 便宜、穩定，負責從大量評論中快速篩掉明顯沒問題的那些，把候選量壓下來；Gemini 處理真正困難的部分——判斷模稜兩可的案例、寫出 issue summary、把證據片段對齊回原文。\n這樣分工的好處不只是省 LLM 成本，更是因為它比較像真實的產品分析流程：輸出不是一個分類分數，而是一批可以排序、彙整、追蹤的產品問題。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#四個實驗回答四個不同的問題",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#四個實驗回答四個不同的問題",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "四個實驗，回答四個不同的問題",
-    "text": "四個實驗，回答四個不同的問題\n我做了四個主要實驗。重點從來不是衝最高分，而是每個實驗各自回答一個我當下還沒把握的問題：\n\n只看文字的 student 行不行？（Baseline Student）\n模型有沒有偷學評論長度？（Length-Balanced Diagnostic）\n在自然分布下能不能部署？（Full-Pool Deployment）\n用證據監督能不能補回漏判？（Evidence-Supervised Sentence Student）\n\n\n\n\n\n\n\n\n\n\nExperiment\n它在問什麼\nKey Result\n我的決定\n\n\n\n\nBaseline Student\ntext-only DistilBERT 能不能當 Gemini 前的 gate\nmacro-F1 0.850\n可行，但 short 會漏判、long 會誤判\n\n\nLength-Balanced Diagnostic\n模型是不是在靠長度作弊\nbalanced macro-F1 0.670\n只當診斷，不部署\n\n\nFull-Pool Deployment\n自然長度分布下的部署模型\nmacro-F1 0.875、positive recall 0.953\n強 baseline\n\n\nEvidence-Supervised Sentence Student\n用 evidence span 做句子層監督\nmacro-F1 0.896、positive recall 0.977\n最終推薦\n\n\n\n第二個實驗分數最難看，卻是最關鍵的一個。它證實了我擔心的事：模型確實受評論長度影響——很短的評論難以判斷，很長的評論則因為細節多而容易被誤判成 actionable。知道偏誤從哪來，我才有辦法設計下一步的 sentence-evidence model 去對症下藥，而不是盲目調參數。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#最後為什麼選-sentence-evidence-gate",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#最後為什麼選-sentence-evidence-gate",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "最後為什麼選 sentence-evidence gate",
-    "text": "最後為什麼選 sentence-evidence gate\n最終推薦的是 evidence-supervised sentence student。它用 Gemini 的 evidence_span 建立句子層的監督訊號：\n\nevidence 句子 → positive\nnon-actionable 評論裡的句子 → clean negative\nactionable 評論裡其他沒被標成 evidence 的句子 → unknown，不進 loss\n\n推論時模型一樣只讀評論文字，把句子分數取最高，聚合成 review-level 機率。我讓它在部署條件下跟 full-pool gate 正面對打：\n\n\n\nMetric\nFull-Pool Gate\nSentence-Evidence Gate\n\n\n\n\n從 1,043 篇篩出的候選\n491\n504\n\n\n保留的 actionable reviews\n400\n408\n\n\nCorpus-level actionable recall\n0.901\n0.919\n\n\nFalse negatives\n44\n36\n\n\nRTX 3060 離線延遲\n9.9 秒\n16.1 秒\n\n\n\nsentence-evidence gate 多送了 13 篇候選給 Gemini，但少漏了 8 篇 actionable review。對這個離線 digest pipeline 來說，這是划算的交換：多花一點推論時間，換更高的產品問題召回率。\n我也特別檢查了「多抓的這些訊號會不會反而把 digest 攪亂」。結果是不會：47 個產品裡有 44 個的 top issue 完全一致，完整 digest 的 exact issue Jaccard 高達 0.910。也就是說，sentence-evidence gate 沒有改變整體的產品問題結構，只是在邊界案例上多撿回了一些有用的東西——這正是我想要的行為。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#從分類分數到真正能追蹤的產品訊號",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#從分類分數到真正能追蹤的產品訊號",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "從分類分數到真正能追蹤的產品訊號",
-    "text": "從分類分數到真正能追蹤的產品訊號\n這個專案的輸出沒有停在 classifier score。\nGemini extraction 會把每一篇 actionable review 轉成一列 issue：問題面向、摘要、原文證據。這些 row 再彙整成 product digest，讓產品團隊一眼看到每個商品最常出現、最該處理的問題。\n我還把完整的 extraction 接到一個 Amazon Tap 的 monthly issue trend prototype：先把 actionable reviews 對映到人工審過的 canonical issue families，再用 empirical-logit local linear trend 的 state space model 搭配 Kalman filter，去偵測 Rising、Spike、Drop 這幾種訊號。對我來說這一步很自然——把「把噪訊濾成可信狀態」的 Kalman 思路，從金融時間序列搬到產品問題的時間序列上。\n所以這條 pipeline 的價值不只是「找出哪些評論有問題」，而是把評論變成可以長期追蹤的 product intelligence。"
-  },
-  {
-    "objectID": "posts/amazon_product_reviews_alanysis/index.html#這個專案到底證明了什麼",
-    "href": "posts/amazon_product_reviews_alanysis/index.html#這個專案到底證明了什麼",
-    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "這個專案到底證明了什麼",
-    "text": "這個專案到底證明了什麼\n回頭看，這個專案教我重新理解了 review mining 的核心問題。如果目標是改善產品，那 positive/negative sentiment 只是間接訊號、helpful votes 只是互動訊號；真正重要的，是評論裡有沒有具體、可定位、可採取行動的產品問題。\n最終系統用 sentence-evidence DistilBERT 當 candidate gate，Gemini 負責 structured extraction 與 evidence validation，讓小模型跟 LLM 各做擅長的事，把大量 Amazon 評論轉成貼近產品團隊工作流的 issue digest。\n而對作品集來說，我想呈現的不是某個被我調高 0.02 的 F1，而是一套完整的工作方式：從一個錯的 proxy 出發，被資料糾正，重新定義問題，診斷模型偏誤，做部署取捨，最後把模型輸出接到真正有用的分析成果。 模型訓練只是其中一段；想清楚要解什麼，才是整件事的方向盤。"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "我是盧晉偉，成大應用數學所碩士，政大金融系學士。\n我關注資料分析、電腦視覺、時間序列模型與 AI 應用開發。\n過去的研究與專案包含 Kalman Filter 配對交易、YOLO 影像偵測、Amazon 評論分析，以及全台市集地圖平台。\n這個網站整理我的專案作品與日常技術筆記。"
+  },
+  {
+    "objectID": "notes/index.html",
+    "href": "notes/index.html",
+    "title": "Notes",
+    "section": "",
+    "text": "這裡整理日常技術筆記、環境設定紀錄與踩坑筆記。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nKaggle CLI Setup\n\n\n\nKaggle\n\nCLI\n\nEnvironment\n\n\n\n\n\n\n\n\n\nJun 28, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/kaggle-cli-setup.html",
+    "href": "notes/kaggle-cli-setup.html",
+    "title": "Kaggle CLI Setup",
+    "section": "",
+    "text": "記錄 Kaggle CLI 的安裝、API token 設定與常用指令，作為之後下載資料集與重現實驗環境時的參考。"
+  },
+  {
+    "objectID": "notes/kaggle-cli-setup.html#目的",
+    "href": "notes/kaggle-cli-setup.html#目的",
+    "title": "Kaggle CLI Setup",
+    "section": "",
+    "text": "記錄 Kaggle CLI 的安裝、API token 設定與常用指令，作為之後下載資料集與重現實驗環境時的參考。"
+  },
+  {
+    "objectID": "notes/kaggle-cli-setup.html#安裝",
+    "href": "notes/kaggle-cli-setup.html#安裝",
+    "title": "Kaggle CLI Setup",
+    "section": "安裝",
+    "text": "安裝\npip install kaggle"
+  },
+  {
+    "objectID": "notes/kaggle-cli-setup.html#api-token",
+    "href": "notes/kaggle-cli-setup.html#api-token",
+    "title": "Kaggle CLI Setup",
+    "section": "API Token",
+    "text": "API Token\n\n到 Kaggle Account 頁面建立 API token。\n下載 kaggle.json。\n將 token 放到 Kaggle CLI 預設讀取的位置。"
+  },
+  {
+    "objectID": "notes/kaggle-cli-setup.html#常用指令",
+    "href": "notes/kaggle-cli-setup.html#常用指令",
+    "title": "Kaggle CLI Setup",
+    "section": "常用指令",
+    "text": "常用指令\nkaggle datasets list\nkaggle datasets download -d owner/dataset-name"
+  },
+  {
+    "objectID": "notes/kaggle-cli-setup.html#待補",
+    "href": "notes/kaggle-cli-setup.html#待補",
+    "title": "Kaggle CLI Setup",
+    "section": "待補",
+    "text": "待補\n\nWindows / macOS / Linux 的 token 路徑差異\n常見錯誤訊息與解法\n專案中實際用到的資料集下載流程"
+  },
+  {
+    "objectID": "projects/kalman/index.html",
+    "href": "projects/kalman/index.html",
+    "title": "卡爾曼濾波器在配對交易上的應用",
+    "section": "",
+    "text": "配對交易（pairs trading）是一種市場中立策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有均值回歸（mean reversion）的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。\n要把這件事做成可運作的策略，有兩個核心問題必須回答：\n\n怎麼選出「有效配對」——決定權重 \\(w\\)，使得這個組合真的市場中立、而且價差真的會均值回歸。\n怎麼描述並估計價差——把均值回歸寫成可計算的數學模型，並在每個交易日動態預測下一刻的價差。\n\nElliott et al.(2005) 的價差模型用卡爾曼濾波器（Kalman filter）漂亮地回答了第二個問題，但完全沒有交代第一個問題：它假設配對已經給定，卻沒說怎麼挑。這篇論文要做的，就是把這兩塊缺口補起來，並用真實資料檢驗整套方法到底準不準、限制在哪裡。"
+  },
+  {
+    "objectID": "projects/kalman/index.html#這篇論文在解什麼問題",
+    "href": "projects/kalman/index.html#這篇論文在解什麼問題",
+    "title": "卡爾曼濾波器在配對交易上的應用",
+    "section": "",
+    "text": "配對交易（pairs trading）是一種市場中立策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有均值回歸（mean reversion）的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。\n要把這件事做成可運作的策略，有兩個核心問題必須回答：\n\n怎麼選出「有效配對」——決定權重 \\(w\\)，使得這個組合真的市場中立、而且價差真的會均值回歸。\n怎麼描述並估計價差——把均值回歸寫成可計算的數學模型，並在每個交易日動態預測下一刻的價差。\n\nElliott et al.(2005) 的價差模型用卡爾曼濾波器（Kalman filter）漂亮地回答了第二個問題，但完全沒有交代第一個問題：它假設配對已經給定，卻沒說怎麼挑。這篇論文要做的，就是把這兩塊缺口補起來，並用真實資料檢驗整套方法到底準不準、限制在哪裡。"
+  },
+  {
+    "objectID": "projects/kalman/index.html#方法",
+    "href": "projects/kalman/index.html#方法",
+    "title": "卡爾曼濾波器在配對交易上的應用",
+    "section": "方法",
+    "text": "方法\n\n1. 從傳統 OLS 到狀態空間模型\n卡爾曼濾波器並不是憑空冒出來的演算法，它的骨架其實是大家熟悉的線性迴歸與遞迴最小平方。\n\\[\n\\text{最小平方法} \\;\\rightarrow\\; \\text{加權最小平方法} \\;\\rightarrow\\; \\text{遞迴最小平方法} \\;\\rightarrow\\; \\text{卡爾曼濾波器}\n\\]\n把卡爾曼濾波器理解成「遞迴最小平方在狀態空間上的推廣」之後，它每天兩階段的運作（measurement update 用當天市場價修正估計、time update 往下一天外推先驗估計）就有了清楚的數學意義。\n\n\n2. 怎麼選出「有效配對」\n我們補上 Elliott et al.(2005) 缺的金融理論基礎——資本資產定價模型（CAPM）與 single-index model——再借用 Vidyamurthy(2004) 的共整合（cointegration）想法，提出兩種找權重 \\(w\\) 的方法：\n\nZero-beta approach：選權重 \\(w_{ZB}\\) 讓組合的市場 beta 為零。market beta 定義為\n\n\\[\n\\beta_R = \\rho_{R,R_M}\\,\\frac{\\sigma_R}{\\sigma_{R_M}}\n\\]\nbeta 歸零代表組合報酬與大盤報酬不相關，系統性風險不會外溢進來，這正是「市場中立」的數學寫法。\n\nMean reversion approach：假設價差會均值回歸，就用線性迴歸找出最能貼合價差資料的那條水平線，對應的權重即為 \\(w_{MR}\\)。\n\n\n\n3. 把價差寫成狀態空間模型\n把連續時間的 Ornstein–Uhlenbeck 過程離散化後，價差被寫成一個狀態空間模型：\n\\[\n\\begin{aligned}\n\\text{狀態轉移：} \\quad & Y_i = A + B\\,Y_{i-1} + C w_i \\\\\n\\text{量測過程：} \\quad & z_i = Y_i + D v_i\n\\end{aligned}\n\\]\n其中 \\(Y_i\\) 是理論價差、\\(z_i\\) 是市場觀測到的價差。我們不只寫下模型，還替參數 \\(A,B,C\\) 給出具有金融意義的解釋（\\(A\\) 是這個價差組合的固定報酬、\\(C\\) 是模型誤差的變異、\\(B\\) 在共整合選出的配對下會接近 1）——這正是 Elliott et al. 原文沒做、而我們補上的部分。參數 \\(A,B,C,D\\) 透過 expectation-maximization（EM）以最大概似估計求出。"
+  },
+  {
+    "objectID": "projects/kalman/index.html#數值實驗可口可樂-vs.-百事可樂",
+    "href": "projects/kalman/index.html#數值實驗可口可樂-vs.-百事可樂",
+    "title": "卡爾曼濾波器在配對交易上的應用",
+    "section": "數值實驗：可口可樂 vs. 百事可樂",
+    "text": "數值實驗：可口可樂 vs. 百事可樂\n選了軟性飲料業的經典配對 KO（Coca-Cola）與 PEP（PepsiCo）,取 2012–2019 的每日收盤價,共 2013 個交易日:\n\n\n\n\n\n\n\n設定\n內容\n\n\n\n\n資料來源\nYahoo! Finance 每日收盤價\n\n\n切分\n前 1000 筆為 training set（估參數）、後 1013 筆為 test set（做估計）\n\n\n工具\nR 語言 MARSS 套件（EM + Kalman filter）\n\n\nMean reversion 權重\n\\(w_{MR} = 1.872\\)\n\n\nZero-beta 權重\n\\(w_{ZB} = 0.9614\\)\n\n\n\n以 mean reversion approach 估出的價差模型為例：\n\\[\n\\begin{aligned}\nY_i &= -0.02626 + 0.98790\\,Y_{i-1} + 0.01317\\,w_i \\\\\nz_i &= Y_i + 0.00242\\,v_i\n\\end{aligned}\n\\]\n\\(B \\approx 0.988\\) 接近 1,符合共整合配對的預期。對投資人而言,先驗估計 \\(\\hat{Y}_i^{-}\\) 可直接當交易訊號：當市場價差 \\(z_i\\) 明顯偏離 \\(\\hat{Y}_i^{-}\\) 時,就是進場做多弱勢、做空強勢的時機。"
+  },
+  {
+    "objectID": "projects/kalman/index.html#主要發現",
+    "href": "projects/kalman/index.html#主要發現",
+    "title": "卡爾曼濾波器在配對交易上的應用",
+    "section": "主要發現",
+    "text": "主要發現\n整套方法跑得出穩定、快速收斂的估計,但數值實驗也誠實地暴露了一個結構性限制：\n\n當價差劇烈變動時，卡爾曼濾波器的估計會慢一天才反應過來。\n\n原因很根本——卡爾曼估計值本質上是歷史價差的線性函數，而在離散時間架構下，離當下變動最近的資訊就只有前一天的價差。這代表用這個估計去抓大幅跳動來獲利，有先天的天花板。未來可以嘗試高頻交易，將時間間隔縮小，更好的利用卡爾曼濾波器的估計值。"
+  },
+  {
+    "objectID": "projects/kalman/index.html#技術重點",
+    "href": "projects/kalman/index.html#技術重點",
+    "title": "卡爾曼濾波器在配對交易上的應用",
+    "section": "技術重點",
+    "text": "技術重點\n\n狀態空間模型 / 卡爾曼濾波器：從最小平方法一路推導到 Kalman filter 的遞迴結構,並逐步釐清 measurement / time update 兩階段的數學意義。\n量化金融建模：CAPM、single-index model、market beta、共整合、Ornstein–Uhlenbeck 過程、均值回歸。\n參數估計：以 EM 演算法求狀態空間模型的最大概似估計。\n真實資料驗證：R / MARSS,KO–PEP 2012–2019,train/test 切分,並對模型限制做誠實的誤差分析。\n原創貢獻：替 Elliott 模型狀態轉移參數 \\(A,B,C\\) 補上金融解釋,並指出卡爾曼估計在價差劇變時的延遲限制。\n\nKeywords: Kalman Filter · State-Space Model · Least Squares / Recursive Least Squares · Pairs Trading · Cointegration · CAPM · Single-Index Model · Expectation-Maximization"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html",
+    "href": "projects/amazon_product_reviews_alanysis/index.html",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "",
+    "text": "如果想用消費者留下的評論幫產品團隊找問題，最直覺的做法是：把評論分成好評跟差評，然後去看差評。我一開始也是這樣做的。但做到一半我發現，這個前提其實是錯的——差評不一定有具體問題，而好評裡反而常常藏著最該被處理的缺陷。\n這篇文章記錄的，我怎麼從「補 missing rating、看差評」這個直覺起點，一路把問題重新定義成 actionable review mining，最後做出一個 DistilBERT + Gemini 的兩階段 pipeline：小模型負責便宜地篩出候選評論，LLM 負責把它們抽成 aspect、issue_summary、evidence_span 這種產品團隊能直接讀的結構化 issue。\n真正花時間的不是訓練模型，而是想清楚一件事：我到底在找什麼。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#一開始把問題定義錯了",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#一開始把問題定義錯了",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "一開始把問題定義錯了",
+    "text": "一開始把問題定義錯了\n最初我把這個任務想成兩步：先把缺失的星等補回來，再從負向評論裡找產品問題。聽起來很合理，於是我先處理 rating（星等）。\n原始資料有 1,597 筆評論，其中 420 筆缺 rating；去重後仍有 144 筆沒有星等。有趣的是，這些缺星等評論的文字長度中位數是 474 字元，幾乎是有星等評論（200 字元）的 2.4 倍——它們是寫得最長、內容最多的那一批。我用 TF-IDF + Logistic Regression、也試了 DistilBERT，想預測它們偏好評還是差評。\n但越做越覺得不對勁。很多長評論根本不是「正面」或「負面」可以概括的：有些整體給五星，正文卻列了一串缺點；有些通篇抱怨，最後一句還是推薦這個產品。rating 描述的是使用者對商品的整體態度，但「有沒有具體、可改善的問題」是另一回事。 我花力氣補出來的星等，並不會直接告訴我哪一篇值得產品團隊讀。\n那 helpful votes（點讚數） 呢？這是我試的第二個入口。直覺上，被很多人標 helpful 的評論應該比較值得看。我用 Gemini 標了 400 筆 actionable label （有具體建議的評論）來驗證這個假設：\n\n\n\nLabel\nCount\n\n\n\n\nactionable（有具體建議）\n194\n\n\nnon-actionable\n206\n\n\n\n結果在 194 筆 actionable 評論裡，有 104 筆（53.6%）並不是高 helpful 的評論；numHelpful（點讚數） 跟 actionable label 的相關只有 0.085。換句話說，如果我只讀高票評論，會直接漏掉一半以上的產品改善訊號。 helpful votes 衡量的是「對其他買家有沒有幫助」，不是「對產品團隊有沒有用」，這兩件事並不重疊。\n兩個直覺入口都試過、也都被資料打臉之後，我才意識到問題出在更上游：我一直在用「整體情緒」「互動熱度」這類 proxy（標籤），去逼近一個它們根本不對齊的目標。該換的不是模型，是問題本身。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#那可行動到底是什麼意思",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#那可行動到底是什麼意思",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "那「可行動」到底是什麼意思",
+    "text": "那「可行動」到底是什麼意思\n我把任務重新定義成 actionable review mining。要回答的問題不再是：\n\n這篇評論是好評還是差評？\n\n而是：\n\n這篇評論裡，有沒有產品團隊可以採取行動的具體問題？\n\n在這個專案裡，一篇 actionable review 指的是文字中包含以下任一種訊號：具體缺陷、功能缺口、使用限制，或任何產品團隊能據以改善的需求。情緒是哪一邊、被多少人按讚，都不在判準裡。\n定義清楚之後，整段研究路徑其實可以濃縮成一條線：\n\n\n\n\n\nflowchart TD\n  A[\"補 Missing Rating（走錯）\"] --&gt; B[\"研究 numHelpful（也不夠）\"]\n  B --&gt; C[\"重新定義：Actionable Review Mining\"]\n  C --&gt; D[\"DistilBERT student gate + Gemini extraction\"]\n  D --&gt; E[\"Product digest / Issue trend\"]\n\n\n\n\n\n\nGemini 在這裡扮演 teacher 與抽取器，產出結構化欄位：\n\n\n\nField\nMeaning\n\n\n\n\nactionable\n是否包含可行動的產品問題\n\n\naspect\n問題所屬面向\n\n\nissue_summary\n問題摘要\n\n\nevidence_span\n原評論中的證據片段\n\n\n\n這裡有一個我刻意守住的界線：這些欄位用來做 teacher label、證據驗證跟 digest（評估），但真正要部署的 DistilBERT student model，輸入永遠只有完整的 review body——不讀 rating、不讀 helpful votes、不讀產品名稱、不讀長度，也不讀任何 Gemini 抽出來的欄位。我要的是一個只看文字、就能判斷可行動性的 gate，而不是一個偷偷依賴 metadata 的模型。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#為什麼是小模型把關-llm-抽取",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#為什麼是小模型把關-llm-抽取",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "為什麼是「小模型把關 + LLM 抽取」",
+    "text": "為什麼是「小模型把關 + LLM 抽取」\n最終架構不是讓 DistilBERT 取代 LLM，而是讓兩者各做自己擅長的事：\n\n\n\n\n\nflowchart LR\n  A[\"Amazon review body\"] --&gt; B[\"Sentence-evidence DistilBERT gate\"]\n  B --&gt; C[\"Candidate reviews\"]\n  C --&gt; D[\"Gemini structured extraction\"]\n  D --&gt; E[\"Product issue digest\"]\n  E --&gt; F[\"Issue trend analysis\"]\n\n\n\n\n\n\nDistilBERT 便宜、穩定，負責從大量評論中快速篩掉明顯沒問題的那些，把候選量壓下來；Gemini 處理真正困難的部分——判斷模稜兩可的案例、寫出 issue summary、把證據片段對齊回原文。\n這樣分工的好處不只是省 LLM 成本，更是因為它比較像真實的產品分析流程：輸出不是一個分類分數，而是一批可以排序、彙整、追蹤的產品問題。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#四個實驗回答四個不同的問題",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#四個實驗回答四個不同的問題",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "四個實驗，回答四個不同的問題",
+    "text": "四個實驗，回答四個不同的問題\n我做了四個主要實驗。重點從來不是衝最高分，而是每個實驗各自回答一個我當下還沒把握的問題：\n\n只看文字的 student 行不行？（Baseline Student）\n模型有沒有偷學評論長度？（Length-Balanced Diagnostic）\n在自然分布下能不能部署？（Full-Pool Deployment）\n用證據監督能不能補回漏判？（Evidence-Supervised Sentence Student）\n\n\n\n\n\n\n\n\n\n\nExperiment\n它在問什麼\nKey Result\n我的決定\n\n\n\n\nBaseline Student\ntext-only DistilBERT 能不能當 Gemini 前的 gate\nmacro-F1 0.850\n可行，但 short 會漏判、long 會誤判\n\n\nLength-Balanced Diagnostic\n模型是不是在靠長度作弊\nbalanced macro-F1 0.670\n只當診斷，不部署\n\n\nFull-Pool Deployment\n自然長度分布下的部署模型\nmacro-F1 0.875、positive recall 0.953\n強 baseline\n\n\nEvidence-Supervised Sentence Student\n用 evidence span 做句子層監督\nmacro-F1 0.896、positive recall 0.977\n最終推薦\n\n\n\n第二個實驗分數最難看，卻是最關鍵的一個。它證實了我擔心的事：模型確實受評論長度影響——很短的評論難以判斷，很長的評論則因為細節多而容易被誤判成 actionable。知道偏誤從哪來，我才有辦法設計下一步的 sentence-evidence model 去對症下藥，而不是盲目調參數。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#最後為什麼選-sentence-evidence-gate",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#最後為什麼選-sentence-evidence-gate",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "最後為什麼選 sentence-evidence gate",
+    "text": "最後為什麼選 sentence-evidence gate\n最終推薦的是 evidence-supervised sentence student。它用 Gemini 的 evidence_span 建立句子層的監督訊號：\n\nevidence 句子 → positive\nnon-actionable 評論裡的句子 → clean negative\nactionable 評論裡其他沒被標成 evidence 的句子 → unknown，不進 loss\n\n推論時模型一樣只讀評論文字，把句子分數取最高，聚合成 review-level 機率。我讓它在部署條件下跟 full-pool gate 正面對打：\n\n\n\nMetric\nFull-Pool Gate\nSentence-Evidence Gate\n\n\n\n\n從 1,043 篇篩出的候選\n491\n504\n\n\n保留的 actionable reviews\n400\n408\n\n\nCorpus-level actionable recall\n0.901\n0.919\n\n\nFalse negatives\n44\n36\n\n\nRTX 3060 離線延遲\n9.9 秒\n16.1 秒\n\n\n\nsentence-evidence gate 多送了 13 篇候選給 Gemini，但少漏了 8 篇 actionable review。對這個離線 digest pipeline 來說，這是划算的交換：多花一點推論時間，換更高的產品問題召回率。\n我也特別檢查了「多抓的這些訊號會不會反而把 digest 攪亂」。結果是不會：47 個產品裡有 44 個的 top issue 完全一致，完整 digest 的 exact issue Jaccard 高達 0.910。也就是說，sentence-evidence gate 沒有改變整體的產品問題結構，只是在邊界案例上多撿回了一些有用的東西——這正是我想要的行為。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#從分類分數到真正能追蹤的產品訊號",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#從分類分數到真正能追蹤的產品訊號",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "從分類分數到真正能追蹤的產品訊號",
+    "text": "從分類分數到真正能追蹤的產品訊號\n這個專案的輸出沒有停在 classifier score。\nGemini extraction 會把每一篇 actionable review 轉成一列 issue：問題面向、摘要、原文證據。這些 row 再彙整成 product digest，讓產品團隊一眼看到每個商品最常出現、最該處理的問題。\n我還把完整的 extraction 接到一個 Amazon Tap 的 monthly issue trend prototype：先把 actionable reviews 對映到人工審過的 canonical issue families，再用 empirical-logit local linear trend 的 state space model 搭配 Kalman filter，去偵測 Rising、Spike、Drop 這幾種訊號。對我來說這一步很自然——把「把噪訊濾成可信狀態」的 Kalman 思路，從金融時間序列搬到產品問題的時間序列上。\n所以這條 pipeline 的價值不只是「找出哪些評論有問題」，而是把評論變成可以長期追蹤的 product intelligence。"
+  },
+  {
+    "objectID": "projects/amazon_product_reviews_alanysis/index.html#這個專案到底證明了什麼",
+    "href": "projects/amazon_product_reviews_alanysis/index.html#這個專案到底證明了什麼",
+    "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
+    "section": "這個專案到底證明了什麼",
+    "text": "這個專案到底證明了什麼\n回頭看，這個專案教我重新理解了 review mining 的核心問題。如果目標是改善產品，那 positive/negative sentiment 只是間接訊號、helpful votes 只是互動訊號；真正重要的，是評論裡有沒有具體、可定位、可採取行動的產品問題。\n最終系統用 sentence-evidence DistilBERT 當 candidate gate，Gemini 負責 structured extraction 與 evidence validation，讓小模型跟 LLM 各做擅長的事，把大量 Amazon 評論轉成貼近產品團隊工作流的 issue digest。\n而對作品集來說，我想呈現的不是某個被我調高 0.02 的 F1，而是一套完整的工作方式：從一個錯的 proxy 出發，被資料糾正，重新定義問題，診斷模型偏誤，做部署取捨，最後把模型輸出接到真正有用的分析成果。 模型訓練只是其中一段；想清楚要解什麼，才是整件事的方向盤。"
+  },
+  {
+    "objectID": "projects/index.html",
+    "href": "projects/index.html",
+    "title": "Projects",
+    "section": "",
+    "text": "這裡整理完整專案文章，包含資料分析、電腦視覺、時間序列模型與 AI 應用開發。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議\n\n\n\nNLP\n\nLLM\n\n評論分析\n\n\n\n一個 Amazon review mining 專案的完整過程——為什麼 sentiment、rating、helpful votes 都不是好入口，我如何把任務重新定義成 actionable review mining，最後用 DistilBERT gate + Gemini extraction 把評論轉成產品團隊能直接用的 issue digest。\n\n\n\n\n\nJun 26, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n市集地圖：解決「主辦方」和「逛市集的人」的問題\n\n\n\nLINE LIFF\n\nReact\n\nFastAPI\n\n\n\n這篇文章把兩個子專案——全台市集地圖與個別市集活動介面（東方市集 / dongfang）——放在同一條產品線上說明：它們各自解決什麼、技術上怎麼分工，以及最關鍵的連接點如何把使用者從『發現某個市集』一路帶到『在現場逛那個市集』。\n\n\n\n\n\nJun 26, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n小模型在小資料集更優秀：在 280 張影像上偵測肺結節\n\n\n\n電腦視覺\n\n物件偵測\n\n醫療影像\n\nYOLO\n\n\n\n肺結節偵測是肺癌早篩的關鍵，但小結節只佔影像裡幾個像素，資料集又小又標註寬鬆。這篇記錄我用 YOLOv11 處理「小資料 + 小目標」雙重困境的過程，最後實驗結果是 yolo11n 的效果最好，但仍受限於小結節資料過少的限制。\n\n\n\n\n\nJun 25, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n卡爾曼濾波器在配對交易上的應用\n\n\n\n統計\n\n狀態空間模型\n\n配對交易\n\n\n\n\n\n\n\n\n\nJun 20, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
   }
 ]

@@ -2,26 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ch1nv.github.io/luchinwei/index.html</loc>
-    <lastmod>2026-06-26T13:41:28.537Z</lastmod>
+    <lastmod>2026-06-28T03:46:08.776Z</lastmod>
   </url>
   <url>
-    <loc>https://ch1nv.github.io/luchinwei/posts/market_map/index.html</loc>
-    <lastmod>2026-06-26T13:41:28.543Z</lastmod>
+    <loc>https://ch1nv.github.io/luchinwei/projects/market_map/index.html</loc>
+    <lastmod>2026-06-28T03:46:08.792Z</lastmod>
   </url>
   <url>
-    <loc>https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/index.html</loc>
-    <lastmod>2026-06-26T13:41:28.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ch1nv.github.io/luchinwei/posts/kalman/index.html</loc>
-    <lastmod>2026-06-26T13:41:28.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ch1nv.github.io/luchinwei/posts/amazon_product_reviews_alanysis/index.html</loc>
-    <lastmod>2026-06-26T13:41:28.537Z</lastmod>
+    <loc>https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/index.html</loc>
+    <lastmod>2026-06-28T03:46:08.787Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/about.html</loc>
-    <lastmod>2026-06-26T13:41:28.537Z</lastmod>
+    <lastmod>2026-06-28T03:46:08.776Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/notes/index.html</loc>
+    <lastmod>2026-06-28T03:46:08.776Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/notes/kaggle-cli-setup.html</loc>
+    <lastmod>2026-06-28T03:46:08.777Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/projects/kalman/index.html</loc>
+    <lastmod>2026-06-28T03:46:08.787Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/projects/amazon_product_reviews_alanysis/index.html</loc>
+    <lastmod>2026-06-28T03:46:08.787Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/projects/index.html</loc>
+    <lastmod>2026-06-28T03:46:08.787Z</lastmod>
   </url>
 </urlset>

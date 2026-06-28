@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – CHIN-WEI, LU</title>
+<title>Projects – CHIN-WEI, LU</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,22 +26,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-eb4d22d83e4ba62626cc52b5df34894d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-eb4d22d83e4ba62626cc52b5df34894d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,19 +72,77 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
 
-<link rel="stylesheet" href="styles.css">
-</head>
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
 
-<body class="nav-fixed fullcontent quarto-light">
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="alternate" type="application/rss+xml" title="CHIN-WEI, LU" href="index.xml" data-external="1"></head>
+
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">CHIN-WEI, LU</span>
     </a>
   </div>
@@ -92,19 +153,19 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects/index.html"> 
+    <a class="nav-link active" href="../projects/index.html" aria-current="page"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./notes/index.html"> 
+    <a class="nav-link" href="../notes/index.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -122,43 +183,198 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Projects</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="RmFzdEFQSQ==">FastAPI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TElORSUyMExJRkY=">LINE LIFF <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TExN">LLM <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TkxQ">NLP <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVhY3Q=">React <span class="quarto-category-count">(1)</span></div><div class="category" data-category="WU9MTw==">YOLO <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU3JTg5JUE5JUU0JUJCJUI2JUU1JTgxJUI1JUU2JUI4JUFD">物件偵測 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU3JThCJTgwJUU2JTg1JThCJUU3JUE5JUJBJUU5JTk2JTkzJUU2JUE4JUExJUU1JTlFJThC">狀態空間模型 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU3JUI1JUIxJUU4JUE4JTg4">統計 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU4JUE5JTk1JUU4JUFCJTk2JUU1JTg4JTg2JUU2JTlFJTkw">評論分析 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU5JTg1JThEJUU1JUIwJThEJUU0JUJBJUE0JUU2JTk4JTkz">配對交易 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU5JTg2JUFCJUU3JTk5JTgyJUU1JUJEJUIxJUU1JTgzJThG">醫療影像 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JUU5JTlCJUJCJUU4JTg1JUE2JUU4JUE2JTk2JUU4JUE2JUJB">電腦視覺 <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<div class="quarto-about-jolla">
-  <img src="profile.jpg" class="about-image
-  round " style="height: 15em; width: 15em;">
- <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">About</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header><main class="content" id="quarto-document-content">
-<p>我是盧晉偉，成大應用數學所碩士，政大金融系學士。</p>
-<p>我關注資料分析、電腦視覺、時間序列模型與 AI 應用開發。</p>
-<p>過去的研究與專案包含 Kalman Filter 配對交易、YOLO 影像偵測、Amazon 評論分析，以及全台市集地圖平台。</p>
-<p>這個網站整理我的專案作品與日常技術筆記。</p>
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
-</main> 
-  <hr class="about-sep">
-   <div class="about-links">
-  <a href="https://www.linkedin.com/in/ch1nv" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/Ch1nv" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
+
+
+
+<p>這裡整理完整專案文章，包含資料分析、電腦視覺、時間序列模型與 AI 應用開發。</p>
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="TkxQJTJDTExNJTJDJUU4JUE5JTk1JUU4JUFCJTk2JUU1JTg4JTg2JUU2JTlFJTkw" data-listing-date-sort="1782432000000" data-listing-file-modified-sort="1782618368787" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="471">
+<div class="thumbnail"><a href="../projects/amazon_product_reviews_alanysis/index.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../projects/amazon_product_reviews_alanysis/index.html" class="no-external">差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TkxQ'); return false;">NLP</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TExN'); return false;">LLM</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU4JUE5JTk1JUU4JUFCJTk2JUU1JTg4JTg2JUU2JTlFJTkw'); return false;">評論分析</div>
+
+</div>
+<div class="delink listing-description"><a href="../projects/amazon_product_reviews_alanysis/index.html" class="no-external">
+<p>一個 Amazon review mining 專案的完整過程——為什麼 sentiment、rating、helpful votes 都不是好入口，我如何把任務重新定義成 actionable review mining，最後用 DistilBERT gate + Gemini extraction 把評論轉成產品團隊能直接用的 issue digest。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../projects/amazon_product_reviews_alanysis/index.html" class="no-external">
+<div class="listing-date">
+Jun 26, 2026
+</div>
+<div class="listing-author">
+盧晉偉
+</div>
+</a>
 </div>
 </div>
- <!-- /main -->
+<div class="quarto-post image-right" data-index="1" data-categories="TElORSUyMExJRkYlMkNSZWFjdCUyQ0Zhc3RBUEk=" data-listing-date-sort="1782432000000" data-listing-file-modified-sort="1782618368792" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="540">
+<div class="thumbnail"><a href="../projects/market_map/index.html" class="no-external">
+
+<p class="card-img-top"><img loading='lazy' src="market_map/東方市集詳細頁面.jpg"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../projects/market_map/index.html" class="no-external">市集地圖：解決「主辦方」和「逛市集的人」的問題</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TElORSUyMExJRkY='); return false;">LINE LIFF</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UmVhY3Q='); return false;">React</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RmFzdEFQSQ=='); return false;">FastAPI</div>
+
+</div>
+<div class="delink listing-description"><a href="../projects/market_map/index.html" class="no-external">
+<p>這篇文章把兩個子專案——全台市集地圖與個別市集活動介面（東方市集 / dongfang）——放在同一條產品線上說明：它們各自解決什麼、技術上怎麼分工，以及最關鍵的連接點如何把使用者從『發現某個市集』一路帶到『在現場逛那個市集』。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../projects/market_map/index.html" class="no-external">
+<div class="listing-date">
+Jun 26, 2026
+</div>
+<div class="listing-author">
+盧晉偉
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="JUU5JTlCJUJCJUU4JTg1JUE2JUU4JUE2JTk2JUU4JUE2JUJBJTJDJUU3JTg5JUE5JUU0JUJCJUI2JUU1JTgxJUI1JUU2JUI4JUFDJTJDJUU5JTg2JUFCJUU3JTk5JTgyJUU1JUJEJUIxJUU1JTgzJThGJTJDWU9MTw==" data-listing-date-sort="1782345600000" data-listing-file-modified-sort="1782618368787" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="470">
+<div class="thumbnail"><a href="../projects/lung_nodule_detection/index.html" class="no-external">
+
+<img loading="lazy" src="../projects/lung_nodule_detection/val_batch1_pred.jpg" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../projects/lung_nodule_detection/index.html" class="no-external">小模型在小資料集更優秀：在 280 張影像上偵測肺結節</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU5JTlCJUJCJUU4JTg1JUE2JUU4JUE2JTk2JUU4JUE2JUJB'); return false;">電腦視覺</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU3JTg5JUE5JUU0JUJCJUI2JUU1JTgxJUI1JUU2JUI4JUFD'); return false;">物件偵測</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU5JTg2JUFCJUU3JTk5JTgyJUU1JUJEJUIxJUU1JTgzJThG'); return false;">醫療影像</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('WU9MTw=='); return false;">YOLO</div>
+
+</div>
+<div class="delink listing-description"><a href="../projects/lung_nodule_detection/index.html" class="no-external">
+<p>肺結節偵測是肺癌早篩的關鍵，但小結節只佔影像裡幾個像素，資料集又小又標註寬鬆。這篇記錄我用 YOLOv11 處理「小資料 + 小目標」雙重困境的過程，最後實驗結果是 yolo11n 的效果最好，但仍受限於小結節資料過少的限制。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../projects/lung_nodule_detection/index.html" class="no-external">
+<div class="listing-date">
+Jun 25, 2026
+</div>
+<div class="listing-author">
+盧晉偉
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="JUU3JUI1JUIxJUU4JUE4JTg4JTJDJUU3JThCJTgwJUU2JTg1JThCJUU3JUE5JUJBJUU5JTk2JTkzJUU2JUE4JUExJUU1JTlFJThCJTJDJUU5JTg1JThEJUU1JUIwJThEJUU0JUJBJUE0JUU2JTk4JTkz" data-listing-date-sort="1781913600000" data-listing-file-modified-sort="1782618368787" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="492">
+<div class="thumbnail"><a href="../projects/kalman/index.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../projects/kalman/index.html" class="no-external">卡爾曼濾波器在配對交易上的應用</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU3JUI1JUIxJUU4JUE4JTg4'); return false;">統計</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU3JThCJTgwJUU2JTg1JThCJUU3JUE5JUJBJUU5JTk2JTkzJUU2JUE4JUExJUU1JTlFJThC'); return false;">狀態空間模型</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('JUU5JTg1JThEJUU1JUIwJThEJUU0JUJBJUE0JUU2JTk4JTkz'); return false;">配對交易</div>
+
+</div>
+<div class="delink listing-description"><a href="../projects/kalman/index.html" class="no-external">
+配對交易（pairs trading）是一種<strong>市場中立</strong>策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有<strong>均值回歸（mean reversion）</strong>的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。
+</a></div>
+</div>
+<div class="metadata">
+<a href="../projects/kalman/index.html" class="no-external">
+<div class="listing-date">
+Jun 20, 2026
+</div>
+<div class="listing-author">
+盧晉偉
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     

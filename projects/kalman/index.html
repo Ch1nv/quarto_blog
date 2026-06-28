@@ -7,10 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="盧晉偉">
-<meta name="dcterms.date" content="2026-06-26">
-<meta name="description" content="這篇文章把兩個子專案——全台市集地圖與個別市集活動介面（東方市集 / dongfang）——放在同一條產品線上說明：它們各自解決什麼、技術上怎麼分工，以及最關鍵的連接點如何把使用者從『發現某個市集』一路帶到『在現場逛那個市集』。">
+<meta name="dcterms.date" content="2026-06-20">
 
-<title>市集地圖：解決「主辦方」和「逛市集的人」的問題 – CHIN-WEI, LU</title>
+<title>卡爾曼濾波器在配對交易上的應用 – CHIN-WEI, LU</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,41 +24,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -108,10 +72,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -132,11 +122,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes/index.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/Ch1nv"> <i class="bi bi-github" role="img">
 </i> 
@@ -153,16 +157,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">市集地圖：解決「主辦方」和「逛市集的人」的問題</h1>
-                  <div>
-        <div class="description">
-          這篇文章把兩個子專案——全台市集地圖與個別市集活動介面（東方市集 / dongfang）——放在同一條產品線上說明：它們各自解決什麼、技術上怎麼分工，以及最關鍵的連接點如何把使用者從『發現某個市集』一路帶到『在現場逛那個市集』。
-        </div>
-      </div>
-                          <div class="quarto-categories">
-                <div class="quarto-category">LINE LIFF</div>
-                <div class="quarto-category">React</div>
-                <div class="quarto-category">FastAPI</div>
+      <h1 class="title">卡爾曼濾波器在配對交易上的應用</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">統計</div>
+                <div class="quarto-category">狀態空間模型</div>
+                <div class="quarto-category">配對交易</div>
               </div>
                   </div>
   </div>
@@ -180,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 26, 2026</p>
+        <p class="date">June 20, 2026</p>
       </div>
     </div>
     
@@ -196,19 +195,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#這個專案在解什麼" id="toc-這個專案在解什麼" class="nav-link active" data-scroll-target="#這個專案在解什麼">這個專案在解什麼</a></li>
-  <li><a href="#整體設計兩層架構" id="toc-整體設計兩層架構" class="nav-link" data-scroll-target="#整體設計兩層架構">整體設計：兩層架構</a></li>
-  <li><a href="#連接點從平台詳情走進個別市集的-line" id="toc-連接點從平台詳情走進個別市集的-line" class="nav-link" data-scroll-target="#連接點從平台詳情走進個別市集的-line">連接點：從平台詳情走進個別市集的 LINE</a>
+  <li><a href="#這篇論文在解什麼問題" id="toc-這篇論文在解什麼問題" class="nav-link active" data-scroll-target="#這篇論文在解什麼問題">這篇論文在解什麼問題？</a></li>
+  <li><a href="#方法" id="toc-方法" class="nav-link" data-scroll-target="#方法">方法</a>
   <ul class="collapse">
-  <li><a href="#第一步發現層詳情頁的官方-line-按鈕" id="toc-第一步發現層詳情頁的官方-line-按鈕" class="nav-link" data-scroll-target="#第一步發現層詳情頁的官方-line-按鈕">第一步：發現層詳情頁的官方 LINE 按鈕</a></li>
-  <li><a href="#第二步個別市集官方帳號的-rich-menu" id="toc-第二步個別市集官方帳號的-rich-menu" class="nav-link" data-scroll-target="#第二步個別市集官方帳號的-rich-menu">第二步：個別市集官方帳號的 rich menu</a></li>
-  <li><a href="#第三步liff-app-接手現場體驗" id="toc-第三步liff-app-接手現場體驗" class="nav-link" data-scroll-target="#第三步liff-app-接手現場體驗">第三步：LIFF App 接手現場體驗</a></li>
+  <li><a href="#從傳統-ols-到狀態空間模型" id="toc-從傳統-ols-到狀態空間模型" class="nav-link" data-scroll-target="#從傳統-ols-到狀態空間模型">1. 從傳統 OLS 到狀態空間模型</a></li>
+  <li><a href="#怎麼選出有效配對" id="toc-怎麼選出有效配對" class="nav-link" data-scroll-target="#怎麼選出有效配對">2. 怎麼選出「有效配對」</a></li>
+  <li><a href="#把價差寫成狀態空間模型" id="toc-把價差寫成狀態空間模型" class="nav-link" data-scroll-target="#把價差寫成狀態空間模型">3. 把價差寫成狀態空間模型</a></li>
   </ul></li>
-  <li><a href="#兩個子專案的技術重點" id="toc-兩個子專案的技術重點" class="nav-link" data-scroll-target="#兩個子專案的技術重點">兩個子專案的技術重點</a></li>
-  <li><a href="#為什麼整條路徑都壓在-line-上" id="toc-為什麼整條路徑都壓在-line-上" class="nav-link" data-scroll-target="#為什麼整條路徑都壓在-line-上">為什麼整條路徑都壓在 LINE 上</a></li>
-  <li><a href="#現況東方市集落地驗證" id="toc-現況東方市集落地驗證" class="nav-link" data-scroll-target="#現況東方市集落地驗證">現況：東方市集落地驗證</a></li>
-  <li><a href="#下一步" id="toc-下一步" class="nav-link" data-scroll-target="#下一步">下一步</a></li>
-  <li><a href="#小結" id="toc-小結" class="nav-link" data-scroll-target="#小結">小結</a></li>
+  <li><a href="#數值實驗可口可樂-vs.-百事可樂" id="toc-數值實驗可口可樂-vs.-百事可樂" class="nav-link" data-scroll-target="#數值實驗可口可樂-vs.-百事可樂">數值實驗：可口可樂 vs.&nbsp;百事可樂</a></li>
+  <li><a href="#主要發現" id="toc-主要發現" class="nav-link" data-scroll-target="#主要發現">主要發現</a></li>
+  <li><a href="#技術重點" id="toc-技術重點" class="nav-link" data-scroll-target="#技術重點">技術重點</a></li>
   </ul>
 </nav>
     </div>
@@ -219,240 +215,116 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="這個專案在解什麼" class="level2">
-<h2 class="anchored" data-anchor-id="這個專案在解什麼">這個專案在解什麼</h2>
-<p>每到週末，全台有大量市集同時開張，資訊卻散落在 IG、粉專、活動社團和主辦方公告裡。對想出門逛市集的人來說，痛點其實很具體：不知道這週末附近有哪些市集、不知道有哪些攤、找到的時候活動常常已經結束。</p>
-<p>而站在另一端的主辦方，問題更隱形：他們對自己的活動幾乎沒有任何數據。現場靠紙本集點卡——印多了浪費、印少了不夠、散場後一疊集不滿的卡只能丟，活動結束也說不清今天到底多少人真的參與。</p>
-<p>所以這個專案要解的，是同一條斷裂的路徑上的兩個缺口：</p>
+<section id="這篇論文在解什麼問題" class="level2">
+<h2 class="anchored" data-anchor-id="這篇論文在解什麼問題">這篇論文在解什麼問題？</h2>
+<p>配對交易（pairs trading）是一種<strong>市場中立</strong>策略：挑兩支歷史走勢相近的股票，做多相對弱勢的那支、做空相對強勢的那支，賭兩者的價差（spread）會回到長期均值。只要價差具有<strong>均值回歸（mean reversion）</strong>的性質，價差拉開時進場、收斂時獲利，理論上不受大盤漲跌影響。</p>
+<p>要把這件事做成可運作的策略，有兩個核心問題必須回答：</p>
 <ol type="1">
-<li><strong>發現端</strong>：讓「找市集」這件事，從翻十個社群變成看一張地圖。</li>
-<li><strong>現場端</strong>：讓某一個市集的現場資訊（活動、攤位、集點）變得好找、好用，並讓主辦方第一次握住自己的數據。</li>
+<li><strong>怎麼選出「有效配對」</strong>——決定權重 <span class="math inline">\(w\)</span>，使得這個組合真的市場中立、而且價差真的會均值回歸。</li>
+<li><strong>怎麼描述並估計價差</strong>——把均值回歸寫成可計算的數學模型，並在每個交易日動態預測下一刻的價差。</li>
 </ol>
+<p>Elliott et al.(2005) 的價差模型用<strong>卡爾曼濾波器（Kalman filter）</strong>漂亮地回答了第二個問題，但<strong>完全沒有交代第一個問題</strong>：它假設配對已經給定，卻沒說怎麼挑。這篇論文要做的，就是把這兩塊缺口補起來，並用真實資料檢驗整套方法到底準不準、限制在哪裡。</p>
 </section>
-<section id="整體設計兩層架構" class="level2">
-<h2 class="anchored" data-anchor-id="整體設計兩層架構">整體設計：兩層架構</h2>
-<p>我把整個系統拆成兩層，各自是一個可以獨立跑起來的專案：</p>
+<section id="方法" class="level2">
+<h2 class="anchored" data-anchor-id="方法">方法</h2>
+<section id="從傳統-ols-到狀態空間模型" class="level3">
+<h3 class="anchored" data-anchor-id="從傳統-ols-到狀態空間模型">1. 從傳統 OLS 到狀態空間模型</h3>
+<p>卡爾曼濾波器並不是憑空冒出來的演算法，它的骨架其實是大家熟悉的線性迴歸與遞迴最小平方。</p>
+<p><span class="math display">\[
+\text{最小平方法} \;\rightarrow\; \text{加權最小平方法} \;\rightarrow\; \text{遞迴最小平方法} \;\rightarrow\; \text{卡爾曼濾波器}
+\]</span></p>
+<p>把卡爾曼濾波器理解成「遞迴最小平方在狀態空間上的推廣」之後，它每天兩階段的運作（<strong>measurement update</strong> 用當天市場價修正估計、<strong>time update</strong> 往下一天外推先驗估計）就有了清楚的數學意義。</p>
+</section>
+<section id="怎麼選出有效配對" class="level3">
+<h3 class="anchored" data-anchor-id="怎麼選出有效配對">2. 怎麼選出「有效配對」</h3>
+<p>我們補上 Elliott et al.(2005) 缺的金融理論基礎——<strong>資本資產定價模型（CAPM）</strong>與 <strong>single-index model</strong>——再借用 Vidyamurthy(2004) 的共整合（cointegration）想法，提出兩種找權重 <span class="math inline">\(w\)</span> 的方法：</p>
 <ul>
-<li><p><strong>發現層 — 全台市集地圖</strong> 一張全台市集地圖，負責回答「這週末哪裡有市集」。使用者在這裡瀏覽、搜尋、篩選、看點位，然後<strong>選定一個想去的市集</strong>。技術上是 <code>React + Leaflet</code> 的雙欄地圖介面，後端用 <code>FastAPI</code> 提供輕量查詢層。</p></li>
-<li><p><strong>現場層 — 個別市集活動 App（東方市集為例）</strong> 某一個市集自己的活動頁，負責回答「我已經決定去這個市集了，那它有哪些攤、哪些活動、集點還差幾點」。技術上是跑在 LINE 裡的 <code>LIFF</code> 前端，後端 <code>FastAPI</code> 串 <code>Supabase</code>，並記錄使用者互動事件給主辦方看。</p></li>
+<li><strong>Zero-beta approach</strong>：選權重 <span class="math inline">\(w_{ZB}\)</span> 讓組合的市場 beta 為零。market beta 定義為</li>
 </ul>
-<p>兩層之間的交棒，不是「再開一個網站」，而是落在使用者本來就熟悉的入口——<strong>LINE</strong>。</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">%%{init: {
-  "theme": "base",
-  "flowchart": {
-    "nodeSpacing": 50,
-    "rankSpacing": 80,
-    "diagramPadding": 20
-  },
-  "themeVariables": {
-    "fontFamily": "Noto Sans TC, Microsoft JhengHei, sans-serif",
-    "primaryColor": "#ffffff",
-    "primaryTextColor": "#111827",
-    "primaryBorderColor": "#334155",
-    "lineColor": "#64748b",
-    "secondaryColor": "#f8fafc",
-    "tertiaryColor": "#ffffff"
-  }
-}}%%
-
-flowchart LR
-  user["使用者"]
-
-  subgraph D["發現層：全台市集地圖"]
-    direction TB
-    map["React + Leaflet 地圖&lt;br/&gt;搜尋 / 篩選 / 看點位"]
-    detail["市集詳情面板"]
-  end
-
-  subgraph BRIDGE["連接點"]
-    direction TB
-    oa["個別市集 LINE 官方帳號"]
-    rich["Rich Menu"]
-  end
-
-  subgraph V["現場層：個別市集活動介面"]
-    direction TB
-    liff["LIFF App&lt;br/&gt;活動 / 攤位 / 集點卡"]
-    dash["主辦方數據後台"]
-  end
-
-  user --&gt; map
-  map --&gt; detail
-  detail --&gt;|官方 LINE 按鈕| oa
-  oa --&gt; rich
-  rich --&gt; liff
-  liff --&gt; dash
-
-  classDef normal fill:#ffffff,stroke:#334155,color:#111827,stroke-width:1.5px;
-  classDef bridge fill:#fff7ed,stroke:#ea580c,color:#111827,stroke-width:1.5px;
-  classDef app fill:#ecfdf5,stroke:#059669,color:#111827,stroke-width:1.5px;
-  classDef person fill:#eff6ff,stroke:#2563eb,color:#111827,stroke-width:1.5px;
-
-  class map,detail normal;
-  class oa,rich bridge;
-  class liff,dash app;
-  class user person;
-
-  style D fill:#f8fafc,stroke:#94a3b8,color:#111827
-  style BRIDGE fill:#fffaf0,stroke:#f97316,color:#111827
-  style V fill:#f0fdf4,stroke:#10b981,color:#111827
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+<p><span class="math display">\[
+\beta_R = \rho_{R,R_M}\,\frac{\sigma_R}{\sigma_{R_M}}
+\]</span></p>
+<p>beta 歸零代表組合報酬與大盤報酬不相關，系統性風險不會外溢進來，這正是「市場中立」的數學寫法。</p>
+<ul>
+<li><strong>Mean reversion approach</strong>：假設價差會均值回歸，就用線性迴歸找出最能貼合價差資料的那條水平線，對應的權重即為 <span class="math inline">\(w_{MR}\)</span>。</li>
+</ul>
 </section>
-<section id="連接點從平台詳情走進個別市集的-line" class="level2">
-<h2 class="anchored" data-anchor-id="連接點從平台詳情走進個別市集的-line">連接點：從平台詳情走進個別市集的 LINE</h2>
-<p>整個系統最重要的設計，就是這條交棒路徑：</p>
-<blockquote class="blockquote">
-<p>在全台地圖上選定一個市集 → 從它的詳情頁打開<strong>那個市集自己的 LINE 官方帳號</strong> → 從官方帳號的 rich menu 進入該市集的 LIFF App。</p>
-</blockquote>
-<p>刻意不在發現層裡「內建」每個市集的完整現場功能，而是把使用者交棒到各市集自己的 LINE，是因為這樣每一層的職責都很乾淨：發現層只負責把人帶到對的市集門口，現場層由各市集自己的官方帳號接手。對使用者來說，全程都在 LINE 裡，不需要下載任何 App。</p>
-<section id="第一步發現層詳情頁的官方-line-按鈕" class="level3">
-<h3 class="anchored" data-anchor-id="第一步發現層詳情頁的官方-line-按鈕">第一步：發現層詳情頁的官方 LINE 按鈕</h3>
-<p>在全台地圖的市集詳情面板裡，只要該市集有設定 LINE 連結，就會顯示一顆官方 LINE 按鈕。這顆按鈕就是交棒的起點——使用者點下去，就離開「綜覽地圖」，走進「某一個市集」。</p>
-<p>發現層的後端同時也放了 LINE webhook 的雛形，可以用文字指令完成同一件事：輸入「市集地圖」回覆地圖入口，輸入特定市集名稱（例如「東方市集」）則回覆<strong>那個市集指定的官方 LINE 連結</strong>。換句話說，無論使用者是在網頁上看地圖、還是在 LINE 裡跟平台對話，都能被導向同一個出口。</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 發現層 webhook：把使用者導向「某個市集自己的官方 LINE」</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_text_message(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> text <span class="op">==</span> <span class="st">"市集地圖"</span>:</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> LIFF_MAP_URL  <span class="co"># 回到全台地圖</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> text <span class="kw">in</span> MARKET_LINE_LINKS:</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> MARKET_LINE_LINKS[text]  <span class="co"># 交棒給該市集的官方帳號</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> DEFAULT_REPLY</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p align="center">
-<img src="東方市集詳細頁面.jpg" width="25%" style="vertical-align: top;"> <img src="全台市集數位地圖.jpg" width="68%" style="vertical-align: top;">
-</p>
-<p align="center">
-<em>市集活動詳情頁（左）與全台市集數位地圖（右）</em>
-</p>
-</section>
-<section id="第二步個別市集官方帳號的-rich-menu" class="level3">
-<h3 class="anchored" data-anchor-id="第二步個別市集官方帳號的-rich-menu">第二步：個別市集官方帳號的 rich menu</h3>
-<p>使用者進到某個市集的官方帳號後，現場層接手。這個市集自己的 rich menu 切成兩塊：上半部走 LIFF，打開完整的活動頁；下半部走 bot 回覆，快速給出活動時間與公告。</p>
-<pre class="text"><code>rich menu 上半部 → 開啟 LIFF（?source=rich_menu）
-rich menu 下半部 → postback → webhook 回覆官方市集資訊</code></pre>
-<p>這個切分讓同一張 rich menu 同時支援「進入完整體驗」和「只想快速看一眼答案」兩種人。</p>
-<p align="center">
-<img src="東方市集LINE介面.jpg" width="80%">
-</p>
-<p align="center">
-<em>LINE官方號入口 rich menu （左一） / 攤位列表（左二、左三） / 首頁資訊（右一、右二）</em>
-</p>
-</section>
-<section id="第三步liff-app-接手現場體驗" class="level3">
-<h3 class="anchored" data-anchor-id="第三步liff-app-接手現場體驗">第三步：LIFF App 接手現場體驗</h3>
-<p>LIFF 前端初始化後取得 LINE profile，拿到 <code>userId</code> 就能查這個人在這個市集的集點進度。使用者可以看活動、依日期與分類篩攤位、看攤位詳情，每一步互動都會被記成事件寫回 Supabase——這正是讓主辦方第一次有數據可看的地方。</p>
-<pre class="tsx"><code>await liff.init({ liffId });
-
-if (!liff.isLoggedIn()) {
-  liff.login();
-  return;
-}
-
-const profile = await liff.getProfile();
-// 之後就能用 profile.userId 查這個人在此市集的集點進度</code></pre>
-<p>到這裡，使用者就完成了從「在全台地圖上隨意逛」到「站在某個市集裡、手上拿著手機找攤」的完整移動，而且全程沒有離開 LINE。</p>
-<p align="center">
-<img src="東方市集數位集點卡.jpg" width="80%">
-</p>
-<p align="center">
-<em>數位集點卡</em>
-</p>
+<section id="把價差寫成狀態空間模型" class="level3">
+<h3 class="anchored" data-anchor-id="把價差寫成狀態空間模型">3. 把價差寫成狀態空間模型</h3>
+<p>把連續時間的 Ornstein–Uhlenbeck 過程離散化後，價差被寫成一個<strong>狀態空間模型</strong>：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{狀態轉移：} \quad &amp; Y_i = A + B\,Y_{i-1} + C w_i \\
+\text{量測過程：} \quad &amp; z_i = Y_i + D v_i
+\end{aligned}
+\]</span></p>
+<p>其中 <span class="math inline">\(Y_i\)</span> 是理論價差、<span class="math inline">\(z_i\)</span> 是市場觀測到的價差。我們不只寫下模型，還<strong>替參數 <span class="math inline">\(A,B,C\)</span> 給出具有金融意義的解釋</strong>（<span class="math inline">\(A\)</span> 是這個價差組合的固定報酬、<span class="math inline">\(C\)</span> 是模型誤差的變異、<span class="math inline">\(B\)</span> 在共整合選出的配對下會接近 1）——這正是 Elliott et al.&nbsp;原文沒做、而我們補上的部分。參數 <span class="math inline">\(A,B,C,D\)</span> 透過 expectation-maximization（EM）以最大概似估計求出。</p>
 </section>
 </section>
-<section id="兩個子專案的技術重點" class="level2">
-<h2 class="anchored" data-anchor-id="兩個子專案的技術重點">兩個子專案的技術重點</h2>
-<p>兩層各自的實作細節我寫在獨立的文章裡，這裡只點出重點與分工。</p>
+<section id="數值實驗可口可樂-vs.-百事可樂" class="level2">
+<h2 class="anchored" data-anchor-id="數值實驗可口可樂-vs.-百事可樂">數值實驗：可口可樂 vs.&nbsp;百事可樂</h2>
+<p>選了軟性飲料業的經典配對 <strong>KO（Coca-Cola）與 PEP（PepsiCo）</strong>,取 2012–2019 的每日收盤價,共 2013 個交易日:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 24%">
+<col style="width: 75%">
 </colgroup>
 <thead>
 <tr class="header">
-<th></th>
-<th>發現層：全台市集地圖</th>
-<th>現場層：個別市集 App</th>
+<th>設定</th>
+<th>內容</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>要回答的問題</td>
-<td>這週末哪裡有市集</td>
-<td>這個市集有哪些攤、哪些活動、集點</td>
+<td>資料來源</td>
+<td>Yahoo! Finance 每日收盤價</td>
 </tr>
 <tr class="even">
-<td>前端</td>
-<td>React + react-leaflet（雙欄地圖）</td>
-<td>React + LINE LIFF SDK</td>
+<td>切分</td>
+<td>前 1000 筆為 training set（估參數）、後 1013 筆為 test set（做估計）</td>
 </tr>
 <tr class="odd">
-<td>後端</td>
-<td>FastAPI（讀 JSON 的輕量查詢層）</td>
-<td>FastAPI（串 Supabase + webhook）</td>
+<td>工具</td>
+<td>R 語言 <code>MARSS</code> 套件（EM + Kalman filter）</td>
 </tr>
 <tr class="even">
-<td>資料層</td>
-<td>Excel 轉 mock JSON（第一版）</td>
-<td>Supabase Postgres</td>
+<td>Mean reversion 權重</td>
+<td><span class="math inline">\(w_{MR} = 1.872\)</span></td>
 </tr>
 <tr class="odd">
-<td>LINE 角色</td>
-<td>webhook 導向各市集官方帳號</td>
-<td>rich menu + LIFF + 集點 + 行為分析</td>
-</tr>
-<tr class="even">
-<td>主要產出</td>
-<td>可探索的全台市集地圖</td>
-<td>可營運、可分析的單一市集現場系統</td>
+<td>Zero-beta 權重</td>
+<td><span class="math inline">\(w_{ZB} = 0.9614\)</span></td>
 </tr>
 </tbody>
 </table>
+<p>以 mean reversion approach 估出的價差模型為例：</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_i &amp;= -0.02626 + 0.98790\,Y_{i-1} + 0.01317\,w_i \\
+z_i &amp;= Y_i + 0.00242\,v_i
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(B \approx 0.988\)</span> 接近 1,符合共整合配對的預期。對投資人而言,先驗估計 <span class="math inline">\(\hat{Y}_i^{-}\)</span> 可直接當交易訊號：當市場價差 <span class="math inline">\(z_i\)</span> 明顯偏離 <span class="math inline">\(\hat{Y}_i^{-}\)</span> 時,就是進場做多弱勢、做空強勢的時機。</p>
 </section>
-<section id="為什麼整條路徑都壓在-line-上" class="level2">
-<h2 class="anchored" data-anchor-id="為什麼整條路徑都壓在-line-上">為什麼整條路徑都壓在 LINE 上</h2>
-<p>這套設計刻意不開獨立 App，而是把發現、交棒、現場體驗全部放進 LINE。這不是技術上做不到，而是針對使用情境的取捨：</p>
-<ul>
-<li><strong>現場掃碼的那一秒，才是真正的轉換關卡。</strong> 任何「請先下載 App」的步驟，在市集現場都會變成當下的流失點。LINE 已經在使用者手機裡，少了這層摩擦。</li>
-<li><strong>兩層之間的交棒因此可以無縫。</strong> 因為發現層和現場層共用同一個 LINE 入口，使用者從地圖走進某個市集時，不會經歷「跳出去、再下載、再登入」的斷裂。</li>
-<li><strong>軟體優先是刻意的結構選擇，不是省略。</strong> 不做攤商端硬體裝置，讓每多接一個主辦方就能解鎖背後數十個攤商，整套系統靠軟體就能擴張——這是把「可規模化」放在第一順位的設計判斷。</li>
-</ul>
-</section>
-<section id="現況東方市集落地驗證" class="level2">
-<h2 class="anchored" data-anchor-id="現況東方市集落地驗證">現況：東方市集落地驗證</h2>
-<p>這套兩層架構不是純構想。發現層與現場層的基建，已經透過與「東方市集」的合作做過一次真實驗證，驗證了兩件事：</p>
-<ol type="1">
-<li><strong>LINE 基礎建設在真實市集跑得動。</strong> 為東方市集完成了 LINE 官方帳號、LIFF 頁面，以及市集資訊頁、攤位列表與攤位介紹的上線。一個沒有技術背景的主辦方能順利導入，消費者免下載就能在 LINE 裡瀏覽。</li>
-<li><strong>集點卡數位化的需求是真實而強烈的。</strong> 現場親眼看到紙本集點卡發放沒有控管、印量難拿捏、散場後無從得知參與人數的混亂，並向其他主辦方確認這是市集產業的共通痛點。</li>
-</ol>
-<p>需要精確區分的是：這次合作<strong>驗證了基建、確認了集點卡的需求</strong>，但數位集點卡這個功能本身<strong>還沒有在東方市集實際部署</strong>。把這條界線講清楚，比把它寫成「集點卡已上線」更站得住腳。</p>
-</section>
-<section id="下一步" class="level2">
-<h2 class="anchored" data-anchor-id="下一步">下一步</h2>
-<p>從兩層各自的限制，下一步其實很明確：</p>
-<ol type="1">
-<li><strong>發現層接資料庫與 geocoding</strong>：把第一版的 Excel 轉 JSON 換成 PostgreSQL + PostGIS，並讓地址批次轉座標、標記信心分數。</li>
-<li><strong>現場層補上集點寫入流程</strong>：讓攤主或服務台能掃碼或輸入代碼，更新使用者的集點進度——把「需求被確認」推進到「功能實際上線」。</li>
-<li><strong>把交棒做得更順</strong>：用 Rich Menu 與 LIFF 入口取代文字指令，讓使用者不必記「輸入市集地圖」這種命令。</li>
-<li><strong>數據後台</strong>：整理 rich menu 開啟率、熱門攤位、搜尋關鍵字與日期偏好，讓主辦方真正看得到自己的活動成效。</li>
-<li><strong>權限控管</strong>：為主辦方的管理操作加入角色與登入驗證。</li>
-</ol>
-</section>
-<section id="小結" class="level2">
-<h2 class="anchored" data-anchor-id="小結">小結</h2>
-<p>這個專案有趣的地方，不在單一技術堆疊多複雜，而在於它把一條本來斷裂的日常路徑重新接了起來：</p>
+<section id="主要發現" class="level2">
+<h2 class="anchored" data-anchor-id="主要發現">主要發現</h2>
+<p>整套方法跑得出穩定、快速收斂的估計,但數值實驗也誠實地暴露了一個<strong>結構性限制</strong>：</p>
 <blockquote class="blockquote">
-<p>在全台地圖上發現市集 → 從詳情頁走進那個市集的 LINE 官方帳號 → 在 LIFF 裡逛攤、集點 → 主辦方拿回自己的數據。</p>
+<p>當價差<strong>劇烈變動</strong>時，卡爾曼濾波器的估計會<strong>慢一天</strong>才反應過來。</p>
 </blockquote>
-<p>發現層回答「去哪裡」，現場層回答「到了之後怎麼逛」，而兩者之間的交棒刻意壓在 LINE 上，讓整段體驗不需要使用者下載任何東西。對活動、店家、地方社群這類產品來說，「先把資訊變得可探索、再無縫交棒到熟悉的入口」，往往就是產品真正開始長出來的地方。</p>
+<p>原因很根本——卡爾曼估計值本質上是歷史價差的<strong>線性函數</strong>，而在離散時間架構下，離當下變動最近的資訊就只有前一天的價差。這代表用這個估計去抓大幅跳動來獲利，有先天的天花板。未來可以嘗試高頻交易，將時間間隔縮小，更好的利用卡爾曼濾波器的估計值。</p>
+</section>
+<section id="技術重點" class="level2">
+<h2 class="anchored" data-anchor-id="技術重點">技術重點</h2>
+<ul>
+<li><strong>狀態空間模型 / 卡爾曼濾波器</strong>：從最小平方法一路推導到 Kalman filter 的遞迴結構,並逐步釐清 measurement / time update 兩階段的數學意義。</li>
+<li><strong>量化金融建模</strong>：CAPM、single-index model、market beta、共整合、Ornstein–Uhlenbeck 過程、均值回歸。</li>
+<li><strong>參數估計</strong>：以 EM 演算法求狀態空間模型的最大概似估計。</li>
+<li><strong>真實資料驗證</strong>：R / <code>MARSS</code>,KO–PEP 2012–2019,train/test 切分,並對模型限制做誠實的誤差分析。</li>
+<li><strong>原創貢獻</strong>：替 Elliott 模型狀態轉移參數 <span class="math inline">\(A,B,C\)</span> 補上金融解釋,並指出卡爾曼估計在價差劇變時的延遲限制。</li>
+</ul>
+<p><strong>Keywords</strong>: Kalman Filter · State-Space Model · Least Squares / Recursive Least Squares · Pairs Trading · Cointegration · CAPM · Single-Index Model · Expectation-Maximization</p>
 
 
 </section>

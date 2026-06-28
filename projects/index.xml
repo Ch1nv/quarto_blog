@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>CHIN-WEI, LU</title>
-<link>https://ch1nv.github.io/luchinwei/</link>
-<atom:link href="https://ch1nv.github.io/luchinwei/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://ch1nv.github.io/luchinwei/projects/</link>
+<atom:link href="https://ch1nv.github.io/luchinwei/projects/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.9.38</generator>
 <lastBuildDate>Fri, 26 Jun 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議</title>
   <dc:creator>盧晉偉 </dc:creator>
-  <link>https://ch1nv.github.io/luchinwei/posts/amazon_product_reviews_alanysis/</link>
+  <link>https://ch1nv.github.io/luchinwei/projects/amazon_product_reviews_alanysis/</link>
   <description><![CDATA[ 
 
 
@@ -252,13 +252,13 @@
   <category>NLP</category>
   <category>LLM</category>
   <category>評論分析</category>
-  <guid>https://ch1nv.github.io/luchinwei/posts/amazon_product_reviews_alanysis/</guid>
+  <guid>https://ch1nv.github.io/luchinwei/projects/amazon_product_reviews_alanysis/</guid>
   <pubDate>Fri, 26 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>市集地圖：解決「主辦方」和「逛市集的人」的問題</title>
   <dc:creator>盧晉偉 </dc:creator>
-  <link>https://ch1nv.github.io/luchinwei/posts/market_map/</link>
+  <link>https://ch1nv.github.io/luchinwei/projects/market_map/</link>
   <description><![CDATA[ 
 
 
@@ -410,7 +410,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">return</span> DEFAULT_REPLY</span></code></pre></div></div>
 <p align="center">
-<img src="https://ch1nv.github.io/luchinwei/posts/market_map/東方市集詳細頁面.jpg" width="25%" style="vertical-align: top;"> <img src="https://ch1nv.github.io/luchinwei/posts/market_map/全台市集數位地圖.jpg" width="68%" style="vertical-align: top;">
+<img src="https://ch1nv.github.io/luchinwei/projects/market_map/東方市集詳細頁面.jpg" width="25%" style="vertical-align: top;"> <img src="https://ch1nv.github.io/luchinwei/projects/market_map/全台市集數位地圖.jpg" width="68%" style="vertical-align: top;">
 </p>
 <p align="center">
 <em>市集活動詳情頁（左）與全台市集數位地圖（右）</em>
@@ -423,7 +423,7 @@ font-style: inherit;">return</span> DEFAULT_REPLY</span></code></pre></div></div
 rich menu 下半部 → postback → webhook 回覆官方市集資訊</code></pre>
 <p>這個切分讓同一張 rich menu 同時支援「進入完整體驗」和「只想快速看一眼答案」兩種人。</p>
 <p align="center">
-<img src="https://ch1nv.github.io/luchinwei/posts/market_map/東方市集LINE介面.jpg" width="80%">
+<img src="https://ch1nv.github.io/luchinwei/projects/market_map/東方市集LINE介面.jpg" width="80%">
 </p>
 <p align="center">
 <em>LINE官方號入口 rich menu （左一） / 攤位列表（左二、左三） / 首頁資訊（右一、右二）</em>
@@ -443,7 +443,7 @@ const profile = await liff.getProfile();
 // 之後就能用 profile.userId 查這個人在此市集的集點進度</code></pre>
 <p>到這裡，使用者就完成了從「在全台地圖上隨意逛」到「站在某個市集裡、手上拿著手機找攤」的完整移動，而且全程沒有離開 LINE。</p>
 <p align="center">
-<img src="https://ch1nv.github.io/luchinwei/posts/market_map/東方市集數位集點卡.jpg" width="80%">
+<img src="https://ch1nv.github.io/luchinwei/projects/market_map/東方市集數位集點卡.jpg" width="80%">
 </p>
 <p align="center">
 <em>數位集點卡</em>
@@ -544,13 +544,13 @@ const profile = await liff.getProfile();
   <category>LINE LIFF</category>
   <category>React</category>
   <category>FastAPI</category>
-  <guid>https://ch1nv.github.io/luchinwei/posts/market_map/</guid>
+  <guid>https://ch1nv.github.io/luchinwei/projects/market_map/</guid>
   <pubDate>Fri, 26 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>小模型在小資料集更優秀：在 280 張影像上偵測肺結節</title>
   <dc:creator>盧晉偉 </dc:creator>
-  <link>https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/</link>
+  <link>https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/</link>
   <description><![CDATA[ 
 
 
@@ -717,7 +717,7 @@ const profile = await liff.getProfile();
 <section id="detection-results" class="level3">
 <h3 class="anchored" data-anchor-id="detection-results">Detection Results</h3>
 <p align="center">
-<img src="https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/val_batch1_labels.jpg" width="45%"> <img src="https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/val_batch1_pred.jpg" width="45%">
+<img src="https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/val_batch1_labels.jpg" width="45%"> <img src="https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/val_batch1_pred.jpg" width="45%">
 </p>
 <p align="center">
 <em>Ground Truth（左）vs Prediction（右）</em>
@@ -749,14 +749,14 @@ const profile = await liff.getProfile();
   <category>物件偵測</category>
   <category>醫療影像</category>
   <category>YOLO</category>
-  <guid>https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/</guid>
+  <guid>https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/</guid>
   <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://ch1nv.github.io/luchinwei/posts/lung_nodule_detection/val_batch1_pred.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/val_batch1_pred.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>卡爾曼濾波器在配對交易上的應用</title>
   <dc:creator>盧晉偉 </dc:creator>
-  <link>https://ch1nv.github.io/luchinwei/posts/kalman/</link>
+  <link>https://ch1nv.github.io/luchinwei/projects/kalman/</link>
   <description><![CDATA[ 
 
 
@@ -867,7 +867,7 @@ const profile = await liff.getProfile();
   <category>統計</category>
   <category>狀態空間模型</category>
   <category>配對交易</category>
-  <guid>https://ch1nv.github.io/luchinwei/posts/kalman/</guid>
+  <guid>https://ch1nv.github.io/luchinwei/projects/kalman/</guid>
   <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
