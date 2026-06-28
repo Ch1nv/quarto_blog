@@ -1,0 +1,17 @@
+---
+title: "Notes"
+listing:
+  contents:
+    - "*.qmd"
+    - "!index.qmd"
+  feed: true
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: true
+page-layout: full
+title-block-banner: true
+---
+
+這裡整理日常技術筆記、環境設定紀錄與踩坑筆記。

@@ -1,15 +1,43 @@
 ---
 title: "CHIN-WEI, LU"
-listing:
-  contents: posts
-  feed: true
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: false
-  filter-ui: false
 page-layout: full
 title-block-banner: true
 ---
 
+我是盧晉偉，這裡整理我在資料分析、電腦視覺、時間序列模型與 AI 應用開發上的作品與技術筆記。
 
+## Featured Projects
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+### [Kalman Filter 配對交易](projects/kalman/)
+
+以狀態空間模型與 Kalman Filter 建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [YOLO 肺結節偵測](projects/lung_nodule_detection/)
+
+在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [Amazon 評論分析](projects/amazon_product_reviews_alanysis/)
+
+把 Amazon 評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [全台市集地圖平台](projects/market_map/)
+
+設計全台市集地圖與 LINE LIFF 現場活動介面，串起市集探索、活動資訊與主辦方營運數據。
+:::
+
+:::
+
+## Browse
+
+- [Projects](projects/)：完整專案文章
+- [Notes](notes/)：日常技術筆記與踩坑紀錄
+- [About](about.qmd)：簡短自我介紹與聯絡連結

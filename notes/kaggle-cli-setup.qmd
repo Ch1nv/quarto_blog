@@ -1,0 +1,38 @@
+---
+title: "Kaggle CLI Setup"
+author: "盧晉偉"
+date: "2026-06-28"
+categories: [Kaggle, CLI, Environment]
+format:
+  html:
+    toc: true
+---
+
+## 目的
+
+記錄 Kaggle CLI 的安裝、API token 設定與常用指令，作為之後下載資料集與重現實驗環境時的參考。
+
+## 安裝
+
+```bash
+pip install kaggle
+```
+
+## API Token
+
+1. 到 Kaggle Account 頁面建立 API token。
+2. 下載 `kaggle.json`。
+3. 將 token 放到 Kaggle CLI 預設讀取的位置。
+
+## 常用指令
+
+```bash
+kaggle datasets list
+kaggle datasets download -d owner/dataset-name
+```
+
+## 待補
+
+- Windows / macOS / Linux 的 token 路徑差異
+- 常見錯誤訊息與解法
+- 專案中實際用到的資料集下載流程

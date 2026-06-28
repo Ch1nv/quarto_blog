@@ -6,8 +6,16 @@ website:
   site-url: https://ch1nv.github.io/luchinwei/
   title: "CHIN-WEI, LU"
   navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: projects/index.qmd
+        text: Projects
+      - href: notes/index.qmd
+        text: Notes
+      - href: about.qmd
+        text: About
     right:
-      - about.qmd
       - icon: github
         href: https://github.com/Ch1nv
 format:
