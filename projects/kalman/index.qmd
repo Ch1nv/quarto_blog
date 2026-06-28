@@ -1,6 +1,7 @@
 ---
 title: "卡爾曼濾波器在配對交易上的應用"
 author: "盧晉偉"
+description: "以狀態空間模型與 Kalman Filter 建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。"
 date: "2026-06-20"
 categories: [統計, 狀態空間模型, 配對交易]
 format:

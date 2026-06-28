@@ -6,38 +6,44 @@ title-block-banner: true
 
 我是盧晉偉，這裡整理我在資料分析、電腦視覺、時間序列模型與 AI 應用開發上的作品與技術筆記。
 
-## Featured Projects
+## 精選作品
 
-::: {.grid}
+<div class="featured-grid">
 
-::: {.g-col-12 .g-col-md-6}
-### [Kalman Filter 配對交易](projects/kalman/)
+<div class="featured-card">
+<div class="featured-card-visual visual-amazon"><span>Review Mining</span></div>
+<div class="featured-card-body">
+<p class="featured-card-kicker">NLP / LLM</p>
+<h3><a href="projects/amazon_product_reviews_alanysis/">Amazon 評論分析</a></h3>
+<p>把評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。</p>
+</div>
+</div>
 
-以狀態空間模型與 Kalman Filter 建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。
-:::
+<div class="featured-card">
+<img class="featured-card-image" src="projects/market_map/全台市集數位地圖.jpg" alt="全台市集地圖介面">
+<div class="featured-card-body">
+<p class="featured-card-kicker">React / LINE LIFF / FastAPI</p>
+<h3><a href="projects/market_map/">全台市集地圖平台</a></h3>
+<p>串起市集探索、LINE 現場活動介面與主辦方營運數據，處理發現端與現場端的產品斷點。</p>
+</div>
+</div>
 
-::: {.g-col-12 .g-col-md-6}
-### [YOLO 肺結節偵測](projects/lung_nodule_detection/)
+<div class="featured-card">
+<img class="featured-card-image" src="projects/lung_nodule_detection/val_batch1_pred.jpg" alt="YOLO 肺結節偵測結果">
+<div class="featured-card-body">
+<p class="featured-card-kicker">Computer Vision / YOLO</p>
+<h3><a href="projects/lung_nodule_detection/">YOLO 肺結節偵測</a></h3>
+<p>在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。</p>
+</div>
+</div>
 
-在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。
-:::
+<div class="featured-card">
+<div class="featured-card-visual visual-kalman"><span>Kalman Filter</span></div>
+<div class="featured-card-body">
+<p class="featured-card-kicker">Time Series / Quant</p>
+<h3><a href="projects/kalman/">Kalman Filter 配對交易</a></h3>
+<p>以狀態空間模型建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。</p>
+</div>
+</div>
 
-::: {.g-col-12 .g-col-md-6}
-### [Amazon 評論分析](projects/amazon_product_reviews_alanysis/)
-
-把 Amazon 評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。
-:::
-
-::: {.g-col-12 .g-col-md-6}
-### [全台市集地圖平台](projects/market_map/)
-
-設計全台市集地圖與 LINE LIFF 現場活動介面，串起市集探索、活動資訊與主辦方營運數據。
-:::
-
-:::
-
-## Browse
-
-- [Projects](projects/)：完整專案文章
-- [Notes](notes/)：日常技術筆記與踩坑紀錄
-- [About](about.qmd)：簡短自我介紹與聯絡連結
+</div>

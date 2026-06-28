@@ -1,1 +1,110 @@
 /* css styles */
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.featured-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+  color: inherit;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.featured-card:hover {
+  border-color: #7aa7c7;
+  box-shadow: 0 10px 24px rgba(29, 53, 87, 0.11);
+  transform: translateY(-2px);
+}
+
+.featured-card-image,
+.featured-card-visual {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #edf2f7;
+}
+
+.featured-card-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: #17324d;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.visual-amazon {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.58)),
+    linear-gradient(135deg, #dceefb 0%, #f6d9d7 100%);
+}
+
+.visual-kalman {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.5)),
+    linear-gradient(135deg, #dff3e3 0%, #d9e6f7 100%);
+}
+
+.featured-card-body {
+  padding: 1rem;
+}
+
+.featured-card-kicker {
+  margin-bottom: 0.45rem;
+  color: #506579;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.featured-card h3 {
+  margin: 0 0 0.55rem;
+  font-size: 1.12rem;
+  line-height: 1.35;
+}
+
+.featured-card h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.featured-card h3 a:hover {
+  color: #2a6f97;
+}
+
+.featured-card p:last-child {
+  margin-bottom: 0;
+  color: #384b5d;
+  line-height: 1.65;
+}
+
+.quarto-listing-filter {
+  margin: 0 0 1rem 0;
+  max-width: 26rem;
+}
+
+.quarto-listing .listing-actions-group,
+.quarto-listing .quarto-listing-filter {
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quarto-listing-filter {
+    max-width: 100%;
+  }
+}
