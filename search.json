@@ -11,7 +11,7 @@
     "href": "index.html#精選作品",
     "title": "CHIN-WEI, LU",
     "section": "精選作品",
-    "text": "精選作品\n\n\n\n\n\nNLP / LLM\nAmazon 評論分析\n把評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。\n\n\n\n\n\n\nReact / LINE LIFF / FastAPI\n全台市集地圖平台\n串起市集探索、LINE 現場活動介面與主辦方營運數據，處理發現端與現場端的產品斷點。\n\n\n\n\n\n\nComputer Vision / YOLO\nYOLO 肺結節偵測\n在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。\n\n\n\n\nKalman Filter\n\nTime Series / Quant\nKalman Filter 配對交易\n以狀態空間模型建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。"
+    "text": "精選作品\n\n\n\n\n\nNLP / LLM\nAmazon 評論分析\n把評論從情緒分類重新定義成 actionable review mining，結合 DistilBERT 與 Gemini 產出產品問題摘要。\n\n\n\n\n\n\nReact / LINE LIFF / FastAPI\n全台市集地圖平台\n串起市集探索、LINE 現場活動介面與主辦方營運數據，處理發現端與現場端的產品斷點。\n\n\n\n\n\n\nComputer Vision / YOLO\nYOLO 肺結節偵測\n在小資料集與小目標限制下訓練 YOLOv11，分析模型大小、資料增強與醫療影像偵測指標的取捨。\n\n\n\n\n\n\nTime Series / Quant\nKalman Filter 配對交易\n以狀態空間模型建立配對交易價差估計流程，並討論模型在劇烈變動時的延遲限制。"
   },
   {
     "objectID": "projects/market_map/index.html",

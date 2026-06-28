@@ -872,6 +872,7 @@ const profile = await liff.getProfile();
   <category>配對交易</category>
   <guid>https://ch1nv.github.io/luchinwei/projects/kalman/</guid>
   <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://ch1nv.github.io/luchinwei/projects/kalman/pepsi coca cola.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
