@@ -2,38 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ch1nv.github.io/luchinwei/index.html</loc>
-    <lastmod>2026-06-28T13:52:47.991Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/projects/market_map/index.html</loc>
-    <lastmod>2026-06-28T13:52:48.008Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.901Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/projects/lung_nodule_detection/index.html</loc>
-    <lastmod>2026-06-28T13:52:48.002Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.896Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/about.html</loc>
-    <lastmod>2026-06-28T13:52:47.991Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
   </url>
   <url>
-    <loc>https://ch1nv.github.io/luchinwei/notes/kaggle/kaggle-cli-notebook-workflow.html</loc>
-    <lastmod>2026-06-28T13:52:47.991Z</lastmod>
+    <loc>https://ch1nv.github.io/luchinwei/notes/life/index.html</loc>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/notes/tech/index.html</loc>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/notes/reading/index.html</loc>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/notes/tech/kaggle/kaggle-cli-notebook-workflow.html</loc>
+    <lastmod>2026-06-28T15:37:54.885Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ch1nv.github.io/luchinwei/notes/games/index.html</loc>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/notes/index.html</loc>
-    <lastmod>2026-06-28T13:52:47.991Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.884Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/projects/kalman/index.html</loc>
-    <lastmod>2026-06-28T13:52:48.002Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.895Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/projects/amazon_product_reviews_analysis/index.html</loc>
-    <lastmod>2026-06-28T13:52:48.002Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.895Z</lastmod>
   </url>
   <url>
     <loc>https://ch1nv.github.io/luchinwei/projects/index.html</loc>
-    <lastmod>2026-06-28T13:52:48.002Z</lastmod>
+    <lastmod>2026-06-28T15:37:54.895Z</lastmod>
   </url>
 </urlset>

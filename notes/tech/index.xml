@@ -6,14 +6,14 @@
       version="2.0">
 <channel>
 <title>CHIN-WEI, LU</title>
-<link>https://ch1nv.github.io/luchinwei/notes/</link>
-<atom:link href="https://ch1nv.github.io/luchinwei/notes/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://ch1nv.github.io/luchinwei/notes/tech/</link>
+<atom:link href="https://ch1nv.github.io/luchinwei/notes/tech/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.9.38</generator>
 <lastBuildDate>Sun, 28 Jun 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果</title>
-  <link>https://ch1nv.github.io/luchinwei/notes/kaggle/kaggle-cli-notebook-workflow.html</link>
+  <link>https://ch1nv.github.io/luchinwei/notes/tech/kaggle/kaggle-cli-notebook-workflow.html</link>
   <description><![CDATA[ 
 
 
@@ -581,11 +581,12 @@ font-style: inherit;">-</span>c playground-series-s6e6</span></code></pre></div>
 </section>
 
  ]]></description>
+  <category>tech</category>
   <category>kaggle</category>
   <category>cli</category>
   <category>notebook</category>
   <category>machine-learning</category>
-  <guid>https://ch1nv.github.io/luchinwei/notes/kaggle/kaggle-cli-notebook-workflow.html</guid>
+  <guid>https://ch1nv.github.io/luchinwei/notes/tech/kaggle/kaggle-cli-notebook-workflow.html</guid>
   <pubDate>Sun, 28 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>

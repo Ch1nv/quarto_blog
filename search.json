@@ -126,88 +126,116 @@
     "text": "我是盧晉偉，成大應用數學所碩士，政大金融系學士。\n我關注資料分析、電腦視覺、時間序列模型與 AI 應用開發。\n過去的研究與專案包含 Kalman Filter 配對交易、YOLO 影像偵測、Amazon 評論分析，以及全台市集地圖平台。\n這個網站整理我的專案作品與日常技術筆記。\n若想聯絡我，可以寫信到 lcw.shinni [at] gmail [dot] com。"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html",
+    "objectID": "notes/life/index.html",
+    "href": "notes/life/index.html",
+    "title": "Life",
+    "section": "",
+    "text": "日常紀錄、生活觀察、料理，以及一些不急著歸類的想法。"
+  },
+  {
+    "objectID": "notes/tech/index.html",
+    "href": "notes/tech/index.html",
+    "title": "Tech",
+    "section": "",
+    "text": "技術筆記、資料分析、工具流程紀錄。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nKaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果\n\n\n\ntech\n\nkaggle\n\ncli\n\nnotebook\n\nmachine-learning\n\n\n\n\n\n\n\n\n\nJun 28, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/reading/index.html",
+    "href": "notes/reading/index.html",
+    "title": "Reading",
+    "section": "",
+    "text": "書、文章、影像作品或文本閱讀後留下的摘要、摘記與延伸想法。"
+  },
+  {
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "",
     "text": "這篇整理 Kaggle 原生 CLI 的常用指令。目標是讓 Kaggle Notebook 的使用方式接近 Git workflow：\n本機 repo / notebook\n  -&gt; 修改 .ipynb\n  -&gt; kaggle kernels push\n  -&gt; Kaggle 雲端執行 GPU / CPU notebook\n  -&gt; kaggle kernels status 查狀態\n  -&gt; kaggle kernels output 抓回 submission.csv / log\n  -&gt; kaggle competitions submit 提交結果"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#目標工作流",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#目標工作流",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#目標工作流",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#目標工作流",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "",
     "text": "這篇整理 Kaggle 原生 CLI 的常用指令。目標是讓 Kaggle Notebook 的使用方式接近 Git workflow：\n本機 repo / notebook\n  -&gt; 修改 .ipynb\n  -&gt; kaggle kernels push\n  -&gt; Kaggle 雲端執行 GPU / CPU notebook\n  -&gt; kaggle kernels status 查狀態\n  -&gt; kaggle kernels output 抓回 submission.csv / log\n  -&gt; kaggle competitions submit 提交結果"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#先備條件",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#先備條件",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#先備條件",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#先備條件",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "先備條件",
     "text": "先備條件\n安裝 Kaggle CLI：\npip install kaggle\n設定 API token。傳統 kaggle.json 通常放在：\nC:\\Users\\&lt;你的 Windows 使用者&gt;\\.kaggle\\kaggle.json\n內容格式：\n{\n  \"username\": \"你的_kaggle_username\",\n  \"key\": \"你的_api_key\"\n}\n新版 Kaggle CLI 也可能要求用環境變數：\n$env:KAGGLE_API_TOKEN = \"你的_api_key\"\n確認 CLI 可用：\nkaggle --version"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#git-類比",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#git-類比",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#git-類比",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#git-類比",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "Git 類比",
     "text": "Git 類比\n\n\n\n\n\n\n\n\nGit 習慣\nKaggle CLI\n用途\n\n\n\n\ngit push\nkaggle kernels push -p .\n把本地 notebook 推到 Kaggle，並觸發雲端執行\n\n\ngit status\nkaggle kernels status owner/kernel-slug\n查看 notebook 執行狀態\n\n\ngit pull\nkaggle kernels pull owner/kernel-slug -p .\n把 Kaggle 網頁上的 notebook 拉回本地\n\n\n下載 artifacts\nkaggle kernels output owner/kernel-slug -p outputs --force\n抓回 submission.csv、log、模型檔等輸出\n\n\n發佈結果\nkaggle competitions submit ...\n提交比賽 submission"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#kernel-metadata",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#kernel-metadata",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#kernel-metadata",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#kernel-metadata",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "Kernel metadata",
     "text": "Kernel metadata\n要用 kaggle kernels push，資料夾中需要有 kernel-metadata.json。\n範例：\n{\n  \"id\": \"your-kaggle-username/s6e6-starter\",\n  \"title\": \"S6E6 Starter\",\n  \"code_file\": \"s6e6_starter.ipynb\",\n  \"language\": \"python\",\n  \"kernel_type\": \"notebook\",\n  \"is_private\": true,\n  \"enable_gpu\": true,\n  \"enable_internet\": false,\n  \"competition_sources\": [\"playground-series-s6e6\"],\n  \"dataset_sources\": [],\n  \"kernel_sources\": [],\n  \"model_sources\": []\n}\n重要欄位：\n\nid: owner/kernel-slug，owner 是 Kaggle username，slug 是 notebook slug。\ncode_file: 要推上去執行的 notebook 或 script。\nenable_gpu: 是否啟用 GPU。\nenable_internet: 是否允許 Kaggle notebook 連外網。\ncompetition_sources: 掛載比賽資料，例如 playground-series-s6e6。"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#最常用工作流",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#最常用工作流",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#最常用工作流",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#最常用工作流",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "最常用工作流",
     "text": "最常用工作流\n\n1. 本地修改 notebook\n例如修改：\ns6e6_starter.ipynb\n\n\n2. 推到 Kaggle 雲端執行\n在有 kernel-metadata.json 的資料夾執行：\nkaggle kernels push -p .\n成功時會看到類似：\nKernel version 2 successfully pushed. Please check progress at https://www.kaggle.com/code/&lt;owner&gt;/&lt;kernel-slug&gt;\n\n\n3. 查執行狀態\nkaggle kernels status your-kaggle-username/s6e6-starter\n常見狀態：\n\nKernelWorkerStatus.RUNNING: 正在跑。\nKernelWorkerStatus.COMPLETE: 跑完，可以抓 output。\nKernelWorkerStatus.ERROR: 執行失敗，要看 log。\nKernelWorkerStatus.CANCELLED: 被取消。\n\n\n\n4. 抓回 output\nkaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force\n下載後通常會看到：\noutputs/\n  submission.csv\n  &lt;kernel-slug&gt;.log\n\n\n5. 提交 submission\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"starter submission\"\n\n\n6. 查看提交紀錄\nkaggle competitions submissions -c playground-series-s6e6"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#常用-kaggle-cli-指令",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#常用-kaggle-cli-指令",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#常用-kaggle-cli-指令",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#常用-kaggle-cli-指令",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "常用 Kaggle CLI 指令",
     "text": "常用 Kaggle CLI 指令\n\nNotebook / Kernel\n列出自己的 kernels：\nkaggle kernels list --mine\n推送目前資料夾到 Kaggle：\nkaggle kernels push -p .\n查 kernel 狀態：\nkaggle kernels status owner/kernel-slug\n抓回 kernel output：\nkaggle kernels output owner/kernel-slug -p outputs --force\n把 Kaggle 上的 kernel 拉回本地：\nkaggle kernels pull owner/kernel-slug -p .\n只有當你在 Kaggle 網頁上直接改 notebook，才比較需要 pull。如果你的主工作區在本機，通常只需要 push、status、output。\n\n\nCompetitions\n列出比賽：\nkaggle competitions list\n下載比賽資料：\nkaggle competitions download -c playground-series-s6e6 -p data\n提交結果：\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"message\"\n查看提交紀錄：\nkaggle competitions submissions -c playground-series-s6e6\n查看 leaderboard：\nkaggle competitions leaderboard -c playground-series-s6e6 --show\n\n\nDatasets\n下載 dataset：\nkaggle datasets download -d owner/dataset-slug -p data\n列出 datasets：\nkaggle datasets list -s keyword"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#notebook-裡讀比賽資料",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#notebook-裡讀比賽資料",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#notebook-裡讀比賽資料",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#notebook-裡讀比賽資料",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "Notebook 裡讀比賽資料",
     "text": "Notebook 裡讀比賽資料\n如果在 Kaggle Notebook 雲端執行，competition source 會掛載在：\n/kaggle/input/&lt;competition-slug&gt;\n例如：\nfrom pathlib import Path\nimport pandas as pd\n\nDATA_DIR = Path(\"/kaggle/input/playground-series-s6e6\")\ntrain = pd.read_csv(DATA_DIR / \"train.csv\")\ntest = pd.read_csv(DATA_DIR / \"test.csv\")\nsample_submission = pd.read_csv(DATA_DIR / \"sample_submission.csv\")\n如果想讓 notebook 同時支援本機和 Kaggle，可以寫 fallback：\nfrom pathlib import Path\nimport kagglehub\n\nCOMPETITION = \"playground-series-s6e6\"\n\nkaggle_input = Path(f\"/kaggle/input/{COMPETITION}\")\nif kaggle_input.exists():\n    data_dir = kaggle_input\nelse:\n    data_dir = Path(kagglehub.competition_download(COMPETITION))"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#建議資料夾結構",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#建議資料夾結構",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#建議資料夾結構",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#建議資料夾結構",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "建議資料夾結構",
     "text": "建議資料夾結構\nmy-kaggle-project/\n  kernel-metadata.json\n  s6e6_starter.ipynb\n  outputs/\n    submission.csv\n    s6e6-starter.log\n  data/\n  README.md\n通常不要 commit：\n.kaggle/\noutputs/\ndata/\n*.zip"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#一組完整日常指令",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#一組完整日常指令",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#一組完整日常指令",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#一組完整日常指令",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "一組完整日常指令",
     "text": "一組完整日常指令\n# 本地改完 notebook 後，推到 Kaggle 跑\nkaggle kernels push -p .\n\n# 等它跑完\nkaggle kernels status your-kaggle-username/s6e6-starter\n\n# 抓回 submission 和 log\nkaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force\n\n# 提交到比賽\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"first baseline\"\n\n# 看提交紀錄\nkaggle competitions submissions -c playground-series-s6e6"
   },
   {
-    "objectID": "notes/kaggle/kaggle-cli-notebook-workflow.html#小提醒",
-    "href": "notes/kaggle/kaggle-cli-notebook-workflow.html#小提醒",
+    "objectID": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#小提醒",
+    "href": "notes/tech/kaggle/kaggle-cli-notebook-workflow.html#小提醒",
     "title": "Kaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果",
     "section": "小提醒",
     "text": "小提醒\n\nkaggle kernels push -p . 會根據目前資料夾的 kernel-metadata.json 推送。\nstatus 和 output 要用 owner/kernel-slug，也就是 Kaggle notebook URL 裡的 owner 和 slug。\n如果 notebook 是 private，通常自己的 token 可以存取，但別人的 token 不行。\n如果 output 抓不到，先確認 status 是 COMPLETE。\n如果 notebook 在 Kaggle 上失敗，先抓 output 或到網頁看 log。\n本地是主版本時，盡量不要在 Kaggle 網頁上直接改 notebook；如果改了，要記得 kaggle kernels pull 拉回來，避免版本分叉。"
+  },
+  {
+    "objectID": "notes/games/index.html",
+    "href": "notes/games/index.html",
+    "title": "Games",
+    "section": "",
+    "text": "遊戲劇情、角色、系統設計與遊玩感受，偏心得也偏拆解。"
   },
   {
     "objectID": "notes/index.html",
     "href": "notes/index.html",
     "title": "Notes",
     "section": "",
-    "text": "這裡整理日常技術筆記、環境設定紀錄與踩坑筆記。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nKaggle CLI 控制 Notebook：本地寫、雲端跑、拉回結果\n\n\n\nkaggle\n\ncli\n\nnotebook\n\nmachine-learning\n\n\n\n\n\n\n\n\n\nJun 28, 2026\n\n\n\n\n\nNo matching items"
+    "text": "這裡收一些比較不像完整專案、但值得留下來的文章。\n\n\n\nTech\n技術筆記、資料分析、工具流程、環境設定與踩坑紀錄。\n\n\n\nLife\n日常紀錄、生活觀察、做了什麼料理，以及一些不急著歸類的想法。\n\n\n\nReading\n書、文章、影像作品或文本閱讀後留下的摘要、摘記與延伸想法。\n\n\n\nGames\n遊戲劇情、角色、系統設計與遊玩感受，偏心得也偏拆解。"
   },
   {
     "objectID": "projects/kalman/index.html",
