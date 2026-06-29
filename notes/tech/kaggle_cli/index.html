@@ -210,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#在-notebook-裡怎麼讀比賽資料" id="toc-在-notebook-裡怎麼讀比賽資料" class="nav-link" data-scroll-target="#在-notebook-裡怎麼讀比賽資料">在 notebook 裡怎麼讀比賽資料</a></li>
   <li><a href="#建議的專案結構" id="toc-建議的專案結構" class="nav-link" data-scroll-target="#建議的專案結構">建議的專案結構</a></li>
   <li><a href="#一組可以複製貼上的日常指令" id="toc-一組可以複製貼上的日常指令" class="nav-link" data-scroll-target="#一組可以複製貼上的日常指令">一組可以複製貼上的日常指令</a></li>
-  <li><a href="#幾個會省你時間的提醒" id="toc-幾個會省你時間的提醒" class="nav-link" data-scroll-target="#幾個會省你時間的提醒">幾個會省你時間的提醒</a></li>
+  <li><a href="#小提醒" id="toc-小提醒" class="nav-link" data-scroll-target="#小提醒">小提醒</a></li>
   </ul>
 </nav>
     </div>
@@ -478,7 +478,7 @@ data/         # 可以重新下載
 </section>
 <section id="一組可以複製貼上的日常指令" class="level2">
 <h2 class="anchored" data-anchor-id="一組可以複製貼上的日常指令">一組可以複製貼上的日常指令</h2>
-<p>把主流程濃縮成一段,改完 notebook 後從上到下跑一遍就是一輪:</p>
+<p>把主流程濃縮成一段，改完 notebook 後從上到下跑一遍就是一輪:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 本機改完 notebook 後，推到 Kaggle 跑</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>kaggle kernels push <span class="op">-</span>p <span class="op">.</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -494,12 +494,12 @@ data/         # 可以重新下載
 <span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 看提交紀錄</span></span>
 <span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>kaggle competitions submissions <span class="op">-</span>c playground-series-s6e6</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="幾個會省你時間的提醒" class="level2">
-<h2 class="anchored" data-anchor-id="幾個會省你時間的提醒">幾個會省你時間的提醒</h2>
+<section id="小提醒" class="level2">
+<h2 class="anchored" data-anchor-id="小提醒">小提醒</h2>
 <p>最後是一些實際操作後才會體會到的小細節，先知道能少踩幾個坑：</p>
 <ul>
 <li><code>kaggle kernels push -p .</code> 永遠是讀「目前資料夾」的 <code>kernel-metadata.json</code> 來決定要推什麼、怎麼推。推之前先確認自己站在對的資料夾。</li>
-<li><code>status</code> 和 <code>output</code> 都要帶 <code>owner/kernel-slug</code>,也就是 notebook 網址裡的那兩段。記不住的話，打開 Kaggle 網頁看一眼網址最快。</li>
+<li><code>status</code> 和 <code>output</code> 都要帶 <code>owner/kernel-slug</code>，也就是 notebook 網址裡的那兩段。記不住的話，打開 Kaggle 網頁看一眼網址最快。</li>
 <li>如果你的 notebook 設成 private（<code>is_private: true</code>），用你自己的 token 可以正常存取，但別人拿他的 token 是看不到的。</li>
 <li><code>output</code> 抓不到東西時，先回去看 <code>status</code> 是不是真的 <code>COMPLETE</code>——還在 <code>RUNNING</code> 的時候當然沒結果可抓。</li>
 <li>notebook 在雲端跑失敗時，先把 output 抓回來看 <code>.log</code>，或直接到網頁看執行紀錄，錯誤訊息幾乎都在那裡。</li>

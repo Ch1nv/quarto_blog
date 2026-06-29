@@ -137,7 +137,42 @@
     "href": "notes/tech/index.html",
     "title": "Tech",
     "section": "",
-    "text": "技術筆記、資料分析、工具流程紀錄。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果\n\n\n\ntech\n\nkaggle\n\ncli\n\nnotebook\n\nmachine-learning\n\n\n\n\n\n\n\n\n\nJun 28, 2026\n\n\n\n\n\nNo matching items"
+    "text": "技術筆記、資料分析、工具流程紀錄。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n從一張天文觀測表，分辨星系、類星體與恆星\n\n\nKaggle Playground Series S6E6 — Predicting Stellar Class 的主題、資料集與 EDA\n\n\n\nKaggle\n\nEDA\n\n天文\n\n機器學習\n\n\n\n用 SDSS 風格的測光與光譜特徵做三分類。這篇紀錄我對這份資料的觀察，以及第一版 baseline 之前的統計描述。\n\n\n\n\n\nJun 29, 2026\n\n\n盧晉偉\n\n\n\n\n\n\n\n\n\n\n\n\n把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果\n\n\n\n\n\n\ntech\n\nkaggle\n\ncli\n\nnotebook\n\nmachine-learning\n\n\n\n\n\n\n\n\n\nJun 28, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/tech/kaggle_s6e6_intro/index.html",
+    "href": "notes/tech/kaggle_s6e6_intro/index.html",
+    "title": "從一張天文觀測表，分辨星系、類星體與恆星",
+    "section": "",
+    "text": "望遠鏡掃過天空時，畫面上每一個亮點看起來都差不多：一個點、一團光。但這些點背後可能是三種完全不同尺度的東西。\n\nSTAR（恆星）：我們銀河系裡的一顆星，距離近、紅移幾乎是零。\nGALAXY（星系）：一整個遙遠的星系，距離遠、紅移中等。\nQSO（類星體 / quasar）：遙遠星系中心極度明亮的活躍核，外觀像一個點，所以名字才叫「quasi-stellar」——看起來像恆星，實際上在非常遠的地方，紅移通常很高。\n\n麻煩的地方就在這裡：QSO 在影像上長得像恆星，物理上卻像遙遠星系。 光看一個亮點分不出來，得靠數字——它在天空中的位置、在不同濾鏡下的亮度、還有紅移——才能判斷它到底是哪一類。這正是 SDSS 這類巡天計畫每天在大規模做的事，也是建立天文星表的基礎工作。\n這個 Kaggle 競賽（Playground Series S6E6）把這件事包成一個乾淨的監督式三分類問題：給你一張表，每一列是一個天體與它的觀測特徵，要你預測它是 GALAXY、QSO 還是 STAR。資料是從真實的恆星分類資料集合成出來的，所以欄位有真實的天文意義，但測試答案不會外流。\n\n\n提交格式是 id,class 的硬標籤（不是機率）：\nid,class\n123456,GALAXY\n123457,STAR\n123458,QSO\n評分指標是 balanced accuracy，也就是「各類別 recall 的平均」：\n\\[\n\\text{Balanced Accuracy} = \\frac{1}{K}\\sum_{k=1}^{K} \\text{recall}_k\n\\]\n\n\n\n\n\n\nImportantBalanced Accuracy\n\n\n\n一般 accuracy 會被最大的類別主導——只要把所有東西都猜成 GALAXY，光靠它佔了三分之二就能拿到不低的分數。balanced accuracy 不吃這套：它把每一類的 recall 等權平均，最小的 STAR（只佔 14%）和最大的 GALAXY 一樣重要。\n換句話說，這個競賽從評分一開始就在逼你正視類別不平衡。後面 EDA 看到的分布，不只是「順便看一眼」，而是直接決定你怎麼設計模型。\n\n\n（指標以競賽頁面的 Evaluation 分頁為準，建議下手前再確認一次。）"
+  },
+  {
+    "objectID": "notes/tech/kaggle_s6e6_intro/index.html#這篇在解什麼問題",
+    "href": "notes/tech/kaggle_s6e6_intro/index.html#這篇在解什麼問題",
+    "title": "從一張天文觀測表，分辨星系、類星體與恆星",
+    "section": "",
+    "text": "望遠鏡掃過天空時，畫面上每一個亮點看起來都差不多：一個點、一團光。但這些點背後可能是三種完全不同尺度的東西。\n\nSTAR（恆星）：我們銀河系裡的一顆星，距離近、紅移幾乎是零。\nGALAXY（星系）：一整個遙遠的星系，距離遠、紅移中等。\nQSO（類星體 / quasar）：遙遠星系中心極度明亮的活躍核，外觀像一個點，所以名字才叫「quasi-stellar」——看起來像恆星，實際上在非常遠的地方，紅移通常很高。\n\n麻煩的地方就在這裡：QSO 在影像上長得像恆星，物理上卻像遙遠星系。 光看一個亮點分不出來，得靠數字——它在天空中的位置、在不同濾鏡下的亮度、還有紅移——才能判斷它到底是哪一類。這正是 SDSS 這類巡天計畫每天在大規模做的事，也是建立天文星表的基礎工作。\n這個 Kaggle 競賽（Playground Series S6E6）把這件事包成一個乾淨的監督式三分類問題：給你一張表，每一列是一個天體與它的觀測特徵，要你預測它是 GALAXY、QSO 還是 STAR。資料是從真實的恆星分類資料集合成出來的，所以欄位有真實的天文意義，但測試答案不會外流。\n\n\n提交格式是 id,class 的硬標籤（不是機率）：\nid,class\n123456,GALAXY\n123457,STAR\n123458,QSO\n評分指標是 balanced accuracy，也就是「各類別 recall 的平均」：\n\\[\n\\text{Balanced Accuracy} = \\frac{1}{K}\\sum_{k=1}^{K} \\text{recall}_k\n\\]\n\n\n\n\n\n\nImportantBalanced Accuracy\n\n\n\n一般 accuracy 會被最大的類別主導——只要把所有東西都猜成 GALAXY，光靠它佔了三分之二就能拿到不低的分數。balanced accuracy 不吃這套：它把每一類的 recall 等權平均，最小的 STAR（只佔 14%）和最大的 GALAXY 一樣重要。\n換句話說，這個競賽從評分一開始就在逼你正視類別不平衡。後面 EDA 看到的分布，不只是「順便看一眼」，而是直接決定你怎麼設計模型。\n\n\n（指標以競賽頁面的 Evaluation 分頁為準，建議下手前再確認一次。）"
+  },
+  {
+    "objectID": "notes/tech/kaggle_s6e6_intro/index.html#資料長什麼樣子",
+    "href": "notes/tech/kaggle_s6e6_intro/index.html#資料長什麼樣子",
+    "title": "從一張天文觀測表，分辨星系、類星體與恆星",
+    "section": "資料長什麼樣子",
+    "text": "資料長什麼樣子\n三個檔案的規模：\n\n\n\n資料集\n列數\n欄數\n\n\n\n\ntrain\n577,347\n12\n\n\ntest\n247,435\n11\n\n\nsample_submission\n247,435\n2\n\n\n\ntrain 比 test 多的那一欄就是答案 class。id 只是識別碼，不該當成建模特徵。\n剩下十個欄位，八個數值、兩個類別，各自帶著天文意義：\n\n\n\n\n\n\n\n\n欄位\n型別\n直覺\n\n\n\n\nalpha, delta\n數值\n天球座標（赤經、赤緯），天體在天空中的位置\n\n\nu, g, r, i, z\n數值\n五個濾鏡波段下的星等（亮度），SDSS 標準測光系統\n\n\nredshift\n數值\n紅移，和天體的距離、退行速度與物理類型高度相關\n\n\nspectral_type\n類別\n光譜類型\n\n\ngalaxy_population\n類別\n星系族群，例如 Red_Sequence 或 Blue_Cloud\n\n\nclass\n目標\nGALAXY / QSO / STAR"
+  },
+  {
+    "objectID": "notes/tech/kaggle_s6e6_intro/index.html#eda我從這份資料看到什麼",
+    "href": "notes/tech/kaggle_s6e6_intro/index.html#eda我從這份資料看到什麼",
+    "title": "從一張天文觀測表，分辨星系、類星體與恆星",
+    "section": "EDA：我從這份資料看到什麼",
+    "text": "EDA：我從這份資料看到什麼\n\n類別不平衡分布\n\n\n\n類別\n筆數\n佔比\n\n\n\n\nGALAXY\n377,480\n65.38%\n\n\nQSO\n117,143\n20.29%\n\n\nSTAR\n82,724\n14.33%\n\n\n\nGALAXY 一個類別就佔了約三分之二，STAR 最少、只有約 14%。接上前面的指標：因為評分是 balanced accuracy，模型在 STAR 上犯的錯，跟在 GALAXY 上犯的錯一樣會被放大。所以我評估模型時不會只看整體 accuracy，而會盯著 confusion matrix 和每一類的 precision / recall，確認它沒有偷懶把東西都丟給 GALAXY。\n\n\n缺失值：乾淨\n目前 starter 統計顯示所有建模欄位的缺失值都是 0。\n這代表第一版 baseline 不必特別補值。不過 pipeline 裡我仍保留 SimpleImputer——之後一旦做了特徵工程、產生新的缺失值，整條流程才不會直接掛掉。這是一種「現在用不到、但留著很便宜」的保險。\n\n\n數值特徵：座標、亮度與一個顏色的想法\n天球座標的範圍大致鋪滿整個天區。alpha（赤經）幾乎覆蓋完整一圈，delta（赤緯）落在約 −18° 到 79° 之間：\n\n\n\n統計量\nalpha\ndelta\n\n\n\n\nmin\n0.0117\n−17.9670\n\n\nmedian\n188.6815\n21.4844\n\n\nmax\n359.9998\n79.1583\n\n\n\n五個亮度波段的平均星等，從 u 到 z 是單調遞減的：\n\n\n\n波段\n平均星等\n\n\n\n\nu\n22.4419\n\n\ng\n21.0073\n\n\nr\n19.9628\n\n\ni\n19.3789\n\n\nz\n19.0411\n\n\n\n單一波段的亮度其實受距離、儀器等因素影響很大，真正有區辨力的常常是波段之間的差——也就是天體的「顏色」。所以一個很自然的下一步，是把相鄰波段相減做出顏色特徵：\ntrain[\"u_g\"] = train[\"u\"] - train[\"g\"]\ntrain[\"g_r\"] = train[\"g\"] - train[\"r\"]\ntrain[\"r_i\"] = train[\"r\"] - train[\"i\"]\ntrain[\"i_z\"] = train[\"i\"] - train[\"z\"]\n這類顏色差通常比單一星等更能捕捉天體的光譜形狀，在這種分類問題裡往往是很有力的特徵。\n\n\nredshift：右偏，而且可能是 QSO 的關鍵\n\n\n\n統計量\n值\n\n\n\n\nmean\n0.7231\n\n\nstd\n0.8101\n\n\nmin\n−0.0100\n\n\n25%\n0.1811\n\n\n50%\n0.4975\n\n\n75%\n0.8814\n\n\nmax\n7.0108\n\n\n\n平均值（0.72）明顯大於中位數（0.50），最大值（7.01）也遠超過 75% 分位數——這是一個右偏分布，有一條長長的高紅移尾巴。\n把它接回物理：恆星紅移幾乎是零（min 出現 −0.01，是量測噪聲級別的小負值），星系紅移中等，而高紅移那條尾巴很可能就是 QSO。如果真是這樣，redshift 會是區分這三類最有力的單一特徵之一。這也是我接下來想做的第一個分析：把 redshift 在三類之間的分布畫出來比較。\n\n\n\n\n\n\nTip\n\n\n\n高紅移、長尾的分布，常見的處理是 log1p 轉換或 clipping，讓模型不被極端值牽著走。這會是調分數時值得一試的方向。\n\n\n\n\n類別特徵：兩個已經帶天文意義的欄位\n兩個類別欄位本身就是天文分類的結果，預期對模型有幫助：\n\nspectral_type 有 4 種，最多的是 M，共 303,323 筆（約 52.54%）。\ngalaxy_population 有 2 種，最多的是 Red_Sequence，共 319,565 筆（約 55.35%）。\n\n要確認它們到底有沒有用，最直接的方式是看它們和 class 的交叉表——每一種類型底下，三類的比例長怎樣：\npd.crosstab(train[\"spectral_type\"], train[\"class\"], normalize=\"index\")\npd.crosstab(train[\"galaxy_population\"], train[\"class\"], normalize=\"index\")\n如果某個 spectral_type 幾乎只對應某一類，那它就是很乾淨的訊號。"
+  },
+  {
+    "objectID": "notes/tech/kaggle_s6e6_intro/index.html#目前的-baseline-與接下來想試的",
+    "href": "notes/tech/kaggle_s6e6_intro/index.html#目前的-baseline-與接下來想試的",
+    "title": "從一張天文觀測表，分辨星系、類星體與恆星",
+    "section": "目前的 baseline 與接下來想試的",
+    "text": "目前的 baseline 與接下來想試的\n第一版 baseline 用的是 HistGradientBoostingClassifier，前處理很單純：數值欄位用中位數補值，類別欄位用眾數補值並做 OrdinalEncoder 編碼：\n本地修改 notebook\n  -&gt; kaggle kernels push\n  -&gt; Kaggle 雲端執行\n  -&gt; kaggle kernels output 抓回 outputs/\n有了能動的管線之後，接下來想做的事，大致照優先順序：\n\n加入顏色差特徵（u-g, g-r, r-i, i-z）。\n把 redshift 在 GALAXY / QSO / STAR 之間的分布畫出來，驗證「高紅移 ≈ QSO」的猜測。\n建 confusion matrix，確認模型沒有偏向最大類別 GALAXY。\n\n再往上提分數，候選清單還有：換 LightGBM / XGBoost / CatBoost；對 redshift 做 log 轉換或 clipping；針對不平衡調 class weight 或決策門檻；以及把兩個類別欄位改成 one-hot，或乾脆用 CatBoost 原生的 categorical 處理。"
   },
   {
     "objectID": "notes/reading/index.html",
@@ -221,14 +256,14 @@
     "href": "notes/tech/kaggle_cli/index.html#一組可以複製貼上的日常指令",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "一組可以複製貼上的日常指令",
-    "text": "一組可以複製貼上的日常指令\n把主流程濃縮成一段,改完 notebook 後從上到下跑一遍就是一輪:\n# 本機改完 notebook 後，推到 Kaggle 跑\nkaggle kernels push -p .\n\n# 等它跑完(看到 COMPLETE 再往下)\nkaggle kernels status your-kaggle-username/s6e6-starter\n\n# 抓回 submission 和 log\nkaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force\n\n# 提交到比賽\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"first baseline\"\n\n# 看提交紀錄\nkaggle competitions submissions -c playground-series-s6e6"
+    "text": "一組可以複製貼上的日常指令\n把主流程濃縮成一段，改完 notebook 後從上到下跑一遍就是一輪:\n# 本機改完 notebook 後，推到 Kaggle 跑\nkaggle kernels push -p .\n\n# 等它跑完(看到 COMPLETE 再往下)\nkaggle kernels status your-kaggle-username/s6e6-starter\n\n# 抓回 submission 和 log\nkaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force\n\n# 提交到比賽\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"first baseline\"\n\n# 看提交紀錄\nkaggle competitions submissions -c playground-series-s6e6"
   },
   {
-    "objectID": "notes/tech/kaggle_cli/index.html#幾個會省你時間的提醒",
-    "href": "notes/tech/kaggle_cli/index.html#幾個會省你時間的提醒",
+    "objectID": "notes/tech/kaggle_cli/index.html#小提醒",
+    "href": "notes/tech/kaggle_cli/index.html#小提醒",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
-    "section": "幾個會省你時間的提醒",
-    "text": "幾個會省你時間的提醒\n最後是一些實際操作後才會體會到的小細節，先知道能少踩幾個坑：\n\nkaggle kernels push -p . 永遠是讀「目前資料夾」的 kernel-metadata.json 來決定要推什麼、怎麼推。推之前先確認自己站在對的資料夾。\nstatus 和 output 都要帶 owner/kernel-slug,也就是 notebook 網址裡的那兩段。記不住的話，打開 Kaggle 網頁看一眼網址最快。\n如果你的 notebook 設成 private（is_private: true），用你自己的 token 可以正常存取，但別人拿他的 token 是看不到的。\noutput 抓不到東西時，先回去看 status 是不是真的 COMPLETE——還在 RUNNING 的時候當然沒結果可抓。\nnotebook 在雲端跑失敗時，先把 output 抓回來看 .log，或直接到網頁看執行紀錄，錯誤訊息幾乎都在那裡。\n最重要的一條:選定本機當主版本，就盡量別再去 Kaggle 網頁上直接改 notebook。 兩邊都改會造成版本分叉（就像 Git 裡本地和遠端各自往前跑、最後對不起來）。萬一真的在網頁改了，記得用 kaggle kernels pull 把那份改動拉回本機，讓兩邊重新對齊。"
+    "section": "小提醒",
+    "text": "小提醒\n最後是一些實際操作後才會體會到的小細節，先知道能少踩幾個坑：\n\nkaggle kernels push -p . 永遠是讀「目前資料夾」的 kernel-metadata.json 來決定要推什麼、怎麼推。推之前先確認自己站在對的資料夾。\nstatus 和 output 都要帶 owner/kernel-slug，也就是 notebook 網址裡的那兩段。記不住的話，打開 Kaggle 網頁看一眼網址最快。\n如果你的 notebook 設成 private（is_private: true），用你自己的 token 可以正常存取，但別人拿他的 token 是看不到的。\noutput 抓不到東西時，先回去看 status 是不是真的 COMPLETE——還在 RUNNING 的時候當然沒結果可抓。\nnotebook 在雲端跑失敗時，先把 output 抓回來看 .log，或直接到網頁看執行紀錄，錯誤訊息幾乎都在那裡。\n最重要的一條:選定本機當主版本，就盡量別再去 Kaggle 網頁上直接改 notebook。 兩邊都改會造成版本分叉（就像 Git 裡本地和遠端各自往前跑、最後對不起來）。萬一真的在網頁改了，記得用 kaggle kernels pull 把那份改動拉回本機，讓兩邊重新對齊。"
   },
   {
     "objectID": "notes/games/index.html",

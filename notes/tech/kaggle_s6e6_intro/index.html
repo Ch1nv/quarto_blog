@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="盧晉偉">
+<meta name="dcterms.date" content="2026-06-29">
+<meta name="description" content="用 SDSS 風格的測光與光譜特徵做三分類。這篇紀錄我對這份資料的觀察，以及第一版 baseline 之前的統計描述。">
+
+<title>從一張天文觀測表，分辨星系、類星體與恆星 – CHIN-WEI, LU</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-eb4d22d83e4ba62626cc52b5df34894d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">CHIN-WEI, LU</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-notes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Notes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-notes">    
+        <li>
+    <a class="dropdown-item" href="../../../notes/index.html">
+ <span class="dropdown-text">All Notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../notes/tech/index.html">
+ <span class="dropdown-text">Tech</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../notes/life/index.html">
+ <span class="dropdown-text">Life</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../notes/reading/index.html">
+ <span class="dropdown-text">Reading</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../notes/games/index.html">
+ <span class="dropdown-text">Games</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/ch1nv"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/Ch1nv"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#這篇在解什麼問題" id="toc-這篇在解什麼問題" class="nav-link active" data-scroll-target="#這篇在解什麼問題">這篇在解什麼問題</a></li>
+  <li><a href="#資料長什麼樣子" id="toc-資料長什麼樣子" class="nav-link" data-scroll-target="#資料長什麼樣子">資料長什麼樣子</a></li>
+  <li><a href="#eda我從這份資料看到什麼" id="toc-eda我從這份資料看到什麼" class="nav-link" data-scroll-target="#eda我從這份資料看到什麼">EDA：我從這份資料看到什麼</a></li>
+  <li><a href="#目前的-baseline-與接下來想試的" id="toc-目前的-baseline-與接下來想試的" class="nav-link" data-scroll-target="#目前的-baseline-與接下來想試的">目前的 baseline 與接下來想試的</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">從一張天文觀測表，分辨星系、類星體與恆星</h1>
+<p class="subtitle lead">Kaggle Playground Series S6E6 — Predicting Stellar Class 的主題、資料集與 EDA</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Kaggle</div>
+    <div class="quarto-category">EDA</div>
+    <div class="quarto-category">天文</div>
+    <div class="quarto-category">機器學習</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    用 SDSS 風格的測光與光譜特徵做三分類。這篇紀錄我對這份資料的觀察，以及第一版 baseline 之前的統計描述。
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>盧晉偉 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 29, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="這篇在解什麼問題" class="level2">
+<h2 class="anchored" data-anchor-id="這篇在解什麼問題">這篇在解什麼問題</h2>
+<p>望遠鏡掃過天空時，畫面上每一個亮點看起來都差不多：一個點、一團光。但這些點背後可能是三種完全不同尺度的東西。</p>
+<ul>
+<li><strong>STAR（恆星）</strong>：我們銀河系裡的一顆星，距離近、紅移幾乎是零。</li>
+<li><strong>GALAXY（星系）</strong>：一整個遙遠的星系，距離遠、紅移中等。</li>
+<li><strong>QSO（類星體 / quasar）</strong>：遙遠星系中心極度明亮的活躍核，外觀像一個點，所以名字才叫「quasi-stellar」——看起來像恆星，實際上在非常遠的地方，紅移通常很高。</li>
+</ul>
+<p>麻煩的地方就在這裡：<strong>QSO 在影像上長得像恆星，物理上卻像遙遠星系。</strong> 光看一個亮點分不出來，得靠數字——它在天空中的位置、在不同濾鏡下的亮度、還有紅移——才能判斷它到底是哪一類。這正是 SDSS 這類巡天計畫每天在大規模做的事，也是建立天文星表的基礎工作。</p>
+<p>這個 Kaggle 競賽（<a href="https://www.kaggle.com/competitions/playground-series-s6e6">Playground Series S6E6</a>）把這件事包成一個乾淨的監督式三分類問題：給你一張表，每一列是一個天體與它的觀測特徵，要你預測它是 <code>GALAXY</code>、<code>QSO</code> 還是 <code>STAR</code>。資料是從真實的恆星分類資料集合成出來的，所以欄位有真實的天文意義，但測試答案不會外流。</p>
+<section id="評分方式" class="level3">
+<h3 class="anchored" data-anchor-id="評分方式">評分方式</h3>
+<p>提交格式是 <code>id,class</code> 的硬標籤（不是機率）：</p>
+<pre class="text"><code>id,class
+123456,GALAXY
+123457,STAR
+123458,QSO</code></pre>
+<p>評分指標是 <strong>balanced accuracy</strong>，也就是「各類別 recall 的平均」：</p>
+<p><span class="math display">\[
+\text{Balanced Accuracy} = \frac{1}{K}\sum_{k=1}^{K} \text{recall}_k
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Balanced Accuracy
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>一般 accuracy 會被最大的類別主導——只要把所有東西都猜成 <code>GALAXY</code>，光靠它佔了三分之二就能拿到不低的分數。balanced accuracy 不吃這套：它把每一類的 recall <strong>等權平均</strong>，最小的 <code>STAR</code>（只佔 14%）和最大的 <code>GALAXY</code> 一樣重要。</p>
+<p>換句話說，這個競賽從評分一開始就在逼你正視類別不平衡。後面 EDA 看到的分布，不只是「順便看一眼」，而是直接決定你怎麼設計模型。</p>
+</div>
+</div>
+<p>（指標以競賽頁面的 Evaluation 分頁為準，建議下手前再確認一次。）</p>
+</section>
+</section>
+<section id="資料長什麼樣子" class="level2">
+<h2 class="anchored" data-anchor-id="資料長什麼樣子">資料長什麼樣子</h2>
+<p>三個檔案的規模：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>資料集</th>
+<th style="text-align: right;">列數</th>
+<th style="text-align: right;">欄數</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>train</code></td>
+<td style="text-align: right;">577,347</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td><code>test</code></td>
+<td style="text-align: right;">247,435</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td><code>sample_submission</code></td>
+<td style="text-align: right;">247,435</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p><code>train</code> 比 <code>test</code> 多的那一欄就是答案 <code>class</code>。<code>id</code> 只是識別碼，不該當成建模特徵。</p>
+<p>剩下十個欄位，八個數值、兩個類別，各自帶著天文意義：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>欄位</th>
+<th>型別</th>
+<th>直覺</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>alpha</code>, <code>delta</code></td>
+<td>數值</td>
+<td>天球座標（赤經、赤緯），天體在天空中的位置</td>
+</tr>
+<tr class="even">
+<td><code>u</code>, <code>g</code>, <code>r</code>, <code>i</code>, <code>z</code></td>
+<td>數值</td>
+<td>五個濾鏡波段下的星等（亮度），SDSS 標準測光系統</td>
+</tr>
+<tr class="odd">
+<td><code>redshift</code></td>
+<td>數值</td>
+<td>紅移，和天體的距離、退行速度與物理類型高度相關</td>
+</tr>
+<tr class="even">
+<td><code>spectral_type</code></td>
+<td>類別</td>
+<td>光譜類型</td>
+</tr>
+<tr class="odd">
+<td><code>galaxy_population</code></td>
+<td>類別</td>
+<td>星系族群，例如 <code>Red_Sequence</code> 或 <code>Blue_Cloud</code></td>
+</tr>
+<tr class="even">
+<td><code>class</code></td>
+<td>目標</td>
+<td><code>GALAXY</code> / <code>QSO</code> / <code>STAR</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="eda我從這份資料看到什麼" class="level2">
+<h2 class="anchored" data-anchor-id="eda我從這份資料看到什麼">EDA：我從這份資料看到什麼</h2>
+<section id="類別不平衡分布" class="level3">
+<h3 class="anchored" data-anchor-id="類別不平衡分布">類別不平衡分布</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>類別</th>
+<th style="text-align: right;">筆數</th>
+<th style="text-align: right;">佔比</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GALAXY</td>
+<td style="text-align: right;">377,480</td>
+<td style="text-align: right;">65.38%</td>
+</tr>
+<tr class="even">
+<td>QSO</td>
+<td style="text-align: right;">117,143</td>
+<td style="text-align: right;">20.29%</td>
+</tr>
+<tr class="odd">
+<td>STAR</td>
+<td style="text-align: right;">82,724</td>
+<td style="text-align: right;">14.33%</td>
+</tr>
+</tbody>
+</table>
+<p><code>GALAXY</code> 一個類別就佔了約三分之二，<code>STAR</code> 最少、只有約 14%。接上前面的指標：因為評分是 balanced accuracy，模型在 <code>STAR</code> 上犯的錯，跟在 <code>GALAXY</code> 上犯的錯一樣會被放大。所以我評估模型時不會只看整體 accuracy，而會盯著 confusion matrix 和<strong>每一類的 precision / recall</strong>，確認它沒有偷懶把東西都丟給 <code>GALAXY</code>。</p>
+</section>
+<section id="缺失值乾淨" class="level3">
+<h3 class="anchored" data-anchor-id="缺失值乾淨">缺失值：乾淨</h3>
+<p>目前 starter 統計顯示所有建模欄位的缺失值都是 0。</p>
+<p>這代表第一版 baseline 不必特別補值。不過 pipeline 裡我仍保留 <code>SimpleImputer</code>——之後一旦做了特徵工程、產生新的缺失值，整條流程才不會直接掛掉。這是一種「現在用不到、但留著很便宜」的保險。</p>
+</section>
+<section id="數值特徵座標亮度與一個顏色的想法" class="level3">
+<h3 class="anchored" data-anchor-id="數值特徵座標亮度與一個顏色的想法">數值特徵：座標、亮度與一個顏色的想法</h3>
+<p>天球座標的範圍大致鋪滿整個天區。<code>alpha</code>（赤經）幾乎覆蓋完整一圈，<code>delta</code>（赤緯）落在約 −18° 到 79° 之間：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>統計量</th>
+<th style="text-align: right;"><code>alpha</code></th>
+<th style="text-align: right;"><code>delta</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>min</td>
+<td style="text-align: right;">0.0117</td>
+<td style="text-align: right;">−17.9670</td>
+</tr>
+<tr class="even">
+<td>median</td>
+<td style="text-align: right;">188.6815</td>
+<td style="text-align: right;">21.4844</td>
+</tr>
+<tr class="odd">
+<td>max</td>
+<td style="text-align: right;">359.9998</td>
+<td style="text-align: right;">79.1583</td>
+</tr>
+</tbody>
+</table>
+<p>五個亮度波段的平均星等，從 <code>u</code> 到 <code>z</code> 是單調遞減的：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>波段</th>
+<th style="text-align: right;">平均星等</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>u</td>
+<td style="text-align: right;">22.4419</td>
+</tr>
+<tr class="even">
+<td>g</td>
+<td style="text-align: right;">21.0073</td>
+</tr>
+<tr class="odd">
+<td>r</td>
+<td style="text-align: right;">19.9628</td>
+</tr>
+<tr class="even">
+<td>i</td>
+<td style="text-align: right;">19.3789</td>
+</tr>
+<tr class="odd">
+<td>z</td>
+<td style="text-align: right;">19.0411</td>
+</tr>
+</tbody>
+</table>
+<p>單一波段的亮度其實受距離、儀器等因素影響很大，真正有區辨力的常常是<strong>波段之間的差</strong>——也就是天體的「顏色」。所以一個很自然的下一步，是把相鄰波段相減做出顏色特徵：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train[<span class="st">"u_g"</span>] <span class="op">=</span> train[<span class="st">"u"</span>] <span class="op">-</span> train[<span class="st">"g"</span>]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train[<span class="st">"g_r"</span>] <span class="op">=</span> train[<span class="st">"g"</span>] <span class="op">-</span> train[<span class="st">"r"</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>train[<span class="st">"r_i"</span>] <span class="op">=</span> train[<span class="st">"r"</span>] <span class="op">-</span> train[<span class="st">"i"</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>train[<span class="st">"i_z"</span>] <span class="op">=</span> train[<span class="st">"i"</span>] <span class="op">-</span> train[<span class="st">"z"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>這類顏色差通常比單一星等更能捕捉天體的光譜形狀，在這種分類問題裡往往是很有力的特徵。</p>
+</section>
+<section id="redshift右偏而且可能是-qso-的關鍵" class="level3">
+<h3 class="anchored" data-anchor-id="redshift右偏而且可能是-qso-的關鍵">redshift：右偏，而且可能是 QSO 的關鍵</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>統計量</th>
+<th style="text-align: right;">值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mean</td>
+<td style="text-align: right;">0.7231</td>
+</tr>
+<tr class="even">
+<td>std</td>
+<td style="text-align: right;">0.8101</td>
+</tr>
+<tr class="odd">
+<td>min</td>
+<td style="text-align: right;">−0.0100</td>
+</tr>
+<tr class="even">
+<td>25%</td>
+<td style="text-align: right;">0.1811</td>
+</tr>
+<tr class="odd">
+<td>50%</td>
+<td style="text-align: right;">0.4975</td>
+</tr>
+<tr class="even">
+<td>75%</td>
+<td style="text-align: right;">0.8814</td>
+</tr>
+<tr class="odd">
+<td>max</td>
+<td style="text-align: right;">7.0108</td>
+</tr>
+</tbody>
+</table>
+<p>平均值（0.72）明顯大於中位數（0.50），最大值（7.01）也遠超過 75% 分位數——這是一個右偏分布，有一條長長的高紅移尾巴。</p>
+<p>把它接回物理：恆星紅移幾乎是零（min 出現 −0.01，是量測噪聲級別的小負值），星系紅移中等，而<strong>高紅移那條尾巴很可能就是 QSO</strong>。如果真是這樣，<code>redshift</code> 會是區分這三類最有力的單一特徵之一。這也是我接下來想做的第一個分析：把 <code>redshift</code> 在三類之間的分布畫出來比較。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>高紅移、長尾的分布，常見的處理是 <code>log1p</code> 轉換或 clipping，讓模型不被極端值牽著走。這會是調分數時值得一試的方向。</p>
+</div>
+</div>
+</section>
+<section id="類別特徵兩個已經帶天文意義的欄位" class="level3">
+<h3 class="anchored" data-anchor-id="類別特徵兩個已經帶天文意義的欄位">類別特徵：兩個已經帶天文意義的欄位</h3>
+<p>兩個類別欄位本身就是天文分類的結果，預期對模型有幫助：</p>
+<ul>
+<li><code>spectral_type</code> 有 4 種，最多的是 <code>M</code>，共 303,323 筆（約 52.54%）。</li>
+<li><code>galaxy_population</code> 有 2 種，最多的是 <code>Red_Sequence</code>，共 319,565 筆（約 55.35%）。</li>
+</ul>
+<p>要確認它們到底有沒有用，最直接的方式是看它們和 <code>class</code> 的交叉表——每一種類型底下，三類的比例長怎樣：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pd.crosstab(train[<span class="st">"spectral_type"</span>], train[<span class="st">"class"</span>], normalize<span class="op">=</span><span class="st">"index"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pd.crosstab(train[<span class="st">"galaxy_population"</span>], train[<span class="st">"class"</span>], normalize<span class="op">=</span><span class="st">"index"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>如果某個 <code>spectral_type</code> 幾乎只對應某一類，那它就是很乾淨的訊號。</p>
+</section>
+</section>
+<section id="目前的-baseline-與接下來想試的" class="level2">
+<h2 class="anchored" data-anchor-id="目前的-baseline-與接下來想試的">目前的 baseline 與接下來想試的</h2>
+<p>第一版 baseline 用的是 <code>HistGradientBoostingClassifier</code>，前處理很單純：數值欄位用中位數補值，類別欄位用眾數補值並做 <code>OrdinalEncoder</code> 編碼：</p>
+<pre class="text"><code>本地修改 notebook
+  -&gt; kaggle kernels push
+  -&gt; Kaggle 雲端執行
+  -&gt; kaggle kernels output 抓回 outputs/</code></pre>
+<p>有了能動的管線之後，接下來想做的事，大致照優先順序：</p>
+<ol type="1">
+<li>加入顏色差特徵（<code>u-g</code>, <code>g-r</code>, <code>r-i</code>, <code>i-z</code>）。</li>
+<li>把 <code>redshift</code> 在 <code>GALAXY</code> / <code>QSO</code> / <code>STAR</code> 之間的分布畫出來，驗證「高紅移 ≈ QSO」的猜測。</li>
+<li>建 confusion matrix，確認模型沒有偏向最大類別 <code>GALAXY</code>。</li>
+</ol>
+<p>再往上提分數，候選清單還有：換 LightGBM / XGBoost / CatBoost；對 <code>redshift</code> 做 log 轉換或 clipping；針對不平衡調 class weight 或決策門檻；以及把兩個類別欄位改成 one-hot，或乾脆用 CatBoost 原生的 categorical 處理。</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ch1nv\.github\.io\/luchinwei\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
