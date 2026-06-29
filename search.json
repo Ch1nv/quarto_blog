@@ -137,7 +137,7 @@
     "href": "notes/tech/index.html",
     "title": "Tech",
     "section": "",
-    "text": "技術筆記、資料分析、工具流程紀錄。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\nNo matching items"
+    "text": "技術筆記、資料分析、工具流程紀錄。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果\n\n\n\ntech\n\nkaggle\n\ncli\n\nnotebook\n\nmachine-learning\n\n\n\n\n\n\n\n\n\nJun 28, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "notes/reading/index.html",
@@ -147,85 +147,85 @@
     "text": "書、文章、影像作品或文本閱讀後留下的摘要、摘記與延伸想法。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html",
-    "href": "notes/tech/kaggle/index.html",
+    "objectID": "notes/tech/kaggle_cli/index.html",
+    "href": "notes/tech/kaggle_cli/index.html",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "",
     "text": "在 Kaggle 上比賽，最自然的做法是直接在它的網頁編輯器裡寫 notebook、按執行、等結果。但只要你做過一兩次就會發現，這種「人黏在瀏覽器分頁裡」的工作方式很難長期維持：版本控制靠手動複製、改一行就得整頁重跑、想用自己習慣的編輯器也沒辦法。\n這篇要講的是另一種路線——把雲端的 notebook 當成一個遠端的 Git 倉庫來操作。在本機用熟悉的工具把程式改好，用一行指令推上去，Kaggle 在它的伺服器上（可能掛著 GPU）幫你跑完，你再把結果拉回本地。整個流程是：\n本機 repo / notebook\n  → 修改 .ipynb\n  → kaggle kernels push      # 推上雲端，並觸發執行\n  → Kaggle 雲端跑 GPU/CPU notebook\n  → kaggle kernels status    # 查它跑完了沒\n  → kaggle kernels output    # 把 submission.csv / log 抓回來\n  → kaggle competitions submit  # 提交結果到比賽\n需要用到的是 Kaggle 官方提供的命令列工具（CLI, Command-Line Interface）。下面就從它開始。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#kaggle-cli",
-    "href": "notes/tech/kaggle/index.html#kaggle-cli",
+    "objectID": "notes/tech/kaggle_cli/index.html#kaggle-cli",
+    "href": "notes/tech/kaggle_cli/index.html#kaggle-cli",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "",
     "text": "在 Kaggle 上比賽，最自然的做法是直接在它的網頁編輯器裡寫 notebook、按執行、等結果。但只要你做過一兩次就會發現，這種「人黏在瀏覽器分頁裡」的工作方式很難長期維持：版本控制靠手動複製、改一行就得整頁重跑、想用自己習慣的編輯器也沒辦法。\n這篇要講的是另一種路線——把雲端的 notebook 當成一個遠端的 Git 倉庫來操作。在本機用熟悉的工具把程式改好，用一行指令推上去，Kaggle 在它的伺服器上（可能掛著 GPU）幫你跑完，你再把結果拉回本地。整個流程是：\n本機 repo / notebook\n  → 修改 .ipynb\n  → kaggle kernels push      # 推上雲端，並觸發執行\n  → Kaggle 雲端跑 GPU/CPU notebook\n  → kaggle kernels status    # 查它跑完了沒\n  → kaggle kernels output    # 把 submission.csv / log 抓回來\n  → kaggle competitions submit  # 提交結果到比賽\n需要用到的是 Kaggle 官方提供的命令列工具（CLI, Command-Line Interface）。下面就從它開始。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#先搞懂幾個名詞",
-    "href": "notes/tech/kaggle/index.html#先搞懂幾個名詞",
+    "objectID": "notes/tech/kaggle_cli/index.html#先搞懂幾個名詞",
+    "href": "notes/tech/kaggle_cli/index.html#先搞懂幾個名詞",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "先搞懂幾個名詞",
     "text": "先搞懂幾個名詞\n在動手之前，先把這篇會反覆出現、但 Kaggle 官方文件常常預設你已經懂的幾個詞講清楚。後面的指令會輕鬆很多。\nKernel 就是 Notebook。 你會在 CLI 裡一直看到 kernels 這個字，它指的其實就是 Kaggle 上的 notebook。「Kernel」是 Kaggle 早期對「可在雲端執行的程式碼檔案」的稱呼，後來介面上改叫 Notebook，但指令名稱沿用了舊名，於是同一個東西有兩個名字。看到 kaggle kernels ...，心裡換成「我在操作我的 notebook」就對了。\nSlug 是網址裡那段人類可讀的代號。 每個 notebook 都有一個 owner/kernel-slug 形式的識別碼，例如 your-name/s6e6-starter。前半段是你的 Kaggle 使用者名稱，後半段（slug）是這個 notebook 的代號，正是它網址末端那串文字。很多指令要你指定操作哪一個 notebook，就是靠這組 owner/slug。\nOutput / artifacts 是 notebook 跑完吐出來的東西。 程式執行完會產生一些檔案——比賽的 submission.csv、執行紀錄 .log、有時還有訓練好的模型檔。這些統稱輸出（output）或產物（artifacts）。「跑完之後把產物抓回來」是這套流程很核心的一步。\n掛載（mount）資料，指的是讓 notebook「看得到」某份資料。 在 Kaggle 雲端跑 notebook 時，不是去下載比賽資料，而是宣告「這個 notebook 要用某某比賽的資料」，Kaggle 就會把那份資料接到一個固定路徑下，讓你的程式直接讀。這個「接上去」的動作就叫掛載。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#安裝與設定",
-    "href": "notes/tech/kaggle/index.html#安裝與設定",
+    "objectID": "notes/tech/kaggle_cli/index.html#安裝與設定",
+    "href": "notes/tech/kaggle_cli/index.html#安裝與設定",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "安裝與設定",
     "text": "安裝與設定\n先裝 CLI:\npip install kaggle\n接著要讓這個工具知道「你是誰」。到 Kaggle 帳號設定頁建立一組 API token，它會下載一個 kaggle.json 檔案,裡面就是你的身分憑證——可以把它想成 CLI 用來代替你登入的鑰匙。內容長這樣:\n{\n  \"username\": \"你的_kaggle_username\",\n  \"key\": \"你的_api_key\"\n}\n把這個檔案放到 Kaggle 預設會去找的位置。在 Windows 上是:\nC:\\Users\\&lt;你的 Windows 使用者&gt;\\.kaggle\\kaggle.json\n（在 Mac / Linux 上則是 ~/.kaggle/kaggle.json。）\n除了放檔案，你也可以改用環境變數來提供同一組憑證，這在 CI/CD 或容器環境裡特別方便。注意變數名稱是 KAGGLE_USERNAME 和 KAGGLE_KEY 這兩個:\n$env:KAGGLE_USERNAME = \"你的_kaggle_username\"\n$env:KAGGLE_KEY = \"你的_api_key\"\n這裡有個容易踩的雷：環境變數的優先順序高於 kaggle.json 檔案。也就是說，如果你不小心設了一組錯的環境變數，就算 kaggle.json 內容完全正確，驗證一樣會失敗。遇到莫名其妙的 401 未授權錯誤時，先回頭檢查環境變數有沒有殘留舊值。\n最後確認工具裝好、認得出你：\nkaggle --version"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#用-git-的習慣來理解這套指令",
-    "href": "notes/tech/kaggle/index.html#用-git-的習慣來理解這套指令",
+    "objectID": "notes/tech/kaggle_cli/index.html#用-git-的習慣來理解這套指令",
+    "href": "notes/tech/kaggle_cli/index.html#用-git-的習慣來理解這套指令",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "用 Git 的習慣來理解這套指令",
     "text": "用 Git 的習慣來理解這套指令\n如果使用過 Git，這套流程幾乎可以一對一對應過去。下面這張表把「Git 動作」對到「Kaggle CLI 的對應指令」。只要把既有的直覺搬過來：\n\n\n\n\n\n\n\n\n你熟悉的 Git 動作\nKaggle CLI 對應\n在做什麼\n\n\n\n\ngit push\nkaggle kernels push -p .\n把本機 notebook 推到 Kaggle,並觸發雲端執行\n\n\ngit status\nkaggle kernels status owner/slug\n查這個 notebook 跑到哪了\n\n\ngit pull\nkaggle kernels pull owner/slug -p .\n把 Kaggle 網頁上的版本拉回本機\n\n\n下載建置產物\nkaggle kernels output owner/slug -p outputs --force\n抓回 submission.csv、log、模型檔等輸出\n\n\n發佈結果\nkaggle competitions submit ...\n把成績提交到比賽\n\n\n\n有一個地方和 Git 不太一樣值得先點出來：push 在 Git 裡只是「把程式碼上傳」，但在 Kaggle 這裡，push 上傳的同時還會直接觸發一次雲端執行。換句話說，你按下 push，Kaggle 就開始幫你跑了——這也是為什麼下一步通常是 status，因為你得等它跑完。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#kernel-metadata.json本機與雲端之間的橋樑",
-    "href": "notes/tech/kaggle/index.html#kernel-metadata.json本機與雲端之間的橋樑",
+    "objectID": "notes/tech/kaggle_cli/index.html#kernel-metadata.json本機與雲端之間的橋樑",
+    "href": "notes/tech/kaggle_cli/index.html#kernel-metadata.json本機與雲端之間的橋樑",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "kernel-metadata.json：本機與雲端之間的橋樑",
     "text": "kernel-metadata.json：本機與雲端之間的橋樑\n要用 kaggle kernels push 把資料夾推上去，Kaggle 得知道一些它沒辦法從 .ipynb 本身看出來的事情：這個 notebook 叫什麼名字？要不要開 GPU？要掛哪場比賽的資料？能不能連外網？\n這些設定就寫在資料夾裡一個叫 kernel-metadata.json 的檔案。所謂 metadata（中繼資料）就是「描述這份 notebook 的資料」——它本身不是程式碼，而是一張說明這個 notebook 該怎麼被執行的設定表。一個典型的範例:\n{\n  \"id\": \"your-kaggle-username/s6e6-starter\",\n  \"title\": \"S6E6 Starter\",\n  \"code_file\": \"s6e6_starter.ipynb\",\n  \"language\": \"python\",\n  \"kernel_type\": \"notebook\",\n  \"is_private\": true,\n  \"enable_gpu\": true,\n  \"enable_internet\": false,\n  \"competition_sources\": [\"playground-series-s6e6\"],\n  \"dataset_sources\": [],\n  \"kernel_sources\": [],\n  \"model_sources\": []\n}\n逐欄看一下幾個你最常需要動的設定:\n\nid：就是前面說的 owner/kernel-slug。owner 是你的 Kaggle 使用者名稱，slug 是這個 notebook 的代號。後面 status、output 等指令都靠它指名要操作哪一個 notebook。\ncode_file：真正要被推上去執行的那個 notebook（或 script）檔名。\nenable_gpu：要不要替這次執行配一張 GPU。跑深度學習通常設 true，純資料處理設 false 比較省額度。\nenable_internet：允不允許這個 notebook 在雲端連外網。許多比賽規則要求關閉，設成 false。\ncompetition_sources：把比賽資料掛上來。填比賽代號（如 playground-series-s6e6），Kaggle 執行時就會把那份資料接到 notebook 看得到的地方。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#走一遍日常流程",
-    "href": "notes/tech/kaggle/index.html#走一遍日常流程",
+    "objectID": "notes/tech/kaggle_cli/index.html#走一遍日常流程",
+    "href": "notes/tech/kaggle_cli/index.html#走一遍日常流程",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "走一遍日常流程",
     "text": "走一遍日常流程\n設定都備齊之後，實際的工作循環其實很短。下面把一輪完整流程拆開，每一步都是上一步的自然延續。\n第一步，在本機改你的 notebook。 就用你慣的編輯器打開 s6e6_starter.ipynb，改完存檔。這一步沒什麼特別，重點是：你的「主版本」現在活在本機，而不是 Kaggle 網頁上。\n第二步，推上雲端執行。 切到那個放著 kernel-metadata.json 的資料夾，執行:\nkaggle kernels push -p .\n-p . 的意思是「以目前這個資料夾為來源」（p 是 path）。CLI 會讀同資料夾的 metadata，把指定的 notebook 推上去並開跑。成功時會看到類似這樣的回應，還附上線上進度的網址：\nKernel version 2 successfully pushed. Please check progress at https://www.kaggle.com/code/&lt;owner&gt;/&lt;kernel-slug&gt;\n第三步，查它跑完了沒。 因為執行發生在雲端，你得主動問狀態:\nkaggle kernels status your-kaggle-username/s6e6-starter\n回傳的狀態大致是這幾種:RUNNING 表示還在跑；COMPLETE 表示跑完了、可以去抓結果；ERROR 表示執行出錯，要去看 log 找原因；CANCELLED 表示被取消。實務上你會隔一陣子問一次，直到看見 COMPLETE。\n第四步，把結果抓回來。 確認跑完後：\nkaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force\n-p outputs 指定把檔案下載到本機的 outputs/ 資料夾，--force 允許覆蓋舊檔（這樣你重跑後抓回來不會卡在「檔案已存在」）。抓回來通常會看到：\noutputs/\n  submission.csv\n  &lt;kernel-slug&gt;.log\n那個 submission.csv 就是你要提交的成績檔，.log 則是執行紀錄——萬一前一步狀態是 ERROR，答案多半藏在這裡面。\n第五步，提交到比賽。 把 submission 檔送出去：\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"starter submission\"\n-c 指定比賽，-f 指定要提交的檔案，-m 是這次提交的備註訊息（類似 commit message，日後翻紀錄時你會感謝現在寫清楚的自己）。\n第六步，回頭看成績。 想確認剛剛那筆提交的分數：\nkaggle competitions submissions -c playground-series-s6e6\n到這裡就是完整一圈:改、推、等、抓、交、看。熟了之後整套大概一兩分鐘就跑完，真正花時間的只剩雲端執行本身。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#指令速查",
-    "href": "notes/tech/kaggle/index.html#指令速查",
+    "objectID": "notes/tech/kaggle_cli/index.html#指令速查",
+    "href": "notes/tech/kaggle_cli/index.html#指令速查",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "指令速查",
     "text": "指令速查\n上面那一圈是主幹。下面這些是你偶爾會用到的指令，按用途分組，當作工具箱翻查即可。\n\nNotebook / Kernel\n# 列出自己所有的 notebook\nkaggle kernels list --mine\n\n# 推送目前資料夾(讀同資料夾的 metadata)\nkaggle kernels push -p .\n\n# 查某個 notebook 的執行狀態\nkaggle kernels status owner/kernel-slug\n\n# 抓回某個 notebook 的輸出\nkaggle kernels output owner/kernel-slug -p outputs --force\n\n# 把 Kaggle 上的 notebook 拉回本機\nkaggle kernels pull owner/kernel-slug -p .\n關於最後那個 pull：只有當你直接在 Kaggle 網頁上改了 notebook、想把那些改動同步回本機時才需要它。如果你的主工作區一直在本機，日常其實只會用到 push、status、output 三個。\n\n\nCompetitions\n# 列出目前的比賽\nkaggle competitions list\n\n# 下載某場比賽的資料到 data/\nkaggle competitions download -c playground-series-s6e6 -p data\n\n# 提交成績\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"message\"\n\n# 查自己的提交紀錄\nkaggle competitions submissions -c playground-series-s6e6\n\n# 查 leaderboard(排行榜)\nkaggle competitions leaderboard -c playground-series-s6e6 --show\n\n\nDatasets\n# 下載某個資料集\nkaggle datasets download -d owner/dataset-slug -p data\n\n# 用關鍵字搜尋資料集\nkaggle datasets list -s keyword"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#在-notebook-裡怎麼讀比賽資料",
-    "href": "notes/tech/kaggle/index.html#在-notebook-裡怎麼讀比賽資料",
+    "objectID": "notes/tech/kaggle_cli/index.html#在-notebook-裡怎麼讀比賽資料",
+    "href": "notes/tech/kaggle_cli/index.html#在-notebook-裡怎麼讀比賽資料",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "在 notebook 裡怎麼讀比賽資料",
     "text": "在 notebook 裡怎麼讀比賽資料\n前面提過「掛載」：當你在 metadata 裡用 competition_sources 掛了一場比賽，Kaggle 在雲端執行時會把那份資料接到一個固定路徑底下:\n/kaggle/input/&lt;competition-slug&gt;\n所以在 notebook 裡，你不需要寫任何下載邏輯,直接從這個路徑讀就好:\nfrom pathlib import Path\nimport pandas as pd\n\nDATA_DIR = Path(\"/kaggle/input/playground-series-s6e6\")\ntrain = pd.read_csv(DATA_DIR / \"train.csv\")\ntest = pd.read_csv(DATA_DIR / \"test.csv\")\nsample_submission = pd.read_csv(DATA_DIR / \"sample_submission.csv\")\n不過這條路徑只在 Kaggle 雲端存在，你在本機跑同一份 notebook 時它是空的。如果你希望「同一份程式碼在本機和雲端都能跑」，可以加一段 fallback：先看看 Kaggle 的掛載路徑在不在，在的話直接用；不在的話，改用 kagglehub 把資料下載下來。kagglehub 是 Kaggle 官方的 Python 套件，專門負責在你自己的環境裡抓取比賽或資料集的檔案：\nfrom pathlib import Path\nimport kagglehub\n\nCOMPETITION = \"playground-series-s6e6\"\n\nkaggle_input = Path(f\"/kaggle/input/{COMPETITION}\")\nif kaggle_input.exists():\n    data_dir = kaggle_input                                  # 在 Kaggle 雲端,直接用掛載資料\nelse:\n    data_dir = Path(kagglehub.competition_download(COMPETITION))  # 在本機，改用 kagglehub 下載\n這樣一來，在本機開發、推上雲端執行，兩邊讀資料的程式碼完全一致，不用為了換環境改來改去。"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#建議的專案結構",
-    "href": "notes/tech/kaggle/index.html#建議的專案結構",
+    "objectID": "notes/tech/kaggle_cli/index.html#建議的專案結構",
+    "href": "notes/tech/kaggle_cli/index.html#建議的專案結構",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "建議的專案結構",
     "text": "建議的專案結構\n把檔案擺整齊會讓上面所有指令都更順手。一個夠用的結構大概是：\nmy-kaggle-project/\n  kernel-metadata.json    # 推送設定\n  s6e6_starter.ipynb      # 你的 notebook(主版本)\n  outputs/                # 抓回來的 submission 和 log\n    submission.csv\n    s6e6-starter.log\n  data/                   # 本機下載的比賽資料\n  README.md\n如果這個資料夾本身也是 Git 倉庫，有幾類東西不建議 commit 進版本控制——憑證涉及安全，輸出和資料則是又大又可重新產生的，留在本機就好：\n.kaggle/      # 你的憑證,絕對不要外流\noutputs/      # 可以重抓\ndata/         # 可以重新下載\n*.zip"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#一組可以複製貼上的日常指令",
-    "href": "notes/tech/kaggle/index.html#一組可以複製貼上的日常指令",
+    "objectID": "notes/tech/kaggle_cli/index.html#一組可以複製貼上的日常指令",
+    "href": "notes/tech/kaggle_cli/index.html#一組可以複製貼上的日常指令",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "一組可以複製貼上的日常指令",
     "text": "一組可以複製貼上的日常指令\n把主流程濃縮成一段,改完 notebook 後從上到下跑一遍就是一輪:\n# 本機改完 notebook 後，推到 Kaggle 跑\nkaggle kernels push -p .\n\n# 等它跑完(看到 COMPLETE 再往下)\nkaggle kernels status your-kaggle-username/s6e6-starter\n\n# 抓回 submission 和 log\nkaggle kernels output your-kaggle-username/s6e6-starter -p outputs --force\n\n# 提交到比賽\nkaggle competitions submit -c playground-series-s6e6 -f outputs\\submission.csv -m \"first baseline\"\n\n# 看提交紀錄\nkaggle competitions submissions -c playground-series-s6e6"
   },
   {
-    "objectID": "notes/tech/kaggle/index.html#幾個會省你時間的提醒",
-    "href": "notes/tech/kaggle/index.html#幾個會省你時間的提醒",
+    "objectID": "notes/tech/kaggle_cli/index.html#幾個會省你時間的提醒",
+    "href": "notes/tech/kaggle_cli/index.html#幾個會省你時間的提醒",
     "title": "把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果",
     "section": "幾個會省你時間的提醒",
     "text": "幾個會省你時間的提醒\n最後是一些實際操作後才會體會到的小細節，先知道能少踩幾個坑：\n\nkaggle kernels push -p . 永遠是讀「目前資料夾」的 kernel-metadata.json 來決定要推什麼、怎麼推。推之前先確認自己站在對的資料夾。\nstatus 和 output 都要帶 owner/kernel-slug,也就是 notebook 網址裡的那兩段。記不住的話，打開 Kaggle 網頁看一眼網址最快。\n如果你的 notebook 設成 private（is_private: true），用你自己的 token 可以正常存取，但別人拿他的 token 是看不到的。\noutput 抓不到東西時，先回去看 status 是不是真的 COMPLETE——還在 RUNNING 的時候當然沒結果可抓。\nnotebook 在雲端跑失敗時，先把 output 抓回來看 .log，或直接到網頁看執行紀錄，錯誤訊息幾乎都在那裡。\n最重要的一條:選定本機當主版本，就盡量別再去 Kaggle 網頁上直接改 notebook。 兩邊都改會造成版本分叉（就像 Git 裡本地和遠端各自往前跑、最後對不起來）。萬一真的在網頁改了，記得用 kaggle kernels pull 把那份改動拉回本機，讓兩邊重新對齊。"

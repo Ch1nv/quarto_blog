@@ -1,7 +1,9 @@
 [
   {
     "listing": "/notes/tech/index.html",
-    "items": []
+    "items": [
+      "/notes/tech/kaggle_cli/index.html"
+    ]
   },
   {
     "listing": "/projects/index.html",

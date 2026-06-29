@@ -82,9 +82,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -232,7 +232,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y2xp">cli <span class="quarto-category-count">(1)</span></div><div class="category" data-category="a2FnZ2xl">kaggle <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWFjaGluZS1sZWFybmluZw==">machine-learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bm90ZWJvb2s=">notebook <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGVjaA==">tech <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -253,7 +253,41 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="dGVjaCUyQ2thZ2dsZSUyQ2NsaSUyQ25vdGVib29rJTJDbWFjaGluZS1sZWFybmluZw==" data-listing-date-sort="1782604800000" data-listing-file-modified-sort="1782716018309" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="815">
+<div class="thumbnail"><a href="../../notes/tech/kaggle_cli/index.html" class="no-external">
 
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../notes/tech/kaggle_cli/index.html" class="no-external">把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('dGVjaA=='); return false;">tech</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('a2FnZ2xl'); return false;">kaggle</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Y2xp'); return false;">cli</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('bm90ZWJvb2s='); return false;">notebook</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('bWFjaGluZS1sZWFybmluZw=='); return false;">machine-learning</div>
+
+</div>
+<div class="delink listing-description"><a href="../../notes/tech/kaggle_cli/index.html" class="no-external">
+在 Kaggle 上比賽，最自然的做法是直接在它的網頁編輯器裡寫 notebook、按執行、等結果。但只要你做過一兩次就會發現，這種「人黏在瀏覽器分頁裡」的工作方式很難長期維持：版本控制靠手動複製、改一行就得整頁重跑、想用自己習慣的編輯器也沒辦法。
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../notes/tech/kaggle_cli/index.html" class="no-external">
+<div class="listing-date">
+Jun 28, 2026
+</div>
+</a>
+</div>
+</div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div></main> <!-- /main -->

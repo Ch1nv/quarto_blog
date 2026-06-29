@@ -10,6 +10,634 @@
 <atom:link href="https://ch1nv.github.io/luchinwei/notes/tech/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Mon, 29 Jun 2026 06:12:16 GMT</lastBuildDate>
+<lastBuildDate>Sun, 28 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>把 Kaggle Notebook 當成 Git 專案:本地寫、雲端跑、拉回結果</title>
+  <link>https://ch1nv.github.io/luchinwei/notes/tech/kaggle_cli/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="kaggle-cli" class="level2">
+<h2 class="anchored" data-anchor-id="kaggle-cli">Kaggle CLI</h2>
+<p>在 Kaggle 上比賽，最自然的做法是直接在它的網頁編輯器裡寫 notebook、按執行、等結果。但只要你做過一兩次就會發現，這種「人黏在瀏覽器分頁裡」的工作方式很難長期維持：版本控制靠手動複製、改一行就得整頁重跑、想用自己習慣的編輯器也沒辦法。</p>
+<p>這篇要講的是另一種路線——<strong>把雲端的 notebook 當成一個遠端的 Git 倉庫來操作</strong>。在本機用熟悉的工具把程式改好，用一行指令推上去，Kaggle 在它的伺服器上（可能掛著 GPU）幫你跑完，你再把結果拉回本地。整個流程是：</p>
+<pre class="text"><code>本機 repo / notebook
+  → 修改 .ipynb
+  → kaggle kernels push      # 推上雲端，並觸發執行
+  → Kaggle 雲端跑 GPU/CPU notebook
+  → kaggle kernels status    # 查它跑完了沒
+  → kaggle kernels output    # 把 submission.csv / log 抓回來
+  → kaggle competitions submit  # 提交結果到比賽</code></pre>
+<p>需要用到的是 Kaggle 官方提供的命令列工具（CLI, Command-Line Interface）。下面就從它開始。</p>
+</section>
+<section id="先搞懂幾個名詞" class="level2">
+<h2 class="anchored" data-anchor-id="先搞懂幾個名詞">先搞懂幾個名詞</h2>
+<p>在動手之前，先把這篇會反覆出現、但 Kaggle 官方文件常常預設你已經懂的幾個詞講清楚。後面的指令會輕鬆很多。</p>
+<p><strong>Kernel 就是 Notebook。</strong> 你會在 CLI 裡一直看到 <code>kernels</code> 這個字，它指的其實就是 Kaggle 上的 notebook。「Kernel」是 Kaggle 早期對「可在雲端執行的程式碼檔案」的稱呼，後來介面上改叫 Notebook，但指令名稱沿用了舊名，於是同一個東西有兩個名字。看到 <code>kaggle kernels ...</code>，心裡換成「我在操作我的 notebook」就對了。</p>
+<p><strong>Slug 是網址裡那段人類可讀的代號。</strong> 每個 notebook 都有一個 <code>owner/kernel-slug</code> 形式的識別碼，例如 <code>your-name/s6e6-starter</code>。前半段是你的 Kaggle 使用者名稱，後半段（slug）是這個 notebook 的代號，正是它網址末端那串文字。很多指令要你指定操作哪一個 notebook，就是靠這組 <code>owner/slug</code>。</p>
+<p><strong>Output / artifacts 是 notebook 跑完吐出來的東西。</strong> 程式執行完會產生一些檔案——比賽的 <code>submission.csv</code>、執行紀錄 <code>.log</code>、有時還有訓練好的模型檔。這些統稱輸出（output）或產物（artifacts）。「跑完之後把產物抓回來」是這套流程很核心的一步。</p>
+<p><strong>掛載（mount）資料，指的是讓 notebook「看得到」某份資料。</strong> 在 Kaggle 雲端跑 notebook 時，不是去下載比賽資料，而是宣告「這個 notebook 要用某某比賽的資料」，Kaggle 就會把那份資料接到一個固定路徑下，讓你的程式直接讀。這個「接上去」的動作就叫掛載。</p>
+</section>
+<section id="安裝與設定" class="level2">
+<h2 class="anchored" data-anchor-id="安裝與設定">安裝與設定</h2>
+<p>先裝 CLI:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1">pip install kaggle</span></code></pre></div></div>
+<p>接著要讓這個工具知道「你是誰」。到 Kaggle 帳號設定頁建立一組 API token，它會下載一個 <code>kaggle.json</code> 檔案,裡面就是你的身分憑證——可以把它想成 CLI 用來代替你登入的鑰匙。內容長這樣:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb3-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"username"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"你的_kaggle_username"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb3-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"key"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"你的_api_key"</span></span>
+<span id="cb3-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+<p>把這個檔案放到 Kaggle 預設會去找的位置。在 Windows 上是:</p>
+<pre class="text"><code>C:\Users\&lt;你的 Windows 使用者&gt;\.kaggle\kaggle.json</code></pre>
+<p>（在 Mac / Linux 上則是 <code>~/.kaggle/kaggle.json</code>。）</p>
+<p>除了放檔案，你也可以改用環境變數來提供同一組憑證，這在 CI/CD 或容器環境裡特別方便。注意變數名稱是 <code>KAGGLE_USERNAME</code> 和 <code>KAGGLE_KEY</code> 這兩個:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb5-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$env</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">KAGGLE_USERNAME</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"你的_kaggle_username"</span></span>
+<span id="cb5-2"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$env</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">KAGGLE_KEY</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"你的_api_key"</span></span></code></pre></div></div>
+<p>這裡有個容易踩的雷：<strong>環境變數的優先順序高於 <code>kaggle.json</code> 檔案</strong>。也就是說，如果你不小心設了一組錯的環境變數，就算 <code>kaggle.json</code> 內容完全正確，驗證一樣會失敗。遇到莫名其妙的 401 未授權錯誤時，先回頭檢查環境變數有沒有殘留舊值。</p>
+<p>最後確認工具裝好、認得出你：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1">kaggle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>version</span></code></pre></div></div>
+</section>
+<section id="用-git-的習慣來理解這套指令" class="level2">
+<h2 class="anchored" data-anchor-id="用-git-的習慣來理解這套指令">用 Git 的習慣來理解這套指令</h2>
+<p>如果使用過 Git，這套流程幾乎可以一對一對應過去。下面這張表把「Git 動作」對到「Kaggle CLI 的對應指令」。只要把既有的直覺搬過來：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>你熟悉的 Git 動作</th>
+<th>Kaggle CLI 對應</th>
+<th>在做什麼</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>git push</code></td>
+<td><code>kaggle kernels push -p .</code></td>
+<td>把本機 notebook 推到 Kaggle,並觸發雲端執行</td>
+</tr>
+<tr class="even">
+<td><code>git status</code></td>
+<td><code>kaggle kernels status owner/slug</code></td>
+<td>查這個 notebook 跑到哪了</td>
+</tr>
+<tr class="odd">
+<td><code>git pull</code></td>
+<td><code>kaggle kernels pull owner/slug -p .</code></td>
+<td>把 Kaggle 網頁上的版本拉回本機</td>
+</tr>
+<tr class="even">
+<td>下載建置產物</td>
+<td><code>kaggle kernels output owner/slug -p outputs --force</code></td>
+<td>抓回 <code>submission.csv</code>、log、模型檔等輸出</td>
+</tr>
+<tr class="odd">
+<td>發佈結果</td>
+<td><code>kaggle competitions submit ...</code></td>
+<td>把成績提交到比賽</td>
+</tr>
+</tbody>
+</table>
+<p>有一個地方和 Git 不太一樣值得先點出來：<code>push</code> 在 Git 裡只是「把程式碼上傳」，但在 Kaggle 這裡，<code>push</code> 上傳的同時還會<strong>直接觸發一次雲端執行</strong>。換句話說，你按下 push，Kaggle 就開始幫你跑了——這也是為什麼下一步通常是 <code>status</code>，因為你得等它跑完。</p>
+</section>
+<section id="kernel-metadata.json本機與雲端之間的橋樑" class="level2">
+<h2 class="anchored" data-anchor-id="kernel-metadata.json本機與雲端之間的橋樑">kernel-metadata.json：本機與雲端之間的橋樑</h2>
+<p>要用 <code>kaggle kernels push</code> 把資料夾推上去，Kaggle 得知道一些它沒辦法從 <code>.ipynb</code> 本身看出來的事情：這個 notebook 叫什麼名字？要不要開 GPU？要掛哪場比賽的資料？能不能連外網？</p>
+<p>這些設定就寫在資料夾裡一個叫 <code>kernel-metadata.json</code> 的檔案。所謂 metadata（中繼資料）就是「描述這份 notebook 的資料」——它本身不是程式碼，而是一張說明這個 notebook 該怎麼被執行的設定表。一個典型的範例:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb7-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"id"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"your-kaggle-username/s6e6-starter"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"title"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"S6E6 Starter"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-4">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"code_file"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s6e6_starter.ipynb"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-5">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"language"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"python"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-6">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"kernel_type"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"notebook"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-7">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"is_private"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-8">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"enable_gpu"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-9">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"enable_internet"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-10">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"competition_sources"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playground-series-s6e6"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-11">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"dataset_sources"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-12">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"kernel_sources"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-13">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"model_sources"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[]</span></span>
+<span id="cb7-14"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+<p>逐欄看一下幾個你最常需要動的設定:</p>
+<ul>
+<li><code>id</code>：就是前面說的 <code>owner/kernel-slug</code>。owner 是你的 Kaggle 使用者名稱，slug 是這個 notebook 的代號。後面 <code>status</code>、<code>output</code> 等指令都靠它指名要操作哪一個 notebook。</li>
+<li><code>code_file</code>：真正要被推上去執行的那個 notebook（或 script）檔名。</li>
+<li><code>enable_gpu</code>：要不要替這次執行配一張 GPU。跑深度學習通常設 <code>true</code>，純資料處理設 <code>false</code> 比較省額度。</li>
+<li><code>enable_internet</code>：允不允許這個 notebook 在雲端連外網。許多比賽規則要求關閉，設成 <code>false</code>。</li>
+<li><code>competition_sources</code>：把比賽資料掛上來。填比賽代號（如 <code>playground-series-s6e6</code>），Kaggle 執行時就會把那份資料接到 notebook 看得到的地方。</li>
+</ul>
+</section>
+<section id="走一遍日常流程" class="level2">
+<h2 class="anchored" data-anchor-id="走一遍日常流程">走一遍日常流程</h2>
+<p>設定都備齊之後，實際的工作循環其實很短。下面把一輪完整流程拆開，每一步都是上一步的自然延續。</p>
+<p><strong>第一步，在本機改你的 notebook。</strong> 就用你慣的編輯器打開 <code>s6e6_starter.ipynb</code>，改完存檔。這一步沒什麼特別，重點是：你的「主版本」現在活在本機，而不是 Kaggle 網頁上。</p>
+<p><strong>第二步，推上雲端執行。</strong> 切到那個放著 <code>kernel-metadata.json</code> 的資料夾，執行:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb8-1">kaggle kernels push <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span></span></code></pre></div></div>
+<p><code>-p .</code> 的意思是「以目前這個資料夾為來源」（p 是 path）。CLI 會讀同資料夾的 metadata，把指定的 notebook 推上去並開跑。成功時會看到類似這樣的回應，還附上線上進度的網址：</p>
+<pre class="text"><code>Kernel version 2 successfully pushed. Please check progress at https://www.kaggle.com/code/&lt;owner&gt;/&lt;kernel-slug&gt;</code></pre>
+<p><strong>第三步，查它跑完了沒。</strong> 因為執行發生在雲端，你得主動問狀態:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb10-1">kaggle kernels status your-kaggle-username<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>s6e6-starter</span></code></pre></div></div>
+<p>回傳的狀態大致是這幾種:<code>RUNNING</code> 表示還在跑；<code>COMPLETE</code> 表示跑完了、可以去抓結果；<code>ERROR</code> 表示執行出錯，要去看 log 找原因；<code>CANCELLED</code> 表示被取消。實務上你會隔一陣子問一次，直到看見 <code>COMPLETE</code>。</p>
+<p><strong>第四步，把結果抓回來。</strong> 確認跑完後：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb11-1">kaggle kernels output your-kaggle-username<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>s6e6-starter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p outputs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>force</span></code></pre></div></div>
+<p><code>-p outputs</code> 指定把檔案下載到本機的 <code>outputs/</code> 資料夾，<code>--force</code> 允許覆蓋舊檔（這樣你重跑後抓回來不會卡在「檔案已存在」）。抓回來通常會看到：</p>
+<pre class="text"><code>outputs/
+  submission.csv
+  &lt;kernel-slug&gt;.log</code></pre>
+<p>那個 <code>submission.csv</code> 就是你要提交的成績檔，<code>.log</code> 則是執行紀錄——萬一前一步狀態是 <code>ERROR</code>，答案多半藏在這裡面。</p>
+<p><strong>第五步，提交到比賽。</strong> 把 submission 檔送出去：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb13-1">kaggle competitions submit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>f outputs\submission<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>m <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"starter submission"</span></span></code></pre></div></div>
+<p><code>-c</code> 指定比賽，<code>-f</code> 指定要提交的檔案，<code>-m</code> 是這次提交的備註訊息（類似 commit message，日後翻紀錄時你會感謝現在寫清楚的自己）。</p>
+<p><strong>第六步，回頭看成績。</strong> 想確認剛剛那筆提交的分數：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb14-1">kaggle competitions submissions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6</span></code></pre></div></div>
+<p>到這裡就是完整一圈:改、推、等、抓、交、看。熟了之後整套大概一兩分鐘就跑完，真正花時間的只剩雲端執行本身。</p>
+</section>
+<section id="指令速查" class="level2">
+<h2 class="anchored" data-anchor-id="指令速查">指令速查</h2>
+<p>上面那一圈是主幹。下面這些是你偶爾會用到的指令，按用途分組，當作工具箱翻查即可。</p>
+<section id="notebook-kernel" class="level3">
+<h3 class="anchored" data-anchor-id="notebook-kernel">Notebook / Kernel</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb15-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 列出自己所有的 notebook</span></span>
+<span id="cb15-2">kaggle kernels list <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>mine</span>
+<span id="cb15-3"></span>
+<span id="cb15-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 推送目前資料夾(讀同資料夾的 metadata)</span></span>
+<span id="cb15-5">kaggle kernels push <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb15-6"></span>
+<span id="cb15-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 查某個 notebook 的執行狀態</span></span>
+<span id="cb15-8">kaggle kernels status owner<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>kernel-slug</span>
+<span id="cb15-9"></span>
+<span id="cb15-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 抓回某個 notebook 的輸出</span></span>
+<span id="cb15-11">kaggle kernels output owner<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>kernel-slug <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p outputs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>force</span>
+<span id="cb15-12"></span>
+<span id="cb15-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 把 Kaggle 上的 notebook 拉回本機</span></span>
+<span id="cb15-14">kaggle kernels pull owner<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>kernel-slug <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span></span></code></pre></div></div>
+<p>關於最後那個 <code>pull</code>：只有當你直接在 Kaggle 網頁上改了 notebook、想把那些改動同步回本機時才需要它。如果你的主工作區一直在本機，日常其實只會用到 <code>push</code>、<code>status</code>、<code>output</code> 三個。</p>
+</section>
+<section id="competitions" class="level3">
+<h3 class="anchored" data-anchor-id="competitions">Competitions</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 列出目前的比賽</span></span>
+<span id="cb16-2">kaggle competitions list</span>
+<span id="cb16-3"></span>
+<span id="cb16-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 下載某場比賽的資料到 data/</span></span>
+<span id="cb16-5">kaggle competitions download <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">data</span></span>
+<span id="cb16-6"></span>
+<span id="cb16-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 提交成績</span></span>
+<span id="cb16-8">kaggle competitions submit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>f outputs\submission<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>m <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"message"</span></span>
+<span id="cb16-9"></span>
+<span id="cb16-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 查自己的提交紀錄</span></span>
+<span id="cb16-11">kaggle competitions submissions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6</span>
+<span id="cb16-12"></span>
+<span id="cb16-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 查 leaderboard(排行榜)</span></span>
+<span id="cb16-14">kaggle competitions leaderboard <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>show</span></code></pre></div></div>
+</section>
+<section id="datasets" class="level3">
+<h3 class="anchored" data-anchor-id="datasets">Datasets</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 下載某個資料集</span></span>
+<span id="cb17-2">kaggle datasets download <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>d owner<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>dataset-slug <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">data</span></span>
+<span id="cb17-3"></span>
+<span id="cb17-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 用關鍵字搜尋資料集</span></span>
+<span id="cb17-5">kaggle datasets list <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>s keyword</span></code></pre></div></div>
+</section>
+</section>
+<section id="在-notebook-裡怎麼讀比賽資料" class="level2">
+<h2 class="anchored" data-anchor-id="在-notebook-裡怎麼讀比賽資料">在 notebook 裡怎麼讀比賽資料</h2>
+<p>前面提過「掛載」：當你在 metadata 裡用 <code>competition_sources</code> 掛了一場比賽，Kaggle 在雲端執行時會把那份資料接到一個固定路徑底下:</p>
+<pre class="text"><code>/kaggle/input/&lt;competition-slug&gt;</code></pre>
+<p>所以在 notebook 裡，你不需要寫任何下載邏輯,直接從這個路徑讀就好:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pathlib <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Path</span>
+<span id="cb19-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb19-3"></span>
+<span id="cb19-4">DATA_DIR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/kaggle/input/playground-series-s6e6"</span>)</span>
+<span id="cb19-5">train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(DATA_DIR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train.csv"</span>)</span>
+<span id="cb19-6">test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(DATA_DIR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"test.csv"</span>)</span>
+<span id="cb19-7">sample_submission <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(DATA_DIR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sample_submission.csv"</span>)</span></code></pre></div></div>
+<p>不過這條路徑只在 Kaggle 雲端存在，你在本機跑同一份 notebook 時它是空的。如果你希望「同一份程式碼在本機和雲端都能跑」，可以加一段 fallback：先看看 Kaggle 的掛載路徑在不在，在的話直接用；不在的話，改用 <code>kagglehub</code> 把資料下載下來。<code>kagglehub</code> 是 Kaggle 官方的 Python 套件，專門負責在你自己的環境裡抓取比賽或資料集的檔案：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pathlib <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Path</span>
+<span id="cb20-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> kagglehub</span>
+<span id="cb20-3"></span>
+<span id="cb20-4">COMPETITION <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playground-series-s6e6"</span></span>
+<span id="cb20-5"></span>
+<span id="cb20-6">kaggle_input <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"/kaggle/input/</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>COMPETITION<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb20-7"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> kaggle_input.exists():</span>
+<span id="cb20-8">    data_dir <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> kaggle_input                                  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 在 Kaggle 雲端,直接用掛載資料</span></span>
+<span id="cb20-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb20-10">    data_dir <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(kagglehub.competition_download(COMPETITION))  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 在本機，改用 kagglehub 下載</span></span></code></pre></div></div>
+<p>這樣一來，在本機開發、推上雲端執行，兩邊讀資料的程式碼完全一致，不用為了換環境改來改去。</p>
+</section>
+<section id="建議的專案結構" class="level2">
+<h2 class="anchored" data-anchor-id="建議的專案結構">建議的專案結構</h2>
+<p>把檔案擺整齊會讓上面所有指令都更順手。一個夠用的結構大概是：</p>
+<pre class="text"><code>my-kaggle-project/
+  kernel-metadata.json    # 推送設定
+  s6e6_starter.ipynb      # 你的 notebook(主版本)
+  outputs/                # 抓回來的 submission 和 log
+    submission.csv
+    s6e6-starter.log
+  data/                   # 本機下載的比賽資料
+  README.md</code></pre>
+<p>如果這個資料夾本身也是 Git 倉庫，有幾類東西不建議 commit 進版本控制——憑證涉及安全，輸出和資料則是又大又可重新產生的，留在本機就好：</p>
+<pre class="text"><code>.kaggle/      # 你的憑證,絕對不要外流
+outputs/      # 可以重抓
+data/         # 可以重新下載
+*.zip</code></pre>
+</section>
+<section id="一組可以複製貼上的日常指令" class="level2">
+<h2 class="anchored" data-anchor-id="一組可以複製貼上的日常指令">一組可以複製貼上的日常指令</h2>
+<p>把主流程濃縮成一段,改完 notebook 後從上到下跑一遍就是一輪:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb23-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 本機改完 notebook 後，推到 Kaggle 跑</span></span>
+<span id="cb23-2">kaggle kernels push <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb23-3"></span>
+<span id="cb23-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 等它跑完(看到 COMPLETE 再往下)</span></span>
+<span id="cb23-5">kaggle kernels status your-kaggle-username<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>s6e6-starter</span>
+<span id="cb23-6"></span>
+<span id="cb23-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 抓回 submission 和 log</span></span>
+<span id="cb23-8">kaggle kernels output your-kaggle-username<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>s6e6-starter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p outputs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">--</span>force</span>
+<span id="cb23-9"></span>
+<span id="cb23-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 提交到比賽</span></span>
+<span id="cb23-11">kaggle competitions submit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>f outputs\submission<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>m <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"first baseline"</span></span>
+<span id="cb23-12"></span>
+<span id="cb23-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 看提交紀錄</span></span>
+<span id="cb23-14">kaggle competitions submissions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c playground-series-s6e6</span></code></pre></div></div>
+</section>
+<section id="幾個會省你時間的提醒" class="level2">
+<h2 class="anchored" data-anchor-id="幾個會省你時間的提醒">幾個會省你時間的提醒</h2>
+<p>最後是一些實際操作後才會體會到的小細節，先知道能少踩幾個坑：</p>
+<ul>
+<li><code>kaggle kernels push -p .</code> 永遠是讀「目前資料夾」的 <code>kernel-metadata.json</code> 來決定要推什麼、怎麼推。推之前先確認自己站在對的資料夾。</li>
+<li><code>status</code> 和 <code>output</code> 都要帶 <code>owner/kernel-slug</code>,也就是 notebook 網址裡的那兩段。記不住的話，打開 Kaggle 網頁看一眼網址最快。</li>
+<li>如果你的 notebook 設成 private（<code>is_private: true</code>），用你自己的 token 可以正常存取，但別人拿他的 token 是看不到的。</li>
+<li><code>output</code> 抓不到東西時，先回去看 <code>status</code> 是不是真的 <code>COMPLETE</code>——還在 <code>RUNNING</code> 的時候當然沒結果可抓。</li>
+<li>notebook 在雲端跑失敗時，先把 output 抓回來看 <code>.log</code>，或直接到網頁看執行紀錄，錯誤訊息幾乎都在那裡。</li>
+<li><strong>最重要的一條:選定本機當主版本，就盡量別再去 Kaggle 網頁上直接改 notebook。</strong> 兩邊都改會造成版本分叉（就像 Git 裡本地和遠端各自往前跑、最後對不起來）。萬一真的在網頁改了，記得用 <code>kaggle kernels pull</code> 把那份改動拉回本機，讓兩邊重新對齊。</li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>tech</category>
+  <category>kaggle</category>
+  <category>cli</category>
+  <category>notebook</category>
+  <category>machine-learning</category>
+  <guid>https://ch1nv.github.io/luchinwei/notes/tech/kaggle_cli/</guid>
+  <pubDate>Sun, 28 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 </channel>
 </rss>
