@@ -179,14 +179,28 @@
     "href": "notes/reading/雪国/index.html",
     "title": "雪国　川端康成",
     "section": "",
-    "text": "初讀\n一開始讀這本小說時最大的想法是：為什麼每個段落之間有時候感覺很割裂？後來才明白，原來段落間的時間間隔是不固定的，有時段落間是接續著書寫，有時中間隔了一個晚上，或一、兩天，甚至一季或半年。習慣了這個默契後，讀起來就順暢多了。"
+    "text": "一開始讀這本小說時最大的想法是：為什麼每個段落之間有時候感覺很割裂？後來才明白，原來段落間的時間間隔是不固定的，有時段落間是接續著書寫，有時中間隔了一個晚上，或一、兩天，甚至一季或半年。習慣了這個默契後，讀起來就順暢多了。\n除此之外，也覺得大部分的內文，都透漏著隨興的風格。很像想到什麼就寫什麼。當然這也不是即興的起筆。更像是面對故事全貌思考過後裁切的剪影。文字是沒辦法完完整整的表達所有內容的。只能透過剪裁、切割把全貌投影到文字當中。"
+  },
+  {
+    "objectID": "notes/reading/雪国/index.html#初讀",
+    "href": "notes/reading/雪国/index.html#初讀",
+    "title": "雪国　川端康成",
+    "section": "",
+    "text": "一開始讀這本小說時最大的想法是：為什麼每個段落之間有時候感覺很割裂？後來才明白，原來段落間的時間間隔是不固定的，有時段落間是接續著書寫，有時中間隔了一個晚上，或一、兩天，甚至一季或半年。習慣了這個默契後，讀起來就順暢多了。\n除此之外，也覺得大部分的內文，都透漏著隨興的風格。很像想到什麼就寫什麼。當然這也不是即興的起筆。更像是面對故事全貌思考過後裁切的剪影。文字是沒辦法完完整整的表達所有內容的。只能透過剪裁、切割把全貌投影到文字當中。"
+  },
+  {
+    "objectID": "notes/reading/雪国/index.html#銀河",
+    "href": "notes/reading/雪国/index.html#銀河",
+    "title": "雪国　川端康成",
+    "section": "銀河",
+    "text": "銀河\n在前大部分的內文都是很鬆散、很島村自我的獨白。偶爾穿插駒子的對話和葉子的相遇。我讀起來的感覺是很任性的寫作風格，幾乎沒什麼特別的主題，也沒有什麼重點的情節安排。就是在段落與段落之間時間流動著，島村眼裡的客棧、山與四季不斷的交替，畫面有駒子、有葉子，但像撥放著電影一樣，恍惚間影像不斷的變換。直到葉子從不開口的潔白形象到突然向島村開口，島村與駒子之間的相處才被迫坦然的面對彼此。"
   },
   {
     "objectID": "notes/reading/index.html",
     "href": "notes/reading/index.html",
     "title": "Reading",
     "section": "",
-    "text": "書、文章、影像作品或文本閱讀後留下的摘要、摘記與延伸想法。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n雪国　川端康成\n\n\n\n日文小說\n\n感想\n\n\n\n在沒有絕對時間概念下的段落裡，情緒被裁縫在了一起。\n\n\n\n\n\nJun 29, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
+    "text": "書、文章、影像作品或文本閱讀後留下的摘要、摘記與延伸想法。\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n雪国　川端康成\n\n\n\n日文小說\n\n感想\n\n\n\n在沒有絕對時間概念下的段落裡，情緒被裁縫在一起。\n\n\n\n\n\nJun 29, 2026\n\n\n盧晉偉\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "notes/tech/kaggle_cli/index.html",
@@ -333,49 +347,49 @@
     "href": "projects/amazon_product_reviews_analysis/index.html",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
     "section": "",
-    "text": "如果想用消費者留下的評論幫產品團隊找問題，最直覺的做法是：把評論分成好評跟差評，然後去看差評。我一開始也是這樣做的。但做到一半我發現，這個前提其實是錯的——差評不一定有具體問題，而好評裡反而常常藏著最該被處理的缺陷。\n這篇文章記錄的，我怎麼從「補 missing rating、看差評」這個直覺起點，一路把問題重新定義成 actionable review mining，最後做出一個 DistilBERT + Gemini 的兩階段 pipeline：小模型負責便宜地篩出候選評論，LLM 負責把它們抽成 aspect、issue_summary、evidence_span 這種產品團隊能直接讀的結構化 issue。\n真正花時間的不是訓練模型，而是想清楚一件事：我到底在找什麼。\n資料來源：Amazon Product Reviews Dataset"
+    "text": "如果想用消費者留下的評論幫產品團隊找問題，最直覺的做法是：把評論分成好評跟差評，然後去看差評。我一開始也是這樣做的。但做到一半我發現，這個前提其實是錯的——差評不一定有具體問題，而好評裡反而常常藏著最該被處理的缺陷。\n這篇文章記錄的，我怎麼從「補 missing rating、看差評」這個直覺起點，一路把問題重新定義成 actionable review mining，也就是直接看評論並找出有效的建議。最後做出一個 DistilBERT + Gemini 的兩階段流程：DistilBERT 負責便宜且快速地篩出候選評論，之後交給 LLM 更精細的挑出建議語句。\n資料來源：Amazon Product Reviews Dataset"
   },
   {
-    "objectID": "projects/amazon_product_reviews_analysis/index.html#一開始把問題定義錯了",
-    "href": "projects/amazon_product_reviews_analysis/index.html#一開始把問題定義錯了",
+    "objectID": "projects/amazon_product_reviews_analysis/index.html#外在標籤無法判斷有效建議",
+    "href": "projects/amazon_product_reviews_analysis/index.html#外在標籤無法判斷有效建議",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "一開始把問題定義錯了",
-    "text": "一開始把問題定義錯了\n最初我把這個任務想成兩步：先把缺失的星等補回來，再從負向評論裡找產品問題。聽起來很合理，於是我先處理 rating（星等）。\n原始資料有 1,597 筆評論，其中 420 筆缺 rating；去重後仍有 144 筆沒有星等。有趣的是，這些缺星等評論的文字長度中位數是 474 字元，幾乎是有星等評論（200 字元）的 2.4 倍——它們是寫得最長、內容最多的那一批。我用 TF-IDF + Logistic Regression、也試了 DistilBERT，想預測它們偏好評還是差評。\n但越做越覺得不對勁。很多長評論根本不是「正面」或「負面」可以概括的：有些整體給五星，正文卻列了一串缺點；有些通篇抱怨，最後一句還是推薦這個產品。rating 描述的是使用者對商品的整體態度，但「有沒有具體、可改善的問題」是另一回事。 我花力氣補出來的星等，並不會直接告訴我哪一篇值得產品團隊讀。\n那 helpful votes（點讚數） 呢？這是我試的第二個入口。直覺上，被很多人標 helpful 的評論應該比較值得看。我用 Gemini 標了 400 筆 actionable label （有具體建議的評論）來驗證這個假設：\n\n\n\nLabel\nCount\n\n\n\n\nactionable（有具體建議）\n194\n\n\nnon-actionable\n206\n\n\n\n結果在 194 筆 actionable 評論裡，有 104 筆（53.6%）並不是高 helpful 的評論；numHelpful（點讚數） 跟 actionable label 的相關只有 0.085。換句話說，如果我只讀高票評論，會直接漏掉一半以上的產品改善訊號。 helpful votes 衡量的是「對其他買家有沒有幫助」，不是「對產品團隊有沒有用」，這兩件事並不重疊。\n兩個直覺入口都試過、也都被資料打臉之後，我才意識到問題出在更上游：我一直在用「整體情緒」「互動熱度」這類 proxy（標籤），去逼近一個它們根本不對齊的目標。該換的不是模型，是問題本身。"
+    "section": "外在標籤無法判斷有效建議",
+    "text": "外在標籤無法判斷有效建議\n原始資料有 1,597 筆評論，其中 420 筆缺 rating；去重後仍有 144 筆沒有星等。有趣的是，這些缺星等評論的文字長度中位數是 474 字元，幾乎是有星等評論（200 字元）的 2.4 倍——它們是寫得最長、內容最多的那一批。因此我一開始最想做的事情是把缺失值補回來，因為他們的內文很長，應該包含比較多的實質內容。發現到絕大多數的評論都是 4、5 顆星，1、2 星占比很少，因此我想做分類：好評（４、５星）和差評（１、２、３星）。我用 TF-IDF + Logistic Regression、也試了 DistilBERT，想預測缺失值的好評還是差評。\n但越做越覺得不對勁。很多長評論根本不是「正面」或「負面」可以概括的：有些整體給五星，正文卻列了一串缺點；有些通篇抱怨，最後一句還是推薦這個產品。星等描述的是使用者對商品的整體態度，但「有沒有具體、可改善的問題」是另一回事。\n那 helpful votes（點讚數） 呢？這是我試的第二個入口。直覺上，被很多人點讚的評論應該比較值得看。\n這次我先讓 Gemini 2.5 pro 標註 400 筆評論是不是包含有效建議（actionable label）來驗證「點讚數」跟「有效建議」之間的關係：\n\n\n\nLabel\nCount\n\n\n\n\nactionable（有具體建議）\n194\n\n\nnon-actionable\n206\n\n\n\n結果在 194 筆 actionable 評論裡，有 104 筆（53.6%）並不是高點讚的評論；numHelpful（點讚數） 跟 actionable label 的相關只有 0.085。換句話說，如果我只讀高票評論，會直接漏掉一半以上的產品改善訊號。點讚數衡量的是「對其他買家有沒有幫助」，不是「對產品團隊有沒有用」，這兩件事並不重疊。\n兩個直覺入口都試過、也都被資料打臉之後，我才意識到問題出在更上游：我一直在用「整體情緒」「互動熱度」這類 proxy（標籤），去逼近一個它們根本不對齊的目標。"
   },
   {
-    "objectID": "projects/amazon_product_reviews_analysis/index.html#那可行動到底是什麼意思",
-    "href": "projects/amazon_product_reviews_analysis/index.html#那可行動到底是什麼意思",
+    "objectID": "projects/amazon_product_reviews_analysis/index.html#如何定義有效建議",
+    "href": "projects/amazon_product_reviews_analysis/index.html#如何定義有效建議",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "那「可行動」到底是什麼意思",
-    "text": "那「可行動」到底是什麼意思\n我把任務重新定義成 actionable review mining。要回答的問題不再是：\n\n這篇評論是好評還是差評？\n\n而是：\n\n這篇評論裡，有沒有產品團隊可以採取行動的具體問題？\n\n在這個專案裡，一篇 actionable review 指的是文字中包含以下任一種訊號：具體缺陷、功能缺口、使用限制，或任何產品團隊能據以改善的需求。情緒是哪一邊、被多少人按讚，都不在判準裡。\n定義清楚之後，整段研究路徑其實可以濃縮成一條線：\n\n\n\n\n\nflowchart TD\n  A[\"補 Missing Rating（走錯）\"] --&gt; B[\"研究 numHelpful（也不夠）\"]\n  B --&gt; C[\"重新定義：Actionable Review Mining\"]\n  C --&gt; D[\"DistilBERT student gate + Gemini extraction\"]\n  D --&gt; E[\"Product digest / Issue trend\"]\n\n\n\n\n\n\nGemini 在這裡扮演 teacher 與抽取器，產出結構化欄位：\n\n\n\nField\nMeaning\n\n\n\n\nactionable\n是否包含可行動的產品問題\n\n\naspect\n問題所屬面向\n\n\nissue_summary\n問題摘要\n\n\nevidence_span\n原評論中的證據片段\n\n\n\n這裡有一個我刻意守住的界線：這些欄位用來做 teacher label、證據驗證跟 digest（評估），但真正要部署的 DistilBERT student model，輸入永遠只有完整的 review body——不讀 rating、不讀 helpful votes、不讀產品名稱、不讀長度，也不讀任何 Gemini 抽出來的欄位。我要的是一個只看文字、就能判斷可行動性的 gate，而不是一個偷偷依賴 metadata 的模型。"
+    "section": "如何定義「有效」建議",
+    "text": "如何定義「有效」建議\n我把任務重新定義成 actionable review mining。要回答的問題不再是：\n\n這篇評論是好評還是差評？\n\n而是：\n\n這篇評論裡，有沒有產品團隊可以採取行動的具體問題？\n\n在這個專案裡，一篇評論被稱為是 actionable 指的是文字中包含以下任一種訊號：具體缺陷、功能缺口、使用限制，或任何產品團隊能據以改善的需求。情緒、被多少人按讚，都不在判準裡。\n定義清楚之後，整段研究路徑其實可以濃縮成一條線：\n\n\n\n\n\nflowchart TD\n  A[\"補 Missing Rating（走錯）\"] --&gt; B[\"研究 numHelpful（也不夠）\"]\n  B --&gt; C[\"重新定義：Actionable Review Mining\"]\n  C --&gt; D[\"DistilBERT student gate + Gemini extraction\"]\n  D --&gt; E[\"Product digest / Issue trend\"]\n\n\n\n\n\n\nGemini 在這裡扮演 teacher 與抽取器，產出結構化欄位：\n\n\n\nField\nMeaning\n\n\n\n\nactionable\n是否包含可行動的產品問題\n\n\naspect\n問題所屬面向\n\n\nissue_summary\n問題摘要\n\n\nevidence_span\n原評論中的證據片段\n\n\n\n這些欄位用來做 teacher label、證據驗證跟 digest（評估），但真正要部署的 DistilBERT student model，訓練資料的輸入永遠只有完整的 review body——不讀星等、不讀點讚數、不讀產品名稱、不讀長度，也不讀任何 Gemini 抽出來的欄位。只是單純的輸入文字，微調 DistilBERT 分類一篇評論是不是有效的評論。"
   },
   {
     "objectID": "projects/amazon_product_reviews_analysis/index.html#為什麼是小模型把關-llm-抽取",
     "href": "projects/amazon_product_reviews_analysis/index.html#為什麼是小模型把關-llm-抽取",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
     "section": "為什麼是「小模型把關 + LLM 抽取」",
-    "text": "為什麼是「小模型把關 + LLM 抽取」\n最終架構不是讓 DistilBERT 取代 LLM，而是讓兩者各做自己擅長的事：\n\n\n\n\n\nflowchart LR\n  A[\"Amazon review body\"] --&gt; B[\"Sentence-evidence DistilBERT gate\"]\n  B --&gt; C[\"Candidate reviews\"]\n  C --&gt; D[\"Gemini structured extraction\"]\n  D --&gt; E[\"Product issue digest\"]\n  E --&gt; F[\"Issue trend analysis\"]\n\n\n\n\n\n\nDistilBERT 便宜、穩定，負責從大量評論中快速篩掉明顯沒問題的那些，把候選量壓下來；Gemini 處理真正困難的部分——判斷模稜兩可的案例、寫出 issue summary、把證據片段對齊回原文。\n這樣分工的好處不只是省 LLM 成本，更是因為它比較像真實的產品分析流程：輸出不是一個分類分數，而是一批可以排序、彙整、追蹤的產品問題。"
+    "text": "為什麼是「小模型把關 + LLM 抽取」\n最終架構不是讓 DistilBERT 取代 LLM，而是讓兩者各做自己擅長的事：\n\n\n\n\n\nflowchart LR\n  A[\"Amazon review body\"] --&gt; B[\"Sentence-evidence DistilBERT gate\"]\n  B --&gt; C[\"Candidate reviews\"]\n  C --&gt; D[\"Gemini structured extraction\"]\n  D --&gt; E[\"Product issue digest\"]\n  E --&gt; F[\"Issue trend analysis\"]\n\n\n\n\n\n\n\nDistilBERT 便宜、穩定：負責從大量評論中快速篩掉明顯沒問題的那些，把候選量壓下來\nGemini 處理真正困難的部分——判斷模稜兩可的案例、寫出 issue summary、把證據片段對齊回原文。"
   },
   {
     "objectID": "projects/amazon_product_reviews_analysis/index.html#四個實驗回答四個不同的問題",
     "href": "projects/amazon_product_reviews_analysis/index.html#四個實驗回答四個不同的問題",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
     "section": "四個實驗，回答四個不同的問題",
-    "text": "四個實驗，回答四個不同的問題\n我做了四個主要實驗。重點從來不是衝最高分，而是每個實驗各自回答一個我當下還沒把握的問題：\n\n只看文字的 student 行不行？（Baseline Student）\n模型有沒有偷學評論長度？（Length-Balanced Diagnostic）\n在自然分布下能不能部署？（Full-Pool Deployment）\n用證據監督能不能補回漏判？（Evidence-Supervised Sentence Student）\n\n\n\n\n\n\n\n\n\n\nExperiment\n它在問什麼\nKey Result\n我的決定\n\n\n\n\nBaseline Student\ntext-only DistilBERT 能不能當 Gemini 前的 gate\nmacro-F1 0.850\n可行，但 short 會漏判、long 會誤判\n\n\nLength-Balanced Diagnostic\n模型是不是在靠長度作弊\nbalanced macro-F1 0.670\n只當診斷，不部署\n\n\nFull-Pool Deployment\n自然長度分布下的部署模型\nmacro-F1 0.875、positive recall 0.953\n強 baseline\n\n\nEvidence-Supervised Sentence Student\n用 evidence span 做句子層監督\nmacro-F1 0.896、positive recall 0.977\n最終推薦\n\n\n\n第二個實驗分數最難看，卻是最關鍵的一個。它證實了我擔心的事：模型確實受評論長度影響——很短的評論難以判斷，很長的評論則因為細節多而容易被誤判成 actionable。知道偏誤從哪來，我才有辦法設計下一步的 sentence-evidence model 去對症下藥，而不是盲目調參數。"
+    "text": "四個實驗，回答四個不同的問題\n我做了四個主要實驗。重點從來不是衝最高分，而是每個實驗各自回答一個我當下還沒把握的問題：\n\n只看文字行不行？（Baseline Student）\n模型有沒有偷學評論長度？（Length-Balanced Diagnostic）\n在自然分布下能不能部署？（Full-Pool Deployment）\n用證據監督能不能補回漏判？（Evidence-Supervised Sentence Student）\n\n\n\n\n\n\n\n\n\n\nExperiment\n它在問什麼\nKey Result\n我的決定\n\n\n\n\nBaseline Student\ntext-only DistilBERT 能不能當 Gemini 前的 gate\nmacro-F1 0.850\n可行，但 short 會漏判、long 會誤判\n\n\nLength-Balanced Diagnostic\n模型是不是在靠長度作弊\nbalanced macro-F1 0.670\n只當診斷，不部署\n\n\nFull-Pool Deployment\n自然長度分布下的部署模型\nmacro-F1 0.875、positive recall 0.953\n強 baseline\n\n\nEvidence-Supervised Sentence Student\n用 evidence span 做句子層監督\nmacro-F1 0.896、positive recall 0.977\n最終推薦\n\n\n\n第二個實驗分數最難看，卻是最關鍵的一個。它證實了我擔心的事：模型確實受評論長度影響——很短的評論難以判斷，很長的評論則因為細節多而容易被誤判。知道偏誤從哪來，我才有辦法設計下一步的 Evidence-Supervised Sentence Student 去對症下藥，而不是盲目調參數。"
   },
   {
-    "objectID": "projects/amazon_product_reviews_analysis/index.html#最後為什麼選-sentence-evidence-gate",
-    "href": "projects/amazon_product_reviews_analysis/index.html#最後為什麼選-sentence-evidence-gate",
+    "objectID": "projects/amazon_product_reviews_analysis/index.html#evidence-supervised-sentence-student",
+    "href": "projects/amazon_product_reviews_analysis/index.html#evidence-supervised-sentence-student",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "最後為什麼選 sentence-evidence gate",
-    "text": "最後為什麼選 sentence-evidence gate\n最終推薦的是 evidence-supervised sentence student。它用 Gemini 的 evidence_span 建立句子層的監督訊號：\n\nevidence 句子 → positive\nnon-actionable 評論裡的句子 → clean negative\nactionable 評論裡其他沒被標成 evidence 的句子 → unknown，不進 loss\n\n推論時模型一樣只讀評論文字，把句子分數取最高，聚合成 review-level 機率。我讓它在部署條件下跟 full-pool gate 正面對打：\n\n\n\nMetric\nFull-Pool Gate\nSentence-Evidence Gate\n\n\n\n\n從 1,043 篇篩出的候選\n491\n504\n\n\n保留的 actionable reviews\n400\n408\n\n\nCorpus-level actionable recall\n0.901\n0.919\n\n\nFalse negatives\n44\n36\n\n\nRTX 3060 離線延遲\n9.9 秒\n16.1 秒\n\n\n\nsentence-evidence gate 多送了 13 篇候選給 Gemini，但少漏了 8 篇 actionable review。對這個離線 digest pipeline 來說，這是划算的交換：多花一點推論時間，換更高的產品問題召回率。\n我也特別檢查了「多抓的這些訊號會不會反而把 digest 攪亂」。結果是不會：47 個產品裡有 44 個的 top issue 完全一致，完整 digest 的 exact issue Jaccard 高達 0.910。也就是說，sentence-evidence gate 沒有改變整體的產品問題結構，只是在邊界案例上多撿回了一些有用的東西——這正是我想要的行為。"
+    "section": "Evidence-Supervised Sentence Student",
+    "text": "Evidence-Supervised Sentence Student\n最終推薦的是 evidence-supervised sentence student。它用 Gemini 的 evidence_span 建立句子層的監督訊號。模型訓練時是一句話一句話做判斷，判斷是不是有具體建議的句子。為了做到這個效果，我把訓練資料做更精細的標註。\n\n標註為 evidence 的句子 → positive（有具體建議的句子）\nnon-actionable 評論裡的句子 → clean negative（所有句子都是沒有具體建議的句子）\nactionable 評論裡其他沒被標成 evidence 的句子 → unknown，不進 loss（因為有可能有有具體建議句子被漏判）\n\n推論時模型一樣只讀評論文字，把句子分數取最高，聚合成 review-level 機率。\n比較 Full-Pool 和 Evidence-Supervised Sentence 在全部資料上的數據差距：\n\n\n\nMetric\nFull-Pool Gate\nSentence-Evidence Gate\n\n\n\n\n從 1,043 篇篩出的候選\n491\n504\n\n\n保留的 actionable reviews\n400\n408\n\n\nCorpus-level actionable recall\n0.901\n0.919\n\n\nFalse negatives\n44\n36\n\n\nRTX 3060 離線延遲\n9.9 秒\n16.1 秒\n\n\n\nsentence-evidence gate 多送了 13 篇候選給 Gemini，但少漏了 8 篇 actionable review。這是划算的交換：多花一點推論時間，換更高的產品問題召回率。\n47 個產品裡有 44 個的 top issue 完全一致，exact issue Jaccard 高達 0.910。也就是說，sentence-evidence gate 沒有改變整體的產品問題結構，只是在邊界案例上多發現有用的評論。"
   },
   {
-    "objectID": "projects/amazon_product_reviews_analysis/index.html#從分類分數到真正能追蹤的產品訊號",
-    "href": "projects/amazon_product_reviews_analysis/index.html#從分類分數到真正能追蹤的產品訊號",
+    "objectID": "projects/amazon_product_reviews_analysis/index.html#有了一堆有效評論後要如何總結建議",
+    "href": "projects/amazon_product_reviews_analysis/index.html#有了一堆有效評論後要如何總結建議",
     "title": "差評不等於產品問題：從 Amazon 評論抽取有價值的產品建議",
-    "section": "從分類分數到真正能追蹤的產品訊號",
-    "text": "從分類分數到真正能追蹤的產品訊號\n這個專案的輸出沒有停在 classifier score。\nGemini extraction 會把每一篇 actionable review 轉成一列 issue：問題面向、摘要、原文證據。這些 row 再彙整成 product digest，讓產品團隊一眼看到每個商品最常出現、最該處理的問題。\n我還把完整的 extraction 接到一個 Amazon Tap 的 monthly issue trend prototype：先把 actionable reviews 對映到人工審過的 canonical issue families，再用 empirical-logit local linear trend 的 state space model 搭配 Kalman filter，去偵測 Rising、Spike、Drop 這幾種訊號。對我來說這一步很自然——把「把噪訊濾成可信狀態」的 Kalman 思路，從金融時間序列搬到產品問題的時間序列上。\n所以這條 pipeline 的價值不只是「找出哪些評論有問題」，而是把評論變成可以長期追蹤的 product intelligence。"
+    "section": "有了一堆有效評論後，要如何總結建議？",
+    "text": "有了一堆有效評論後，要如何總結建議？\nGemini extraction 會把每一篇 actionable review 轉成一列 issue：問題面向、摘要、原文證據。我利用時間序列方法分析評論的趨勢。在這個專案當中，我選擇評論最集中的 Amazon Tap 這項產品做分析。從 2016 年七月到 2017 年七月、135 筆被判定成有效評論。\n\n\n\n\n\n\n\n\n\nIssue family\n意義\n被提及次數\n出現月份次數\n\n\n\n\nhands_free_activation\n免按鍵、喚醒詞、always-listening 相關問題\n48\n13\n\n\nconnectivity_integration\nWi-Fi、Bluetooth、app、音樂服務整合問題\n20\n11\n\n\naudio_quality\n音質、音量、bass、speaker quality 問題\n18\n6\n\n\nvoice_recognition_capability\n語音辨識、麥克風、理解能力問題\n18\n9\n\n\nbattery_power\n電池、充電、續航、dock 問題\n12\n9\n\n\nusability_setup_docs\n設定、操作、文件、學習成本問題\n10\n7\n\n\n\n這六類是我從 Gemini 抽出的零散 aspect 整理出來的 canonical issue family。我沒有直接拿 Gemini 原始的 aspect 做趨勢分析，因為它命名太分散、很多類別整段期間只出現一兩次，硬要對這麼稀疏的資料估趨勢，估出來的多半是雜訊。所以我先設了一道門檻：一個 issue 至少要被提及 10 次、而且至少橫跨 4 個不同月份，才進入後面的時間序列模型。上表這六類，就是通過門檻的議題。\n\n月度提及率\n對每個 issue，我每個月算三個數：\n\n\\(N_t\\)：該月 Amazon Tap 的全部評論數\n\\(y_t\\)：該月被歸到這個 issue 的 actionable 評論數\n\\(\\text{raw\\_rate}_t = \\frac{y_t}{N_t}\\)\n\n但我沒有直接拿 \\(\\text{raw\\_rate}\\) 去判斷趨勢。每個月的評論總數差很多，有些月份某個 issue 的 count 甚至是 0，直接看比例會非常不穩定——一個月只有 3 篇評論、其中 1 篇提到音質，那個「33%」其實沒什麼意義。"
   },
   {
     "objectID": "projects/amazon_product_reviews_analysis/index.html#這個專案到底證明了什麼",
